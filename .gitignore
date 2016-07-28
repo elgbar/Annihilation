@@ -1,3 +1,7 @@
+#Ignore some eclipse stuff, but ill leave in the .settings folder to make it easy to build for others :)
+target
+*.bat
+
 *.class
 
 # Mobile Tools for Java (J2ME)
