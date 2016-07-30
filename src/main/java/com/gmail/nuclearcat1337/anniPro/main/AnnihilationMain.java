@@ -4,11 +4,6 @@ package com.gmail.nuclearcat1337.anniPro.main;
 import java.io.File;
 import java.io.IOException;
 
-import com.gmail.nuclearcat1337.anniPro.anniEvents.PluginDisableEvent;
-import com.gmail.nuclearcat1337.anniPro.announcementBar.AnnounceBar;
-import com.gmail.nuclearcat1337.anniPro.announcementBar.Announcement;
-import net.techcable.npclib.api.NPCMain;
-import com.gmail.nuclearcat1337.anniPro.utils.DamageControl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.nuclearcat1337.anniPro.anniEvents.GameEndEvent;
 import com.gmail.nuclearcat1337.anniPro.anniEvents.GameStartEvent;
+import com.gmail.nuclearcat1337.anniPro.anniEvents.PluginDisableEvent;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniTeam;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
@@ -32,6 +28,8 @@ import com.gmail.nuclearcat1337.anniPro.anniGame.GameVars;
 import com.gmail.nuclearcat1337.anniPro.anniGame.StandardPhaseHandler;
 import com.gmail.nuclearcat1337.anniPro.anniMap.GameMap;
 import com.gmail.nuclearcat1337.anniPro.anniMap.LobbyMap;
+import com.gmail.nuclearcat1337.anniPro.announcementBar.AnnounceBar;
+import com.gmail.nuclearcat1337.anniPro.announcementBar.Announcement;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ActionMenuItem;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickHandler;
@@ -39,11 +37,17 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.CustomItem;
 import com.gmail.nuclearcat1337.anniPro.kits.KitLoading;
 import com.gmail.nuclearcat1337.anniPro.mapBuilder.MapBuilder;
+import com.gmail.nuclearcat1337.anniPro.utils.DamageControl;
 import com.gmail.nuclearcat1337.anniPro.utils.InvisibilityListeners;
 import com.gmail.nuclearcat1337.anniPro.voting.AutoStarter;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
 import com.gmail.nuclearcat1337.anniPro.voting.ScoreboardAPI;
 import com.gmail.nuclearcat1337.anniPro.voting.VoteMapManager;
+import com.hcs.Listners.BlockBreakListner;
+import com.hcs.Listners.FoodLvlChangeListner;
+import com.hcs.Listners.TrampleListner;
+
+import net.techcable.npclib.api.NPCMain;
 
 public class AnnihilationMain extends JavaPlugin implements Listener
 { 
@@ -66,7 +70,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 
         DamageControl.register(this);
 		
-		ConfigManager.load(this); //Enables the loading of the main config file, this is now different from the lobby config file
+		ConfigManager.load(this); //Enables the loading of the main config file, this is different from the lobby config file
 		
 		loadMainValues(); //This will load values from the main config file and load the lobby from the lobby config file
 		
@@ -91,11 +95,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		{
 			for(Player pl : Bukkit.getOnlinePlayers())
 			{
-//				final Player pl = p.getPlayer();
-//				if(pl != null)
-//				{
-					Game.LobbyMap.sendToSpawn(pl);
-//				}
+				Game.LobbyMap.sendToSpawn(pl);
 			}
 		}
 		
@@ -104,8 +104,12 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		new TeamCommand(this);
 		new GameListeners(this);
 		new AreaCommand(this);
+		new BlockBreakListner(this);
+		new FoodLvlChangeListner(this);
+		new TrampleListner(this);
 		//XPSystem.loadXPSystem(this,ConfigManager.getConfig().getConfigurationSection("XP-System"));
 		new KitLoading(this); //No real reason to come last, but I kind of feel since its the heaviest processing power user, it should be last	
+
 	}
 	
 	public void loadLang()
@@ -151,9 +155,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		}
 		catch (IOException e)
 		{
-//			log.log(Level.WARNING, "PluginName: Failed to save lang.yml.");
-//			log.log(Level.WARNING,
-//					"PluginName: Report this stack trace to <your name>.");
 			e.printStackTrace();
 		}
 	}

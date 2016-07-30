@@ -9,7 +9,7 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 
 public class GameVars
 {
-	private static GameMode defaultGamemode = GameMode.ADVENTURE;
+	private static GameMode defaultGamemode = GameMode.SURVIVAL;
 	private static String endGameCommand = "stop";
 	
 	private static boolean AutoStart = false;
@@ -164,7 +164,7 @@ public class GameVars
 					}
 					catch(Exception e)
 					{
-						defaultGamemode = GameMode.ADVENTURE;
+						defaultGamemode = GameMode.SURVIVAL;
 					}
 				}
 			}

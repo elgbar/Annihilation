@@ -154,7 +154,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			{
 				context.getForWhom().sendRawMessage(purple+"What type of product would you like to give when this block is broken?");
 				context.getForWhom().sendRawMessage(purple+"Enter a material value and/or a data value in the format:"+red+"["+green+"Material"+red+"] ["+green+"DataValue"+red+"]"+purple+"(omit brackets)");
-				finalMessage = purple+"Material enum reference: "+ChatColor.RESET+"http://jd.bukkit.org/rb/apidocs/org/bukkit/Material.html";
+				finalMessage = purple+"Material enum reference: "+ChatColor.RESET+"https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html";
 				break;
 			}
 			case 12:

@@ -41,16 +41,11 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
     	}
 
     	@Override
-    	public int g() //used to be p()
+    	public int g()
     	{
     		return 0;
     	}
 
-//    	@Override
-//    	public Block q()
-//    	{
-//    		return Blocks.FURNACE;
-//    	}
 
     	@Override
     	public InventoryHolder getOwner()
@@ -95,7 +90,7 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
     	{
             try
             {
-                c();//this used to be h();
+                c();
             }
             catch(Throwable t)
             {

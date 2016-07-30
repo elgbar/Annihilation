@@ -23,7 +23,7 @@ public class MapKey implements Comparable<MapKey>
 	@Override
 	public int hashCode()
 	{
-		final int prime = 31;
+		final int prime = 31; //wtf magic numbers :/ --kh498
 		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		return result;
