@@ -69,39 +69,6 @@ public class KitUtils
 		return meta.getDisplayName().equalsIgnoreCase(name);
 	}
 	
-//	public static ItemStack[] coloredArmor(AnniTeam team)
-//	{
-//		Color c;
-//		if(team.getColor() == ChatColor.RED)
-//			c = Color.RED;
-//		else if(team.getColor() == ChatColor.BLUE)
-//			c = Color.BLUE;
-//		else if(team.getColor() == ChatColor.GREEN)
-//			c = Color.GREEN;
-//		else
-//			c = Color.YELLOW;
-//		for(ItemStack stack : armor)
-//		{
-//			LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
-//			meta.setColor(c);
-//			stack.setItemMeta(meta);
-//		}
-//		return armor;
-//	}
-//	
-//	public static void giveTeamArmor(Player player)
-//	{
-//		final AnniPlayer pl = AnniPlayer.getPlayer(player.getUniqueId());
-//		if(pl != null)
-//		{
-//			final AnniTeam t = pl.getTeam();
-//			if(t != null)
-//			{
-//				player.getInventory().setArmorContents(coloredArmor(t));	
-//			}
-//		}
-//	}
-	
 	public static ItemStack setName(ItemStack itemStack, String name)
 	{
 		ItemMeta meta = itemStack.getItemMeta();

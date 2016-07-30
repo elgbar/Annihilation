@@ -23,7 +23,6 @@ public class MenuItem
 		this.lore = new ArrayList<String>();
 		for(String str : lore)
 			this.lore.add(str);
-		//Arrays.asList(lore);
 	}
 
 	/**

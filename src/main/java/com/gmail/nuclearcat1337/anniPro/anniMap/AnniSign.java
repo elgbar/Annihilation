@@ -25,7 +25,6 @@ public final class AnniSign
 			throw new NullPointerException();
 		
 		boolean signpost = configSection.getBoolean("isSignPost");
-		//Location loc = ConfigManager.getLocation(configSection.getConfigurationSection("Location"));
 		Loc loc = new Loc(configSection.getConfigurationSection("Location"));
 		BlockFace facing = BlockFace.valueOf(configSection.getString("FacingDirection"));	
 		obj = new FacingObject(facing, loc);
@@ -38,8 +37,6 @@ public final class AnniSign
 		else
 			type = SignType.newTeamSign(AnniTeam.getTeamByName(data.split("-")[1]));
 	}
-	
-	//public abstract void onSignClick(final Player player);
 	
 	public boolean isSignPost()
 	{
@@ -66,7 +63,6 @@ public final class AnniSign
 		if(configSection != null)
 		{
 			configSection.set("isSignPost", this.isSignPost());
-			//ConfigManager.saveLocation(this.getLocation(), configSection.createSection("Location"));
 			getLocation().saveToConfig(configSection.createSection("Location"));
 			configSection.set("FacingDirection", this.getFacingDirection().name());	
 			String data;

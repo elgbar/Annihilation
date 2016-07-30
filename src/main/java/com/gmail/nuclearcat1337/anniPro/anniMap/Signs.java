@@ -73,15 +73,6 @@ public final class Signs implements Iterable<AnniSign>, Listener
 		if(!signs.containsKey(key))
 		{
 			String[] lore;
-//			if(sign.getType().equals(SignType.Brewing))
-//				lore = new String[]{g+"["+ChatColor.DARK_PURPLE+"Shop"+g+"]",ChatColor.BLACK+"Brewing"};
-//			else if(sign.getType().equals(SignType.Weapon))
-//				lore = new String[]{g+"["+ChatColor.DARK_PURPLE+"Shop"+g+"]",ChatColor.BLACK+"Weapon"};
-//			else
-//			{
-//				AnniTeam team = sign.getType().getTeam();
-//				lore = new String[]{ChatColor.DARK_PURPLE+"Right Click",ChatColor.DARK_PURPLE+"To Join:",team.getColoredName()+" Team"};
-//			}
 			if(sign.getType().equals(SignType.Brewing))
 				lore = new String[]{g+"["+Lang.SHOP.toString()+g+"]",Lang.BREWINGSIGN.toString()};
 			else if(sign.getType().equals(SignType.Weapon))

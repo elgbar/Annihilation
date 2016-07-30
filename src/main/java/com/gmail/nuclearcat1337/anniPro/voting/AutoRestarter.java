@@ -29,7 +29,6 @@ public class AutoRestarter implements Listener
 	
 	public AutoRestarter(Plugin p, int playersToRestart, int countdown)
 	{
-		//Bukkit.getLogger().info("This is a thing");
 		Bukkit.getPluginManager().registerEvents(this, p);
 		if(playersToRestart < 0)
 			playersToRestart = 0;
@@ -101,14 +100,12 @@ public class AutoRestarter implements Listener
 						int count = Bukkit.getOnlinePlayers().size();
 						if(count > players)
 						{
-							//MessageBar.Reset();
 
                             AnnounceBar.getInstance().countDown(new Announcement(ChatColor.RED + "Auto-restart aborted!").setTime(2).setCallback(new Runnable()
                             {
                                 @Override
                                 public void run()
                                 {
-                                    //MessageBar.countDown(data);
                                     AnnounceBar.getInstance().countDown(data);
                                     data = null;
                                 }

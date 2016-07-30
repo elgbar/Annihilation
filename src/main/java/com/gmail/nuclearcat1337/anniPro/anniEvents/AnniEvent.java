@@ -10,8 +10,4 @@ public final class AnniEvent
         Bukkit.getPluginManager().callEvent(event);
     }
 
-//    public static void registerListener(Listener listener)
-//    {
-//        Bukkit.getPluginManager().registerEvents(listener, AnnihilationMain.getInstance());
-//    }
 }

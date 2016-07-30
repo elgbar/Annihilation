@@ -128,32 +128,31 @@ public class GameVars
 			String command = config.getString("EndGameCommand");
 			if(command != null)
 				endGameCommand = command.trim();
-			//killOnLeave = config.getBoolean("Kill-On-Leave");
 			ConfigurationSection gameVars = config.getConfigurationSection("GameVars");
 			if(gameVars != null)
 			{		
 				ConfigurationSection auto = gameVars.getConfigurationSection("AutoStart");
-				AutoStart = auto.getBoolean("On");//auto.set("On", false);
-				PlayerstoStart = auto.getInt("PlayersToStart");//auto.set("PlayersToStart", 4);
+				AutoStart = auto.getBoolean("On");
+				PlayerstoStart = auto.getInt("PlayersToStart");
 				CountdowntoStart = auto.getInt("CountdownTime");
 				
 				ConfigurationSection mapload = gameVars.getConfigurationSection("MapLoading");
-				Voting = mapload.getBoolean("Voting");//mapload.set("Voting", true);
+				Voting = mapload.getBoolean("Voting");
 				maxVotingMaps = mapload.getInt("Max-Maps-For-Voting");
-				Map = mapload.getString("UseMap");//mapload.set("UseMap", "plugins/Annihilation/Worlds/Test");
+				Map = mapload.getString("UseMap");
 				
 				ConfigurationSection autorestart = gameVars.getConfigurationSection("AutoRestart");
-				AutoReStart = autorestart.getBoolean("On");//autorestart.set("On", false);
-				PlayersToRestart = autorestart.getInt("PlayersToAutoRestart");//autorestart.set("PlayersToAutoRestart", 0);
+				AutoReStart = autorestart.getBoolean("On");
+				PlayersToRestart = autorestart.getInt("PlayersToAutoRestart");
 				CountdowntoRestart = autorestart.getInt("CountdownTime");
 				
 				ConfigurationSection balance = gameVars.getConfigurationSection("Team-Balancing");
-				useTeamBalance = balance.getBoolean("On");//autorestart.set("On", false);
-				balanceTolerance = balance.getInt("Tolerance");//autorestart.set("PlayersToAutoRestart", 0);
+				useTeamBalance = balance.getBoolean("On");
+				balanceTolerance = balance.getInt("Tolerance");
 
                 ConfigurationSection antilog = gameVars.getConfigurationSection("Anti-Log-System");
-                useAntiLog = antilog.getBoolean("On");//autorestart.set("On", false);
-                npcTimeout = antilog.getInt("NPC-Time");//autorestart.set("PlayersToAutoRestart", 0);
+                useAntiLog = antilog.getBoolean("On");
+                npcTimeout = antilog.getInt("NPC-Time");
 			
 				String gamemode = gameVars.getString("DefaultGameMode");
 				if(gamemode != null)
@@ -172,9 +171,5 @@ public class GameVars
 		File worldFolder = new File(AnnihilationMain.getInstance().getDataFolder().getAbsolutePath()+"/Worlds");
 		if(!worldFolder.exists())
 			worldFolder.mkdir();
-//		tempWorldPath = AnnihilationMain.getInstance().getDataFolder().getAbsolutePath()+"/TempWorld";
-//		worldFolder = new File(tempWorldPath);
-//		if(!worldFolder.exists())
-//			worldFolder.mkdir();
 	}
 }

@@ -22,16 +22,7 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
     		EntityPlayer player = ((CraftPlayer) p).getHandle();
     		this.owningPlayer = player;
     		this.world = player.world;
-    		//try
-    		//{
-    			//ReflectionUtil.setSuperValue(this, "m", "Ender Furnace");
-                super.a("Ender Furnace");
-               // this.a(new BlockPosition(0,0,0));
-    		//}
-    		//catch (Exception e)
-    		//{
-    		//	e.printStackTrace();
-    		//}
+            super.a("Ender Furnace");
     	}
 
     	@Override
@@ -50,11 +41,6 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
     	@Override
     	public InventoryHolder getOwner()
     	{
-    //		int x = 0;
-    //		org.bukkit.block.Block b = this.world.getWorld().getBlockAt(x, 0, 0);
-    //		while(b != null && b.getType() != Material.AIR)
-    //			b = this.world.getWorld().getBlockAt(++x,0,0);
-    //		Furnace furnace = new CraftFurnace(b);
     		org.bukkit.block.Furnace furnace = new CraftFurnace(this.world.getWorld().getBlockAt(0, 0, 0));
     		try
     		{
@@ -67,20 +53,9 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
     		return furnace;
     	}
 
-        //as of Minecraft 1.8 the bottom slot of a furnace only allows fuel to be put in it.
-        //We want to allow any item to be stored in the bottom slot
-//        @Override
-//        public boolean b(int i, net.minecraft.server.v1_8_R1.ItemStack itemstack)
-//        {
-//            Bukkit.getLogger().info("This was called");
-//            return i != 2;
-//        }
-
     	@Override
     	public void open()
     	{
-    		//Bukkit.getLogger().info("Owning players name is "+this.owningPlayer.getName());
-    		//this.owningPlayer.openTileEntity(this);//openFurnace(this);
             Bukkit.getLogger().info("Attempted to open for player "+owningPlayer.getName());
             owningPlayer.openContainer(this);
     	}

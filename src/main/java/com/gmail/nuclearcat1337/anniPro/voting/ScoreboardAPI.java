@@ -26,7 +26,6 @@ public class ScoreboardAPI
 	{
 		final BoardListeners l = new BoardListeners();
 		Bukkit.getPluginManager().registerEvents(l,p);
-//		AnniEvent.registerListener(l);
 	}
 	
 	private static class BoardListeners implements Listener
@@ -104,51 +103,4 @@ public class ScoreboardAPI
 	{
 		player.setScoreboard(anniScoreboard);
 	}
-	
-//	public static void addPlayer(AnniTeam team, Player p)
-//	{
-//		anniScoreboard.getTeam(team.getName()).addPlayer(p);
-//		//updateSigns(team);
-//	}
-//	
-//	public static void removePlayer(AnniTeam team, Player p)
-//	{
-//		anniScoreboard.getTeam(team.getName()).removePlayer(p);
-//		//updateSigns(team);
-//	}
-	
-//	public static Integer[] teamCounts()
-//	{
-//		Integer[] x = new Integer[4];
-//		int i = 0;
-//		for(AnniTeam t : AnniTeam.Teams)
-//		{
-//			if(t.isTeamDead())
-//				x[i] = 0;
-//			else
-//				x[i] = anniScoreboard.getTeam(t.getName()).getSize();
-//			i++;
-//		}
-//		Arrays.sort(x);
-//		return x;
-////		Integer[] x = new Integer[4];
-////		int i = 0;
-////		for(Team t : anniScoreboard.getTeams())
-////		{
-////			x[i] = t.getSize();
-////			i++;
-////		}
-////		Arrays.sort(x);
-////		return x;
-//	}
-//	
-//	public static Set<OfflinePlayer> getPlayers(AnniTeam t)
-//	{
-//		return anniScoreboard.getTeam(t.getName()).getPlayers();
-//	}
-//	
-//	public static int getPlayerCount(AnniTeam team)
-//	{
-//		return anniScoreboard.getTeam(team.getName()).getSize();
-//	}
 }

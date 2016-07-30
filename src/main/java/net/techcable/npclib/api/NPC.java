@@ -9,7 +9,6 @@ public class NPC
 {
     public NPC(Player player, LogoutTag tag)
     {
-        //this.uuid = player.getUniqueId();
         this.tag = tag;
         spawn(player,player.getLocation());
     }
@@ -18,21 +17,15 @@ public class NPC
     private boolean spawned;
     private Entity entity;
     private Loc loc;
-    //private UUID uuid;
 
     public boolean despawn()
     {
         if(!spawned) return false;
         this.spawned = false;
-        //Util.getNMS().onDespawn(this);
-
         Util.getNMS().onDespawn(this);
 
         entity.remove();
         entity = null;
-        //update();
-        //cancel();
-       // getRegistry().deregister(this);
 
         tag = null;
         loc = null;
@@ -54,23 +47,9 @@ public class NPC
         {
             this.spawned = true;
             this.entity = spawned;
-            //update();
-            //tryEquipmentChangeNotify(Bukkit.getOnlinePlayers());
             return true;
         } else return false;
     }
-
-//    public void update()
-//    {
-//        update(Util.getNearbyPlayers(128, getEntity().getLocation()));
-//    }
-
-//    public void update(Player[] players)
-//    {
-//        if (spawned) Util.getNMS().notifyOfSpawn(players, new Player[] { (Player)getEntity() });
-//        else
-//            Util.getNMS().notifyOfDespawn(players, new Player[] { (Player)getEntity() });
-//    }
 
     public boolean onKill(Player killer)
     {

@@ -51,8 +51,6 @@ import net.techcable.npclib.api.NPCMain;
 
 public class AnnihilationMain extends JavaPlugin implements Listener
 { 
-	//public static boolean useProtocalHack = false;
-	//public static final String Name = "Annihilation";
 	private static JavaPlugin instance;
 	public static JavaPlugin getInstance()
 	{
@@ -77,12 +75,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		VoteMapManager.registerListener(this);
 		AnniCommand.register(this);
 		buildAnniCommand();
-		//VoteMapManager.Enable(this);
 		new MapBuilder(this);
-		
-		
-		
-		//DragonBar.registerListeners(this); //should come after the "use protocol hack" is loaded
 		
 		handleAutoAndVoting();
 
@@ -107,7 +100,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		new BlockBreakListner(this);
 		new FoodLvlChangeListner(this);
 		new TrampleListner(this);
-		//XPSystem.loadXPSystem(this,ConfigManager.getConfig().getConfigurationSection("XP-System"));
 		new KitLoading(this); //No real reason to come last, but I kind of feel since its the heaviest processing power user, it should be last	
 
 	}
@@ -120,11 +112,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 			try
 			{
 				getDataFolder().mkdir();
-				lang.createNewFile();
-//				YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(lang);
-//				defConfig.save(lang);
-//				Lang.setFile(defConfig);
-//				return;				
+				lang.createNewFile();		
 			}
 			catch (IOException e)
 			{
@@ -306,32 +294,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 					}
 					else sender.sendMessage(ChatColor.RED+"You do not have a game map loaded!");
 				}
-				
-//				Game.saveMap();
-//				saveMainValues();
-//				sender.sendMessage(ChatColor.GREEN+"Saved Annihilation Main and Map Configs!");
-//				if(args != null && args.length > 0 && args[0].equalsIgnoreCase("world"))
-//				{
-//					if(Game.getGameMap() != null)
-//					{
-//						World w = Game.getWorld(Game.getGameMap().getWorldName());
-//						if(w != null)
-//						{
-//							w.save();
-//							sender.sendMessage(ChatColor.GREEN+"Saved the Map "+Game.getGameMap().getNiceWorldName()+" to disk.");
-//						}
-//					}
-//					
-//					if(Game.LobbyMap != null)
-//					{
-//						World w = Game.getWorld(Game.LobbyMap.getWorldName());
-//						if(w != null)
-//						{
-//							w.save();
-//							sender.sendMessage(ChatColor.GREEN+"Saved the Lobby Map "+Game.LobbyMap.getNiceWorldName()+" to disk.");
-//						}
-//					}
-//				}
 			}
 
 			@Override
@@ -370,7 +332,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onGameStart(GameStartEvent event)
 	{
-        //Bukkit.getLogger().info("WELL WE GOT HERE!!!!");
 		if(Game.getGameMap() != null)
 		{
 			for(AnniTeam t : AnniTeam.Teams)
@@ -394,7 +355,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 				}
 			}
             AnnounceBar.getInstance().countDown(new Announcement(Lang.PHASEBAR.toStringReplacement(1) + " - {#}").setTime(map.getPhaseTime()).setCallback(new StandardPhaseHandler()));
-			//MessageBar.countDown(Lang.PHASEBAR.toStringReplacement(1) + " - {#}", map.getPhaseTime(), new StandardPhaseHandler());
 			map.setPhase(1);
 			map.setCanDamageNexus(false);
 		}
@@ -404,7 +364,6 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 	public void onGameEnd(GameEndEvent event)
 	{
 		GameMap map = Game.getGameMap(); // if gamemap is null at this point then we have a bigger problem
-		//BarAPI.Reset();
 		map.setPhase(0);
 		map.setCanDamageNexus(false);
 		
@@ -430,31 +389,15 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 			if(p.isOnline())
 				p.getKit().cleanup(p.getPlayer());
 		}
-		//XPSystem.disable();
 		//TODO-------------------I dont know if we need a manual reset or not. There may be unintended consequences for not resetting it for a reload //MessageBar.Reset();
 		saveMainValues();
 		if(Game.getGameMap() != null)
 			Game.getGameMap().unLoadMap();
-		//Game.unloadGameMap();
-
-        //AnniEvent.callEvent(new PluginDisableEvent());
         Bukkit.getPluginManager().callEvent(new PluginDisableEvent());
 	}
 	
 	public void saveMainValues()
 	{
-//		YamlConfiguration config = ConfigManager.getConfig();
-//		if(config != null)
-//		{
-//			//ConfigManager.reloadMainConfig(); //Not sure exactly what the point of this is
-//			
-//			//config.set("ProtocalHack", AnnihilationMain.useProtocalHack);
-//			//config.set("DefaultGameMode", Game.defaultGamemode.name().toLowerCase());
-//			//config.set("EndGameCommand", Game.endGameCommand);
-//			
-//			
-//			//ConfigManager.saveMainConfig();
-//		}
 		
 		if(Game.LobbyMap != null)
 		{
@@ -468,20 +411,9 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		YamlConfiguration config = ConfigManager.getConfig();
 		if(config != null)
 		{	
-			//Load all values here
-//			AnnihilationMain.useProtocalHack = config.getBoolean("ProtocalHack");
-//			if (!useProtocalHack)
-//			{
-//				if (v1_8Fake.isUsable())
-//				{
-//					useProtocalHack = true;
-//					Util.detectVersion();
-//				}
-//			}
 			
 			GameVars.loadGameVars(config);
 		}
-		//Util.detectVersion();
 		
 		File lobbyFile = new File(this.getDataFolder(),"AnniLobbyConfig.yml");
 		if(lobbyFile.exists())

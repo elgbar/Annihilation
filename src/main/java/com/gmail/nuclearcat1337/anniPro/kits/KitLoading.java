@@ -51,7 +51,6 @@ import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 
 public class KitLoading implements Listener, CommandExecutor
 {
-	//private final Map<String,Kit> Kits;
 	private final KitMenuItem[] items;
 	private final Map<UUID,ItemMenu> menus;
 	
@@ -123,20 +122,8 @@ public class KitLoading implements Listener, CommandExecutor
 									Kit.registerKit(kit);
 								}
 							}
-//							else if(AnniPlugin.class.isAssignableFrom(cl))
-//							{
-//								@SuppressWarnings("unchecked")
-//								Class<AnniPlugin> pl = (Class<AnniPlugin>) cl;
-//								AnniPlugin plugin = pl.newInstance();
-//								if(plugin.onEnable())
-//								{
-//									AnniEvent.registerListener(plugin);
-//									Bukkit.getPluginManager().registerEvents(plugin, p);
-//								}								
-//							}
 						}
 					}
-					//loader.close();
 				}
 				catch (InstantiationException | IllegalAccessException e)
 				{
@@ -341,8 +328,6 @@ public class KitLoading implements Listener, CommandExecutor
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	public void RemoveDeathDrops(PlayerDeathEvent event)
 	{
-		//Player player = event.getEntity();
-		
 		for(ItemStack s : new ArrayList<ItemStack>(event.getDrops()))
 		{
 			if(KitUtils.isSoulbound(s))

@@ -65,19 +65,16 @@ public final class Loc
 	
 	public int getBlockX()
 	{
-		//return (int)x.doubleValue();
 		return x.intValue();
 	}
 	
 	public int getBlockY()
 	{
-		//return (int)y.doubleValue();
 		return y.intValue();
 	}
 	
 	public int getBlockZ()
 	{
-		//return (int)z.doubleValue();
 		return z.intValue();
 	}
 	

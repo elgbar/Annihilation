@@ -28,7 +28,6 @@ public class FutureBlockReplace implements Runnable
 			@Override
 			public void run()
 			{
-			//	Bukkit.getLogger().info("RAWR "+state.getType().toString());
 				state.update(true);
 			}	
 		}

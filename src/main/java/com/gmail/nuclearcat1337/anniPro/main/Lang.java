@@ -90,8 +90,6 @@ public enum Lang
 	PHASE3MESSAGE("phase-3-message",ChatColor.AQUA+"Diamonds "+ChatColor.GRAY+"have spawned in the middle"+"%n"+ChatColor.GRAY+"of the map"),
 	PHASE4MESSAGE("phase-4-message",ChatColor.GOLD+"Blaze Powder "+ChatColor.GRAY+"is now available"+"%n"+ChatColor.GRAY+"from the brewing shop"),
 	PHASE5MESSAGE("phase-5-message",ChatColor.GOLD+"Extra damage "+ChatColor.GRAY+"is inflicted on the "+ChatColor.GOLD+"nexus"+"%n"+ChatColor.GRAY+"when breaking it"+"%n"+ChatColor.RED+"x2 "+ChatColor.GOLD+"extra damage");
-
-	//TEST("","");
  
     private String path;
     private String def;

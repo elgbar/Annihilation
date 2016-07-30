@@ -100,16 +100,4 @@ public class DamageControl implements Listener
         }
         return immunities;
     }
-
-//    private class Control
-//    {
-//        private final DamageSource source;
-//        private final long expiration;
-//
-//        public  Control(DamageSource source, long expiration)
-//        {
-//            this.source = source;
-//            this.expiration = expiration;
-//        }
-//    }
 }

@@ -19,9 +19,6 @@ import com.gmail.nuclearcat1337.anniPro.voting.VoteMapManager;
 
 public class Game
 {
-//	private static File tempWorldDirec;
-//	private static File worldDirec;
-	
 	private static GameMap GameMap = null;
 	public static LobbyMap LobbyMap = null;
 	
@@ -55,66 +52,10 @@ public class Game
 	{
 		return GameMap;
 	}
-	
-//	public static void saveMap()
-//	{
-//		if(GameMap != null  && ConfigManager.getMapConfig() != null)
-//		{
-//			GameMap.saveToConfig(ConfigManager.getMapConfig());
-//			ConfigManager.saveMapConfig();
-////			try
-////			{
-////				FileUtils.deleteDirectory(tempWorldDirec);
-////				FileUtils.copyDirectory(worldDirec, tempWorldDirec);
-////			}
-////			catch (IOException e)
-////			{
-////				e.printStackTrace();
-////			}
-//		}
-//	}
-	
-//	public static void unloadGameMap()
-//	{
-//		if(GameMap != null)
-//		{
-//			//Do saving stuff of game map!
-//			World tpworld = Bukkit.getWorlds().size() > 0 ? Bukkit.getWorlds().get(0) : null;
-//			for(Player p : Bukkit.getOnlinePlayers())
-//			{
-//				if(p.getWorld().getName().equals(GameMap.getWorldName()))
-//				{
-//					if(tpworld != null)
-//						p.teleport(tpworld.getSpawnLocation());
-//					else
-//						p.kickPlayer("Unloading the world and we dont want you to get trapped or glitched!");
-//				}
-//			}
-//			saveMap();
-//			GameMap.unregisterListeners();
-//			Bukkit.unloadWorld(GameMap.getWorldName(), false);
-//			
-////			try
-////			{
-////				FileUtils.deleteDirectory(worldDirec);
-////				FileUtils.copyDirectory(tempWorldDirec, worldDirec);
-////			}
-////			catch (IOException e)
-////			{
-////				e.printStackTrace();
-////			}
-//		}
-//	}
+
 	
 	public static boolean loadGameMap(File worldFolder)
 	{
-//		if(tempWorldDirec == null)
-//		{
-//			tempWorldDirec = new File(AnnihilationMain.getInstance().getDataFolder()+"/TempWorld");
-//			if(!tempWorldDirec.exists())
-//				tempWorldDirec.mkdirs();
-//		}
-		
 		if(worldFolder.exists() && worldFolder.isDirectory())
 		{
 			File[] files = worldFolder.listFiles(new FilenameFilter()
@@ -132,15 +73,10 @@ public class Game
 					//We have confirmed that the folder has a level.dat
 					//Now we should copy all the files into the temp world folder
 					
-					//worldDirec = worldFolder;
-					
-					//FileUtils.copyDirectory(worldDirec, tempWorldDirec);
-					
 					String path = worldFolder.getPath();
 					if(path.contains("plugins"))
 						path = path.substring(path.indexOf("plugins"));
 					WorldCreator cr = new WorldCreator(path);
-					//WorldCreator cr = new WorldCreator(new File(worldFolder,"level.dat").toString());
 					cr.environment(Environment.NORMAL);
 					World mapWorld = Bukkit.createWorld(cr);
 					if(mapWorld != null)
@@ -153,10 +89,6 @@ public class Game
 						mapWorld.setAutoSave(false);
 						mapWorld.setGameRuleValue("doMobSpawning", "false");
 						mapWorld.setGameRuleValue("doFireTick", "false");	
-//						File anniConfig = new File(worldFolder,"AnniMapConfig.yml");
-//						if(!anniConfig.exists())
-//								anniConfig.createNewFile();
-						//YamlConfiguration mapconfig = ConfigManager.loadMapConfig(anniConfig);
 						Game.GameMap = new GameMap(mapWorld.getName(),worldFolder);
 						GameMap.registerListeners(AnnihilationMain.getInstance());
 						Game.worldNames.put(worldFolder.getName().toLowerCase(), mapWorld.getName());
@@ -217,26 +149,4 @@ public class Game
 		}
 		return false;
 	}
-	
-//	public static boolean isInAnniWorld(final Loc loc)
-//	{
-//		return isInAnniWorld(loc.toLocation());
-//	}
-//	
-//	public static boolean isInAnniWorld(final Location loc)
-//	{
-//		String lobbyworld = LobbyMap == null ? "" : LobbyMap.getWorldName();
-//		String gameworld = GameMap == null ? "" : GameMap.getWorldName();
-//		String locworld = loc == null ? "CAT" : loc.getWorld().getName();
-//		return locworld.equalsIgnoreCase(lobbyworld) || locworld.equalsIgnoreCase(gameworld);
-//	}
-	
-//	public static void broadcastMessage(String message)
-//	{
-//		Bukkit.getConsoleSender().sendMessage(message);
-//		for(AnniPlayer p : AnniPlayer.getPlayers().values())
-//		{
-//			p.sendMessage(message); //Fails silently
-//		}
-//	}
 }

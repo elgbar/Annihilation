@@ -20,7 +20,6 @@ public class InvisibilityListeners implements Listener
 	public InvisibilityListeners(Plugin plugin)
 	{
 		Bukkit.getPluginManager().registerEvents(this, plugin);
-//		AnniEvent.registerListener(this);
     }
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -40,14 +39,6 @@ public class InvisibilityListeners implements Listener
 			checkInvis(p);
 	}
 	
-//	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-//	public void blockPlacingChecker(final BlockPlaceEvent event)
-//	{
-//		Player player = event.getPlayer();
-//		AnniPlayer p = AnniPlayer.getPlayer(player.getUniqueId());
-//		if(p != null)
-//			checkInvis(player);
-//	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void playerDamageChecker(final EntityDamageEvent event)

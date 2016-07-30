@@ -55,7 +55,6 @@ public enum CustomItem
 	private String name;
 	private String[] lore;
 	private Material type;
-	//private byte data;
 	private boolean soulBound;
 
 	CustomItem(String name, Material type, boolean soulBound, String[] lore) 
@@ -63,7 +62,6 @@ public enum CustomItem
 		this.name = name;
 		this.lore = lore;
 		this.type = type;
-		//this.data = data;
 		this.soulBound = soulBound;
 	}
 

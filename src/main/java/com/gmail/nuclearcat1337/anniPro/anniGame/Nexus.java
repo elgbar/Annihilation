@@ -36,7 +36,6 @@ public class Nexus implements Listener
 	}
 	
 	public final AnniTeam Team;
-	//private ImageMessage message;
 	private Loc Location;
 	
 	public void setLocation(Loc loc)
@@ -105,13 +104,6 @@ public class Nexus implements Listener
 								if(Team.isTeamDead())
 								{
 									ScoreboardAPI.removeTeam(Team);
-//									for(AnniPlayer player : AnniPlayer.getPlayers().values())
-//									{
-//										Player pl = player.getPlayer();
-//										if(pl != null)
-//
-//											pl.getWorld().playSound(pl.getLocation(), Sound.EXPLODE, 1F, .8F);
-//									}
 									World w = loc.getWorld();
 									w.getBlockAt(loc).setType(Material.BEDROCK);
 									try

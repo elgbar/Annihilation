@@ -38,7 +38,6 @@ public class IDTools
 				}
 				catch (Exception ex)
 				{
-					//ex.printStackTrace();
 				}
 				final String s = line;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(AnnihilationMain.getInstance(), new Runnable(){
@@ -82,7 +81,6 @@ public class IDTools
 				}
 				catch (Exception ex)
 				{
-					//ex.printStackTrace();
 				}
 				UUID id = null;
 				try
@@ -101,32 +99,7 @@ public class IDTools
 						callback.apply(d);
 					}});
 			}});
-	}		
-
-//	private static String getUUIDs(String player)
-//	{
-//		try
-//		{	
-//			//URL url = new URL("[url]https://api.mojang.com/users/profiles/minecraft/"+player+"[/url]");
-//			URL url = new URL("https://api.mojang.com/users/profiles/minecraft/"+player);
-//			BufferedReader in = new BufferedReader(new InputStreamReader(
-//					url.openStream()));
-//			String Line;
-//			while ((Line = in.readLine()) != null)
-//			{
-//				String uuid = Line.substring(7, 39);
-//				return uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-"
-//						+ uuid.substring(12, 16) + "-" + uuid.substring(16, 20)
-//						+ "-" + uuid.substring(20, 32);
-//			}
-//			in.close();
-//		}
-//		catch (Exception ex)
-//		{
-//			ex.printStackTrace();
-//		}
-//		return null;
-//	}
+	}
 
 	public static void getName(String uuid, Predicate<String> callback)
 	{

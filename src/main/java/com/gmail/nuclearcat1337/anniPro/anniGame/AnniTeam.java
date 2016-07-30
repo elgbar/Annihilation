@@ -119,11 +119,8 @@ public final class AnniTeam
 	@SuppressWarnings("deprecation")
 	public void leaveTeam(AnniPlayer player)
 	{
-//		if(player.getTeam() != null)
-//		{
 		player.setTeam(null);
 		players.remove(player);
-//		}
 		this.scoreboardTeam.removePlayer(player.getPlayer());
 	}
 	
@@ -131,13 +128,6 @@ public final class AnniTeam
 	{
 		return Collections.unmodifiableList(players);
 	}
-	
-//	public Location getSpectatorLocation()
-//	{
-//		if(this.spectatorLocation != null)
-//			return this.spectatorLocation.toLocation();
-//		else return null;
-//	}
 	
 	public Loc getSpectatorLocation()
 	{
@@ -265,14 +255,12 @@ public final class AnniTeam
 	{
 		if(configSection != null)
 		{
-			//Location nexusloc = ConfigManager.getLocation(configSection.getConfigurationSection("Nexus.Location"));
 			Loc nexusloc = new Loc(configSection.getConfigurationSection("Nexus.Location"));
 			if(nexusloc != null)
 			{
 				Nexus.setLocation(nexusloc);
 			}
 			
-			//Location spectatorspawn = ConfigManager.getLocation(configSection.getConfigurationSection("SpectatorLocation"));
 			Loc spectatorspawn = new Loc(configSection.getConfigurationSection("SpectatorLocation"));
 			if(spectatorspawn != null)
 				setSpectatorLocation(spectatorspawn);
@@ -282,11 +270,9 @@ public final class AnniTeam
 			{
 				for(String key : spawns.getKeys(false))
 				{
-					//Location loc = ConfigManager.getPreciseLocation(spawns.getConfigurationSection(key));
 					Loc loc = new Loc(spawns.getConfigurationSection(key));
 					if(loc != null)
 					{
-						//int num = Integer.parseInt(key); //incase I do numbered spawns, then we can add at each number
 						addSpawn(loc);
 					}
 				}
@@ -302,12 +288,10 @@ public final class AnniTeam
 			Loc nexusLoc = Nexus.getLocation();
 			if(nexusLoc != null)
 				nexusLoc.saveToConfig(configSection.createSection("Nexus.Location"));
-				//ConfigManager.saveLocation(nexusLoc,configSection.createSection("Nexus.Location"));
 			
 			Loc spectatorspawn = getSpectatorLocation();
 			if(spectatorspawn != null)
 				spectatorspawn.saveToConfig(configSection.createSection("SpectatorLocation"));
-				//ConfigManager.saveLocation(spectatorspawn,configSection.createSection("SpectatorLocation"));
 			
 			ConfigurationSection spawnSection = configSection.createSection("Spawns");
 			List<Loc> spawns = getSpawnList();
@@ -316,23 +300,9 @@ public final class AnniTeam
 				for(int x = 0; x < spawns.size(); x++)
 				{
 					spawns.get(x).saveToConfig(spawnSection.createSection(x+""));
-					//ConfigManager.savePreciseLocation(spawns.get(x), spawnSection.createSection(x+""));
 				}
 			}
-			//ConfigurationSection signSection = configSection.createSection("Signs");
-//			Map<String,JoinSign> teamsigns = SignHandler.getTeamSigns();
-//			int counter = 1;
-//			for(Entry<String,JoinSign> entry : teamsigns.entrySet())
-//			{
-//				//only save signs for this team
-//				if(entry.getValue().TeamName.equals(team.getName()))
-//				{
-//					ConfigManager.saveLocation(Loc.fromMapKey(entry.getKey()), signSection.createSection(counter+".Location"));
-//					signSection.set(counter+".Direction", entry.getValue().Face.name());
-//					signSection.set(counter+".SignPost", entry.getValue().signPost);
-//					counter++;
-//				}
-//			}
+
 		}
 	}
 }

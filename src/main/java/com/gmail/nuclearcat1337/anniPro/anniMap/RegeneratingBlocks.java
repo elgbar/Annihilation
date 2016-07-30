@@ -89,8 +89,6 @@ public final class RegeneratingBlocks implements Listener
 							String amount = dataSection.getString("Amount");
 							Integer productData = dataSection.getInt("ProductData");
 							String effect = dataSection.getString("Effect");
-//							if(mat != null && matData != null && time != null && unit != null && xp != null && product != null
-//									&& amount != null && productData != null && effect != null)
 								this.addRegeneratingBlock(new RegeneratingBlock(mat,matData,regen,cobbleReplace,naturalBreak,time,unit,xp,product,amount,
 										productData,effect));
 						}
@@ -152,7 +150,7 @@ public final class RegeneratingBlocks implements Listener
 				{
 					if(b.NaturalBreak)
 					{
-						ResourceBreakEvent e = new ResourceBreakEvent(player,b,0,(ItemStack[])null); //haha, compilers are funny sometimes
+						ResourceBreakEvent e = new ResourceBreakEvent(player,b,0,(ItemStack[])null);
 						AnniEvent.callEvent(e);
 						if(!e.isCancelled())
 							executor.schedule(new FutureBlockReplace(event.getBlock()), b.Time, b.Unit); 
@@ -199,11 +197,6 @@ public final class RegeneratingBlocks implements Listener
 							}
 						}
 
-//						AnniPlayer player = AnniPlayer.getPlayer(p.getUniqueId()); 
-//						if(player != null)
-//						{
-//							amount = player.getKit().onPlayerBreakRegenBlock(p, b, amount);
-//						}
 						ItemStack stack;
 						int xp = b.XP;
 						if(b.ProductData != -1)
@@ -237,7 +230,6 @@ public final class RegeneratingBlocks implements Listener
 						for(int x = 0; x <5; x++)
 						{
 							int z;
-							//ItemStack stack = null;
 							switch(x)
 							{
 								//bone

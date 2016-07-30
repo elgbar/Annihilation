@@ -150,7 +150,6 @@ public class AreaCommand implements CommandExecutor,Listener
 					areas = Game.getGameMap().getAreas();
 				if(areas != null)
 				{
-					//Area a = areas.getArea(arg);
 					if(areas.hasArea(arg))
 					{
 						areas.removeArea(arg);

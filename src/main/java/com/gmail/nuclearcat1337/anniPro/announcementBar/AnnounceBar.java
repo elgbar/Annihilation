@@ -41,7 +41,6 @@ public class AnnounceBar
         }
         catch (Throwable t)
         {
-            //t.printStackTrace();
             bar = new FakeBar();
         }
     }
@@ -83,7 +82,7 @@ public class AnnounceBar
             @Override
             public void run()
             {
-                String m = ChatColor.translateAlternateColorCodes('&',announcement.getMessage());              // message.replace("{#}", format(timeLeft));
+                String m = ChatColor.translateAlternateColorCodes('&',announcement.getMessage());
                 if (announcement.isPermanent())
                 {
                     for (Player player : Bukkit.getOnlinePlayers())
@@ -92,10 +91,9 @@ public class AnnounceBar
                 }
 
 
-                //Bukkit.getLogger().info("This is also happening");
                 timeLeft -= (System.currentTimeMillis() - lastUpdate);
                 lastUpdate = System.currentTimeMillis();
-                if (timeLeft <= 100) //if its less than a tenth of a second, then we can pretty msuch say its over
+                if (timeLeft <= 100) //if its less than a tenth of a second, then we can pretty much say its over
                 {
                     timeLeft = 0;
                     cancelUpdater();
@@ -108,8 +106,6 @@ public class AnnounceBar
                     float percent = (float)((timeLeft/1000) / ((float)announcement.getTime()));
                     for(Player player : Bukkit.getOnlinePlayers())
                         bar.sendToPlayer(player,mess,percent);
-//                    for (Player p : Bukkit.getOnlinePlayers())
-//                        sendToPlayer(p, mess);
 
                 }
             }

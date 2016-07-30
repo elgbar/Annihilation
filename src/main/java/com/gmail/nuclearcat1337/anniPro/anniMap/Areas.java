@@ -32,17 +32,8 @@ public final class Areas implements Iterable<Area>, Listener
 	{
 		this.world = world;
 		areas = new HashMap<String,Area>();
-		//AreaListener l = new AreaListener(this);
-		//Bukkit.getPluginManager().registerEvents(l, plugin);
 	}
 	
-//	public Area createNew(String name, Loc one, Loc two, boolean allowPVP)
-//	{
-//		UseableArea a =  new UseableArea(this,name, one, two);
-//		a.allowPVP = allowPVP;e
-//		areas.put(name.toLowerCase(),a);
-//		return a;
-//	}
 
     public void addArea(Area a)
     {
@@ -59,54 +50,19 @@ public final class Areas implements Iterable<Area>, Listener
         return areas.containsKey(name.toLowerCase());
     }
 	
-	//public String getWorld()
-//	{
-//		return world;
-//	}
-	
 	public Areas loadAreas(ConfigurationSection areaSection)
 	{
 		if(areaSection != null)
 		{
-			//areaSection.set("World",this.getWorld());
 			for(String key : areaSection.getKeys(false))
 			{
 				ConfigurationSection area = areaSection.getConfigurationSection(key);
                 Area a = new Area(area);
                 areas.put(a.getName().toLowerCase(),a);
-//				String name = area.getString("Name");
-//				//Location loc1 = ConfigManager.getLocation(area.getConfigurationSection("Corner1Location"));
-//				Loc loc1 = new Loc(area.getConfigurationSection("Corner1Location"));
-//				//Location loc2 = ConfigManager.getLocation(area.getConfigurationSection("Corner2Location"));
-//				Loc loc2 = new Loc(area.getConfigurationSection("Corner2Location"));
-//				if(name != null && loc1 != null && loc2 != null)
-//				{
-//					UseableArea a = new UseableArea(this,name,loc1,loc2);
-//					if(area.isBoolean("AllowPVP"))
-//						a.setPVP(area.getBoolean("AllowPVP"));
-//					areas.put(name.toLowerCase(), a);
-//				}
 			}
 		}
 		return this;
 	}
-	
-//	private boolean fallsBetween(int one, int two, int num)
-//	{
-//		int min, max;
-//		if(one < two)
-//		{
-//			min = one;
-//			max = two;
-//		}
-//		else
-//		{
-//			min = two;
-//			max = one;
-//		}
-//
-//		return num >= min && num <= max;
-//	}
 	
 	public Area getArea(String name)
 	{
@@ -115,18 +71,8 @@ public final class Areas implements Iterable<Area>, Listener
 	
 	public Area getArea(Loc loc)
 	{
-		//Bukkit.getLogger().info("Area world: "+this.getWorld()+". Event world: "+loc.getWorld());
-		//if(!loc.getWorld().equals(this.getWorld()))
-		//	return null;
 		for(Area a : areas.values())
 		{
-//			if(a.getCorner1().getWorld().equals(loc.getWorld()))
-//			{
-//				if(	fallsBetween(a.getCorner1().getBlockX(),a.getCorner2().getBlockX(),loc.getBlockX()) &&
-//					fallsBetween(a.getCorner1().getBlockY(),a.getCorner2().getBlockY(),loc.getBlockY()) &&
-//					fallsBetween(a.getCorner1().getBlockZ(),a.getCorner2().getBlockZ(),loc.getBlockZ())	)
-//					return a;
-//			}
             if(a.isInArea(loc))
                 return a;
 		}
@@ -140,12 +86,6 @@ public final class Areas implements Iterable<Area>, Listener
 		{
 			ConfigurationSection sec = areaSection.createSection(counter+"");
             a.saveToConfig(sec);
-//			sec.set("Name", a.getName());
-//			sec.set("AllowPVP", a.isPVPAllowed());
-//			//ConfigManager.saveLocation(a.getCorner1(), sec.createSection("Corner1Location"));
-//			a.getCorner1().saveToConfig(sec.createSection("Corner1Location"));
-//			//ConfigManager.saveLocation(a.getCorner2(), sec.createSection("Corner2Location"));
-//			a.getCorner2().saveToConfig(sec.createSection("Corner2Location"));
 			counter++;
 		}
 	}
@@ -187,7 +127,6 @@ public final class Areas implements Iterable<Area>, Listener
         if(a != null && !a.getAllowHunger())
         {
             event.setFoodLevel(20);
-            //event.setCancelled(true);
         }
     }
 

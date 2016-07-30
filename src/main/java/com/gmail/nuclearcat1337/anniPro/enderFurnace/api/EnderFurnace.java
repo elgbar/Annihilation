@@ -20,7 +20,6 @@ public final class EnderFurnace
         {
             String version = VersionUtils.getVersion();
             String name = "com.gmail.nuclearcat1337.anniPro.enderFurnace.versions."+version+".FurnaceCreator";
-            //Bukkit.getLogger().info(name);
             Class<?> rawClass = null;
             try
             {
@@ -31,7 +30,6 @@ public final class EnderFurnace
             }
             catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
             {
-                //Bukkit.getLogger().info("This happened :(");
                 creator = new TempCreator();
             }
         }

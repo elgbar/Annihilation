@@ -47,19 +47,16 @@ public class VoteMapManager
 	private static Scoreboard board;
 	private static Objective obj;
 	private static ItemMenu menu;
-	//private static boolean active;
 	
 	public static void registerListener(JavaPlugin plugin)
 	{
 		voteMap = new HashMap<String,String>();
 		board = Bukkit.getScoreboardManager().getNewScoreboard();
 		obj = board.registerNewObjective("Voting", "CAT CERASET");
-		//active = false;
 		
 		Loader l = new Loader();
 		plugin.getCommand("Vote").setExecutor(l);
 		Bukkit.getPluginManager().registerEvents(l, plugin);
-		//AnniEvent.registerListener(l);
 	}
 	
 	private static class Loader implements CommandExecutor, Listener
@@ -93,32 +90,12 @@ public class VoteMapManager
 				}
 			}
 		}
-		
-//		private void checkLeave()
-//		{
-//			//Check if a person leaves, to remove their vote
-//		}
-//		
-//		@EventHandler(priority = EventPriority.MONITOR)
-//		public void playerCheck(PlayerQuitEvent event)
-//		{
-//			
-//		}
-//		
-//		@EventHandler(priority = EventPriority.MONITOR)
-//		public void playerCheck(PlayerKickEvent event)
-//		{
-//			
-//		}
 
 		@Override
 		public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 		{
 			if(!Game.isGameRunning())
 			{
-//				final AnniPlayer p = AnniPlayer.getPlayer(((Player)sender).getUniqueId());
-//				if(p != null)
-//				{
 				if(sender instanceof Player)
 				{
 					if(maps != null)
@@ -140,8 +117,6 @@ public class VoteMapManager
 					}
 					else sender.sendMessage(ChatColor.RED+"There are no maps for voting!");
 				}
-//				}
-//				else sender.sendMessage(ChatColor.RED+"You must be in an Annihilation game to vote!");
 			}
 			return true;
 		}
@@ -190,12 +165,6 @@ public class VoteMapManager
 		
 		if(!Game.isGameRunning())
 		{
-//			for(AnniPlayer p : AnniPlayer.getPlayers())
-//			{
-//				final Player pl = p.getPlayer();
-//				if(pl != null)
-//					pl.setScoreboard(board);
-//			}
 			for(Player pl : Bukkit.getOnlinePlayers())
 				pl.setScoreboard(board);
 		}

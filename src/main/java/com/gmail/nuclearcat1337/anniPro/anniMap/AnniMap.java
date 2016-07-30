@@ -30,58 +30,27 @@ public abstract class AnniMap
 		this.areas = new Areas(worldName);	
 		this.signs = new Signs();
 		
-		//ConfigurationSection mapSec = config.getConfigurationSection("Map");
-		//if(mapSec != null)
-		//{
 			String world = config.getString("WorldName");
 			if(world != null)
 				this.world = world;
 			ConfigurationSection areaSec = config.getConfigurationSection("Areas");
             areas.loadAreas(areaSec);
-//			if(areaSec != null)
-//			{
-//				for(String key : areaSec.getKeys(false))
-//				{
-//					ConfigurationSection area = areaSec.getConfigurationSection(key);
-//					if(area != null)
-//					{
-//						Loc one = new Loc(area.getConfigurationSection("Corner1"));
-//						Loc two = new Loc(area.getConfigurationSection("Corner2"));
-//						areas.createNew(area.getString("Name"), one, two,area.getBoolean("AllowPVP"));
-//					}
-//				}
-//			}
 			ConfigurationSection signSec = config.getConfigurationSection("Signs");
 			if(signSec != null)
 			{
 				signs = new Signs(signSec);
 			}
-			loadFromConfig(config);
-		//}	
+			loadFromConfig(config);	
 	}
 	
 	protected abstract void loadFromConfig(ConfigurationSection section);
 	
 	protected abstract void saveToConfig(ConfigurationSection section);
 	
-//	public void unloadMap()
-//	{
-//		ConfigurationSection map = config.createSection("Map");
-//		this.saveConfigVars(map);
-//		saveConfig();
-//		unload(map);
-//		//Bukkit.unloadWorld(this.getWorldName(), false);
-//	}
-	
 	public YamlConfiguration getConfig()
 	{
 		return config;
 	}
-	
-//	public ConfigurationSection getMapSection()
-//	{
-//		return config.isConfigurationSection("Map") ? config.getConfigurationSection("Map") : config.createSection("Map");
-//	}
 	
 	public void saveConfig()
 	{
@@ -146,21 +115,9 @@ public abstract class AnniMap
 	
 	public void saveToConfig()
 	{
-		//ConfigurationSection map = config.createSection("Map");
-
 		config.set("WorldName", this.getWorldName());
 		ConfigurationSection areaSection = config.createSection("Areas");
         areas.saveToConfig(areaSection);
-//		for(Area a : areas)
-//		{
-//			ConfigurationSection area = areaSection.createSection(a.getName());
-//			area.set("Name", a.getName());
-//			area.set("AllowPVP", a.isPVPAllowed());
-//			//ConfigManager.saveLocation(a.getCorner1(), area.createSection("Corner1"));
-//			//ConfigManager.saveLocation(a.getCorner2(), area.createSection("Corner2"));
-//			a.getCorner1().saveToConfig(area.createSection("Corner1"));
-//			a.getCorner2().saveToConfig(area.createSection("Corner2"));
-//		}
 		ConfigurationSection signSection = config.createSection("Signs");
 		signs.saveToConfig(signSection);
 		

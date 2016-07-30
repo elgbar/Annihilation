@@ -34,8 +34,9 @@ public class GameListeners implements Listener
         RespawnHandler.register(p);
 
 		String version = VersionUtils.getVersion();
-		if(version.equals("v1_8_R1") || version.equals("v1_8_R2"))
+		if(version.equals("v1_8_R3")) {
 			new ArmorStandListener(p);
+		}
 	}
 
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
@@ -92,23 +93,6 @@ public class GameListeners implements Listener
 							}
 						}
 					}
-//					else if(args[1].equalsIgnoreCase("map") && player.getName().equals("Mr_Little_Kitty"))
-//					{
-//						if(args.length > 2)
-//						{
-//							World w = Game.getWorld(args[2]);
-//							if(w != null)
-//							{
-//								event.setCancelled(true);
-//								player.teleport(w.getSpawnLocation());
-//							}
-//						}
-//						else
-//						{
-//							for(World w : Bukkit.getWorlds())
-//								player.sendMessage(w.getName());
-//						}
-//					}
 				}
 			}
 		}
@@ -184,7 +168,7 @@ public class GameListeners implements Listener
 		{
 			final Player pl = event.getPlayer();
 			final AnniPlayer p = AnniPlayer.getPlayer(pl.getUniqueId());
-			if(p != null )//&& Game.GameWorld != null)
+			if(p != null )
 			{
 				if(!Game.isGameRunning() || p.getTeam() == null || p.getTeam().isTeamDead() || pl.getLocation().getWorld().getName().equalsIgnoreCase(Game.LobbyMap.getWorldName()))
 				{
@@ -197,13 +181,6 @@ public class GameListeners implements Listener
 							if(Game.LobbyMap != null)
 								Game.LobbyMap.sendToSpawn(pl);
 							
-//							pl.getInventory().clear();
-//							pl.getInventory().setArmorContents(null);
-//							pl.teleport(Game.LobbyLocation);
-//							pl.getInventory().addItem(CustomItem.KITMAP.toItemStack(1));
-//							pl.setHealth(pl.getMaxHealth());
-//							pl.setFoodLevel(20);
-							//pl.setGameMode(GameMode.ADVENTURE);
 						}
 					}.runTaskLater(AnnihilationMain.getInstance(),20L);
 				}

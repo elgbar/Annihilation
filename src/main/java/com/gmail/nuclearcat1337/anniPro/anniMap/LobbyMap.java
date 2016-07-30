@@ -24,7 +24,6 @@ public class LobbyMap extends AnniMap
 	public LobbyMap(File configFile)
 	{
 		super(null,configFile);
-	//	spawn = ConfigManager.getLocation(configSection.getConfigurationSection("SpawnLocation"));
 	}
 	
 	public Location getSpawn()
@@ -70,16 +69,6 @@ public class LobbyMap extends AnniMap
 	{
 		if(this.getSpawn() != null && section != null)
 			new Loc(this.getSpawn(),true).saveToConfig(section.createSection("SpawnLocation"));
-		//super.saveConfig();
 	}
 	
-//	public void saveToConfig(ConfigurationSection configSection)
-//	{
-//		if(configSection != null)
-//		{
-//			super.saveToConfig(configSection);
-//			//ConfigManager.saveLocation(this.getSpawn(), configSection.createSection("SpawnLocation"));
-//			
-//		}
-//	}
 }

@@ -47,14 +47,6 @@ public class LogoutTag extends BukkitRunnable
         return wasKilled;
     }
 
-//    public void equiptPlayer(Player player)
-//    {
-//        if(inventory != null)
-//            player.getInventory().setContents(inventory);
-//        if(armor != null)
-//            player.getInventory().setArmorContents(armor);
-//    }
-
     public boolean onKill(Player killer) //could be null if not killed by another entity
     {
         if(killer != null)

@@ -44,7 +44,6 @@ public final class AnniPlayer
 		players.clear();
 		PlayerLoader l = new PlayerLoader();
 		Bukkit.getPluginManager().registerEvents(l, p);
-		//AnniEvent.registerListener(l);
 	}
 	
 	private static class PlayerLoader implements Listener
@@ -65,29 +64,6 @@ public final class AnniPlayer
 			if(!exists(p))
 				loadPlayer(p);
 		}
-		
-//		@EventHandler(priority = EventPriority.LOWEST)
-//		public void playerCheck(PlayerQuitEvent event)
-//		{
-//			removePlayerCheck(event.getPlayer());
-//		}
-//		
-//		@EventHandler(priority = EventPriority.LOWEST)
-//		public void playerCheck(PlayerKickEvent event)
-//		{
-//			removePlayerCheck(event.getPlayer());
-//		}
-//		
-//		private void removePlayerCheck(Player player)
-//		{
-//			if(!Game.isGameRunning())
-//			{
-//				AnniPlayer p = getPlayer(player.getUniqueId());
-//				if(p != null && p.getTeam() != null)
-//					p.getTeam().leaveTeam(p);
-//				players.remove(player.getUniqueId());
-//			}
-//		}
 		
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void enderFuraceManagement(PlayerQuitEvent event)
@@ -111,8 +87,6 @@ public final class AnniPlayer
 					p.setData("ED", p.enderfurnace.getFurnaceData());
 					p.enderfurnace = null;
 				}
-//				if(GameVars.getUseAntiLog())
-//					player.setHealth(0);
 			}
 		}
 		
@@ -145,10 +119,6 @@ public final class AnniPlayer
 			while(ps.hasNext())
 			{
 				AnniPlayer player = ps.next();
-//				if(!player.isOnline())
-//				{
-//					//This is where we should clear players who aren't online or stuff
-//				}
                 if(player.isOnline())
 				    player.enderfurnace = EnderFurnace.getCreator().createFurnace(player);
                 else player.enderfurnace = null;

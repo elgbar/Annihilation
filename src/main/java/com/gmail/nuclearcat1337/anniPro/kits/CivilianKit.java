@@ -13,7 +13,6 @@ public class CivilianKit extends Kit
 	public CivilianKit()
 	{
 		Bukkit.getPluginManager().registerEvents(this, AnnihilationMain.getInstance());
-		//AnniEvent.registerListener(this);
 		this.Initialize();
 	}
 	
@@ -36,25 +35,11 @@ public class CivilianKit extends Kit
 	public IconPackage getIconPackage()
 	{
 		return new IconPackage(new ItemStack(Material.WORKBENCH), Lang.CIVILIANLORE.toStringArray());
-//		return new IconPackage(new ItemStack(Material.WORKBENCH), 
-//				new String[]{	aqua+"You are the backbone.", 
-//								"",
-//								aqua+"Fuel all facets of the",
-//								aqua+"war machine with your",
-//								aqua+"set of wooden tools and", 
-//								aqua+"prepare for battle!" 
-//							});
 	}
 
 	@Override
 	public void onPlayerSpawn(Player player)
 	{
-//		KitUtils.giveTeamArmor(player);
-//		player.getInventory().addItem(Sword);
-//		player.getInventory().addItem(Pick);
-//		player.getInventory().addItem(Axe);
-//		player.getInventory().addItem(CraftingTable);
-//		player.getInventory().addItem(KitUtils.getNavCompass());
 		loadout.giveLoadout(player);
 	}
 

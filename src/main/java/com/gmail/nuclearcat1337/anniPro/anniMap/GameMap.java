@@ -31,7 +31,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Furnace;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniTeam;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
 import com.gmail.nuclearcat1337.anniPro.anniGame.GameVars;
@@ -42,9 +41,6 @@ import com.gmail.nuclearcat1337.anniPro.voting.AutoRestarter;
 
 public final class GameMap extends AnniMap implements Listener
 {
-	//private final File mapDirec;
-//	private final File tempDirec;
-	
 	private RegeneratingBlocks blocks;
 	private List<Loc> diamondLocs;
 	private Map<MapKey,FacingObject> enderFurnaces;
@@ -60,12 +56,6 @@ public final class GameMap extends AnniMap implements Listener
 		super(worldName, new File(mapDirectory,"AnniMapConfig.yml"));
 		if(GameVars.getAutoRestart())
 			restarter = new AutoRestarter(AnnihilationMain.getInstance(),GameVars.getPlayersToRestart(),GameVars.getCountdownToRestart());
-		//mapDirec = mapDirectory;
-//		tempDirec = new File(AnnihilationMain.getInstance().getDataFolder()+"/TempWorld");
-//		if(!tempDirec.exists())
-//			tempDirec.mkdirs();
-		//this.backupConfig();
-		//this.backUpWorld();
 	}
 	
 	@Override
@@ -90,7 +80,6 @@ public final class GameMap extends AnniMap implements Listener
 				{
 					FacingObject obj = FacingObject.loadFromConfig(furnaces.getConfigurationSection(key));
 					this.addEnderFurnace(obj);
-					//enderFurnaces.put(MapKey.getKey(obj.getLocation()), obj);
 				}
 			}
 			ConfigurationSection diamonds = section.getConfigurationSection("DiamondLocations");
@@ -98,12 +87,10 @@ public final class GameMap extends AnniMap implements Listener
 			{
 				for(String key : diamonds.getKeys(false))
 				{
-					//Location loc = ConfigManager.getLocation(diamonds.getConfigurationSection(key));
 					Loc loc = new Loc(diamonds.getConfigurationSection(key));
 					diamondLocs.add(loc);
 				}
 			}
-			//blocks = new RegeneratingBlocks(worldName,configSection.getConfigurationSection("RegeneratingBlocks"));
 			ConfigurationSection teams = section.getConfigurationSection("Teams");
 			if(teams != null)
 			{
@@ -112,7 +99,6 @@ public final class GameMap extends AnniMap implements Listener
 					ConfigurationSection teamSection = teams.getConfigurationSection(team.getName()+" Team");
 					if(teamSection != null)
 					{
-						//Location nexusloc = ConfigManager.getLocation(teamSection.getConfigurationSection("Nexus.Location"));
 						ConfigurationSection nexSec = teamSection.getConfigurationSection("Nexus.Location");
 						if(nexSec == null)
 							team.getNexus().setLocation(null);
@@ -122,7 +108,6 @@ public final class GameMap extends AnniMap implements Listener
 							team.getNexus().setLocation(nexusloc);
 						}
 						
-						//Location spectatorspawn = ConfigManager.getLocation(teamSection.getConfigurationSection("SpectatorLocation"));
 						ConfigurationSection specSec = teamSection.getConfigurationSection("SpectatorLocation");
 						if(specSec == null)
 							team.setSpectatorLocation((Loc)null);
@@ -138,11 +123,9 @@ public final class GameMap extends AnniMap implements Listener
 						{	
 							for(String key : spawns.getKeys(false))
 							{
-								//Location loc = ConfigManager.getPreciseLocation(spawns.getConfigurationSection(key));
 								Loc loc = new Loc(spawns.getConfigurationSection(key));
 								if(loc != null)
 								{
-									//int num = Integer.parseInt(key); //incase I do numbered spawns, then we can add at each number
 									team.addSpawn(loc.toLocation());
 								}
 							}
@@ -168,7 +151,6 @@ public final class GameMap extends AnniMap implements Listener
 	
 	public void unLoadMap()
 	{
-		//World tpworld = Bukkit.getWorlds().size() > 0 ? Bukkit.getWorlds().get(0) : null;
 		World tpworld = Game.LobbyMap != null ? Game.LobbyMap.getWorld() : null;
 		if(tpworld == null)
 			tpworld = Bukkit.getWorlds().size() > 0 ? Bukkit.getWorlds().get(0) : null;
@@ -186,67 +168,17 @@ public final class GameMap extends AnniMap implements Listener
 
 		boolean b = Bukkit.unloadWorld(super.getWorldName(), false);
         Bukkit.getLogger().info("[Annihilation] "+super.getNiceWorldName()+" was unloaded successfully: "+b);
-//		try
-//		{
-//			FileUtils.deleteDirectory(this.mapDirec);
-//			FileUtils.copyDirectory(this.tempDirec, this.mapDirec);
-//			FileUtils.deleteDirectory(this.tempDirec);
-//		}
-//		catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 	
 	public void backUpWorld()
 	{
 		super.getWorld().save();
-//		try
-//		{		
-//			File[] files = this.tempDirec.listFiles(new FilenameFilter(){
-//	
-//				@Override
-//				public boolean accept(File file, String name)
-//				{
-//					return !name.contains("MapConfig");
-//				}});
-//			for(int x = 0; x < files.length; x++)
-//			{
-//				if(files[x].isDirectory())
-//					FileUtils.deleteDirectory(files[x]);
-//				else FileUtils.deleteQuietly(files[x]);
-//			}
-//			
-//			FileUtils.copyDirectory(this.mapDirec, this.tempDirec, new FileFilter(){
-//
-//				@Override
-//				public boolean accept(File file)
-//				{
-//					return !file.getName().contains("MapConfig");
-//				}});
-//		}
-//		catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 	}
 	
 	public void backupConfig()
 	{
 		super.saveToConfig();
-//		File configBackup = new File(this.tempDirec,"AnniMapConfig.yml");
-//		FileUtils.deleteQuietly(configBackup);
-//		try
-//		{
-//			FileUtils.copyFile(super.configFile, configBackup);
-//		}
-//		catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	@Override
@@ -254,7 +186,6 @@ public final class GameMap extends AnniMap implements Listener
 	{
 		if(section != null)
 		{
-			//super.saveToConfig(configSection);
 			blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
 			section.set("PhaseTime", this.PhaseTime);
 			int counter = 1;
@@ -268,7 +199,6 @@ public final class GameMap extends AnniMap implements Listener
 			ConfigurationSection diamonds = section.createSection("DiamondLocations");
 			for(Loc loc : this.diamondLocs)
 			{
-				//ConfigManager.saveLocation(loc, diamonds.createSection(""+counter));
 				loc.saveToConfig(diamonds.createSection(""+counter));
 				counter++;
 			}
@@ -282,12 +212,10 @@ public final class GameMap extends AnniMap implements Listener
 				Loc nexusLoc = team.getNexus().getLocation();
 				if(nexusLoc != null)
 					nexusLoc.saveToConfig(teamSection.createSection("Nexus.Location"));
-					//ConfigManager.saveLocation(nexusLoc,teamSection.createSection("Nexus.Location"));
 				
 				Loc spectatorspawn = team.getSpectatorLocation();
 				if(spectatorspawn != null)
 					spectatorspawn.saveToConfig(teamSection.createSection("SpectatorLocation"));
-					//ConfigManager.saveLocation(spectatorspawn,teamSection.createSection("SpectatorLocation"));
 				
 				ConfigurationSection spawnSection = teamSection.createSection("Spawns");
 				List<Loc> spawns = team.getSpawnList();
@@ -296,7 +224,6 @@ public final class GameMap extends AnniMap implements Listener
 					for(int x = 0; x < spawns.size(); x++)
 					{
 						spawns.get(x).saveToConfig(spawnSection.createSection(x+""));
-						//ConfigManager.savePreciseLocation(spawns.get(x), spawnSection.createSection(x+""));
 					}
 				}
 			}
@@ -373,27 +300,12 @@ public final class GameMap extends AnniMap implements Listener
 			Block b = event.getClickedBlock();
 			if(b != null)
 			{
-				//Bukkit.getLogger().info("Error test 1");
 				if(b.getType() == Material.FURNACE || b.getType() == Material.BURNING_FURNACE)
 				{
-					//Bukkit.getLogger().info("Error test 1");
 					MapKey key = MapKey.getKey(b.getLocation());
 					if(this.enderFurnaces.containsKey(key))
 					{
-						//Bukkit.getLogger().info("Error test 2");
 						event.setCancelled(true);
-						AnniPlayer p = AnniPlayer.getPlayer(event.getPlayer().getUniqueId());
-						if(p != null)
-						{
-//							Bukkit.getLogger().info("Error test 3");
-//							if(p.getFurnace() != null)
-//							{
-//								Bukkit.getLogger().info("Error test 4");
-								p.openFurnace();
-//							}
-//							else
-//								Bukkit.getLogger().warning("[Annihilation] Someones enderfurnace was null!");
-						}
 					}
 				}
 			}
@@ -482,11 +394,6 @@ public final class GameMap extends AnniMap implements Listener
 		this.addEnderFurnace(new FacingObject(direction,loc));
 	}
 	
-//	public void addEnderFurnace(FacingObject furnace)
-//	{
-//		this.enderFurnaces.put(Loc.toMapKey(furnace.getLocation()), furnace);
-//	}
-	
 	public void addEnderFurnace(FacingObject furnace)
 	{
 		MapKey key = MapKey.getKey(furnace.getLocation());
@@ -547,68 +454,6 @@ public final class GameMap extends AnniMap implements Listener
 		}
 		return false;
 	}
-
-//	@Override
-//	public void saveToConfig(ConfigurationSection configSection)
-//	{
-//		if(configSection != null)
-//		{
-//			super.saveToConfig(configSection);
-//			blocks.saveToConfig(configSection.createSection("RegeneratingBlocks"));
-//			configSection.set("PhaseTime", this.PhaseTime);
-//			int counter = 1;
-//			ConfigurationSection enderFurnaces = configSection.createSection("EnderFurnaces");
-//			for(FacingObject obj : this.enderFurnaces.values())
-//			{
-//				obj.saveToConfig(enderFurnaces.createSection(""+counter	));
-//				counter++;
-//			}
-//			counter=1;
-//			ConfigurationSection diamonds = configSection.createSection("DiamondLocations");
-//			for(Loc loc : this.diamondLocs)
-//			{
-//				//ConfigManager.saveLocation(loc, diamonds.createSection(""+counter));
-//				loc.saveToConfig(diamonds.createSection(""+counter));
-//				counter++;
-//			}
-//			counter=1;
-//			blocks.saveToConfig(configSection.createSection("RegeneratingBlocks"));
-//			ConfigurationSection teams = configSection.createSection("Teams");
-//			for(AnniTeam team : AnniTeam.Teams)
-//			{
-//				ConfigurationSection teamSection = teams.createSection(team.getName()+" Team");
-//				
-//				Loc nexusLoc = team.Nexus.getLocation();
-//				if(nexusLoc != null)
-//					nexusLoc.saveToConfig(teamSection.createSection("Nexus.Location"));
-//					//ConfigManager.saveLocation(nexusLoc,teamSection.createSection("Nexus.Location"));
-//				
-//				Loc spectatorspawn = team.getSpectatorLocation();
-//				if(spectatorspawn != null)
-//					spectatorspawn.saveToConfig(teamSection.createSection("SpectatorLocation"));
-//					//ConfigManager.saveLocation(spectatorspawn,teamSection.createSection("SpectatorLocation"));
-//				
-//				ConfigurationSection spawnSection = teamSection.createSection("Spawns");
-//				List<Loc> spawns = team.getSpawnList();
-//				if(spawns != null && !spawns.isEmpty())
-//				{
-//					for(int x = 0; x < spawns.size(); x++)
-//					{
-//						spawns.get(x).saveToConfig(spawnSection.createSection(x+""));
-//						//ConfigManager.savePreciseLocation(spawns.get(x), spawnSection.createSection(x+""));
-//					}
-//				}
-//			}
-//			ConfigurationSection unplaceableSec = configSection.createSection("UnplaceableBlocks");
-//			for(Entry<Material,UnplaceableBlock> entry : this.unplaceableBlocks.entrySet())
-//			{
-//				ConfigurationSection matSec = unplaceableSec.createSection(entry.getKey().toString());
-//				matSec.set("Material", entry.getKey().toString());
-//				matSec.set("Values", entry.getValue().getValues());
-//			}
-//		}
-//		
-//	}
 	
 	private class UnplaceableBlock
 	{

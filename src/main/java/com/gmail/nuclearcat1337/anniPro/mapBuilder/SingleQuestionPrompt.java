@@ -13,7 +13,6 @@ public final class SingleQuestionPrompt extends ValidatingPrompt
 {
 	private static ConversationFactory factory;
 	
-	//private final Player player;
 	private final String question;
 	private final AcceptAnswer listener;
 	
@@ -30,7 +29,6 @@ public final class SingleQuestionPrompt extends ValidatingPrompt
 	
 	private SingleQuestionPrompt(final String question, final AcceptAnswer listener)
 	{
-		//this.player = player;
 		this.question = question;
 		this.listener = listener;
 	}

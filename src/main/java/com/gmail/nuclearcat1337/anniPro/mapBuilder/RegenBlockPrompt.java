@@ -48,9 +48,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 		if(b == null)
 			b = Game.getGameMap().getRegeneratingBlocks().getRegeneratingBlock(block.getType(), -1);
 		
-//		b = RegeneratingBlock.getRegeneratingBlock(block.getType(), -1); 
-//		if(b == null)
-//			b = RegeneratingBlock.getRegeneratingBlock(block.getType(), (int)block.getData());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -207,9 +204,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			{
 				if(this.b.MaterialData == (int)block.getData())
 				{
-//					context.getForWhom().sendRawMessage(purple+"A regenerating block of this type with this data value already exists.");
-//					context.getForWhom().sendRawMessage(purple+"If you would like to remove it, type "+green+"Remove"+purple+".");
-//					finalMessage = purple+"If you would like to override it, type "+green+"Override"+purple+", otherwise type "+red+"Quit"+purple+".";
 					if(input.equals("remove"))
 					{
 						if(Game.getGameMap().getRegeneratingBlocks().removeRegeneratingBlock(b.Type, b.MaterialData))
@@ -225,8 +219,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 				}
 				else if(b.MaterialData == -1)
 				{
-					//context.getForWhom().sendRawMessage(purple+"A regenerating block has already been specified for all data values of this type.");
-					//finalMessage = purple+"If you would like to remove it, type "+green+"Remove"+purple+" otherwise type "+red+"Quit"+purple+".";
 					if(input.equals("remove"))
 					{
 						if(Game.getGameMap().getRegeneratingBlocks().removeRegeneratingBlock(b.Type, b.MaterialData))
@@ -248,8 +240,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 4:
 			{
-//				response += purple+"Would you like these settings to apply to all blocks of this type or just this data value? ";
-//				response += purple+"Type either "+green+"This"+purple+" or "+green+"All"+purple+".";
 				if(input.equals("this"))
 				{
 					this.dataVal = (int)block.getData();
@@ -264,8 +254,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 5:
 			{
-//				response += purple+"Would you like this block to be just unbreakable, or would you like it to regenerate? ";
-//				response += purple+"Type either "+green+"Unbreakable"+purple+" or "+green+"Regenerate"+purple+".";
 				if(input.equals("unbreakable"))
 				{
 					this.regenerate = false;
@@ -280,8 +268,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 6:
 			{
-//				context.getForWhom().sendRawMessage(purple+"Would you like this block to break naturally or would you like the items to be added to the players's inventory?");
-//				finalMessage = purple+"Type either "+green+"Natural"+purple+" or "+green+"UnNatural"+purple+".";
 				if(input.equals("natural"))
 				{
 					this.naturalBreak = true;
@@ -297,16 +283,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 7:
 			{
-//				context.getForWhom().sendRawMessage(purple+"How long would you like this block to remain broken before it is regenerated?");
-//				finalMessage = purple+"Enter a value in the format: "+red+"["+green+"Number"+red+"] ["+green+"Unit"+red+"]"+purple+" (omit the brackets)";
-				//Bukkit.getLogger().info(input);
 				String[] args = input.split(" ");
 				if(args.length == 2)
 				{
 					try
 					{
-					//	Bukkit.getLogger().info(args[0]);
-						//Bukkit.getLogger().info(args[1]);
 						int number = Integer.parseInt(args[0]);
 						TimeUnit u = MapBuilder.getUnit(args[1]);
 						if(u != null)
@@ -329,8 +310,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 8:
 			{
-//				context.getForWhom().sendRawMessage(purple+"When it is broken, would you like this block to be replaced by cobblestone or air?");
-//				finalMessage = purple+"Type either "+green+"Cobblestone"+purple+" or "+green+"Air"+purple+".";
 				if(input.equals("cobblestone"))
 				{
 					this.cobbleReplace = true;
@@ -345,8 +324,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 9:
 			{
-//				context.getForWhom().sendRawMessage(purple+"How much XP do you want to give?");
-//				finalMessage = purple+"Enter a "+green+"Number"+purple+" greater than -1.";
 				try
 				{
 					int num = Integer.parseInt(input);
@@ -361,8 +338,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 10:
 			{
-//				context.getForWhom().sendRawMessage(purple+"If you would like to use a special effect, enter it.?");
-//				finalMessage = purple+"Type either an "+green+"Effect"+purple+" or "+green+"None"+purple+".";
 				if(input.equals("none"))
 				{
 					this.effect = null;
@@ -377,8 +352,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 11:
 			{
-//				context.getForWhom().sendRawMessage(purple+"What type of product would you like to give when this block is broken?");
-//				finalMessage = purple+"Enter a material value and/or a data value in the format:"+red+"["+green+"Material"+red+"] ["+green+"DataValue"+red+"]"+purple+"(omit brackets)";
 				String[] args = input.split(" ");
 				try
 				{
@@ -402,8 +375,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 12:
 			{
-//				context.getForWhom().sendRawMessage(purple+"How much product would you like to give?");
-//				finalMessage = purple+"Enter a "+green+"Number"+purple+".";
 				try
 				{
 					if(input.contains("random"))

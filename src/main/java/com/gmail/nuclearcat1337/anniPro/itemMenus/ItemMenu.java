@@ -18,7 +18,6 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
  */
 public class ItemMenu
 {
-	// private JavaPlugin plugin;
 	private String name;
 	private Size size;
 	private MenuItem[] items;
@@ -47,7 +46,6 @@ public class ItemMenu
 	 */
 	public ItemMenu(String name, Size size, ItemMenu parent)
 	{
-		// this.plugin = plugin;
 		this.name = name;
 		this.size = size;
 		this.items = new MenuItem[size.getSize()];

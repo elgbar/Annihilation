@@ -60,12 +60,6 @@ public class StandardPhaseHandler implements Runnable
 	private void sendImage(int x)
 	{
 		ImageMessage m = images.get(x);
-//		for(AnniPlayer p : AnniPlayer.getPlayers().values())
-//		{
-//			Player player = p.getPlayer();
-//			if(player != null)
-//				m.sendToPlayer(player);
-//		}
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			m.sendToPlayer(player);
@@ -79,7 +73,6 @@ public class StandardPhaseHandler implements Runnable
 		{
 			GameMap map = Game.getGameMap();
 			int newPhase = map.getCurrentPhase()+1;
-            //String m = Lang.PHASEBAR.toStringReplacement(newPhase) + " - {#}";
             Announcement ann = new Announcement(Lang.PHASEBAR.toStringReplacement(newPhase) + " - {#}");
 			switch(newPhase)
 			{
@@ -101,7 +94,6 @@ public class StandardPhaseHandler implements Runnable
 					break;
 				case 5:
 					map.setDamageMultiplier(2);
-					//MessageBar.permanentBar(Lang.PHASEBAR.toStringReplacement(newPhase));
                     ann.setPermanent(true).setMessage(Lang.PHASEBAR.toStringReplacement(newPhase));
 					break;
 			}
@@ -110,7 +102,6 @@ public class StandardPhaseHandler implements Runnable
 			ScoreboardAPI.updatePhase();
 			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE+"Phase "+ChatColor.AQUA+map.getCurrentPhase()+ChatColor.DARK_PURPLE+" has begun!");
 			sendImage(map.getCurrentPhase());
-			//Game.broadcastMessage(message);
 		}
 	}
 }

@@ -38,7 +38,6 @@ import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
 
 public class TeamCommand implements CommandExecutor, Listener
 {
-	//private AnnihilationMain plugin;
 	private ItemMenu menu;
 	private Map<ChatColor,ImageMessage> messages;
 	public TeamCommand(JavaPlugin plugin)
@@ -47,13 +46,6 @@ public class TeamCommand implements CommandExecutor, Listener
 		messages = new EnumMap<ChatColor,ImageMessage>(ChatColor.class);
 		plugin.getCommand("Team").setExecutor(this);
 		Bukkit.getPluginManager().registerEvents(this, plugin);
-//		for(int x = 3; x < 6; x++)
-//		{
-//			Permission perm = new Permission("Anni.JoinPhase."+x);
-//			perm.setDefault(PermissionDefault.OP);
-//			Bukkit.getPluginManager().addPermission(perm);
-//			perm.recalculatePermissibles();
-//		}
 		
 		int x = 0;
 		for(final AnniTeam team : AnniTeam.Teams)
@@ -122,9 +114,6 @@ public class TeamCommand implements CommandExecutor, Listener
 			}
 		}
 	}
-	
-	//private ChatColor r = ChatColor.RED;
-	//private ChatColor g = ChatColor.GREEN;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -141,7 +130,6 @@ public class TeamCommand implements CommandExecutor, Listener
 					int cat = x*2;
 					messages[cat] = t.getColor()+"/Team "+t.getExternalName()+":";
 					int y = t.getPlayerCount();
-					//messages[cat+1] = t.Color+"There are "+y+" Players on the "+t.toString()+" Team.";
 					messages[cat+1] = t.getColor()+Lang.TEAMCHECK.toStringReplacement(y, t.getExternalName());
 				}
 				sender.sendMessage(messages);
@@ -154,9 +142,7 @@ public class TeamCommand implements CommandExecutor, Listener
 					{
 						if(p.getTeam() != null)
 						{
-							//sender.sendMessage(ChatColor.DARK_PURPLE+"You left "+p.getTeam().Color+p.getTeam().getName()+" Team");
 							sender.sendMessage(Lang.LEAVETEAM.toStringReplacement(p.getTeam().getExternalColoredName()));
-							//ScoreboardAPI.removePlayer(p.getTeam(), p.getPlayer());
 							p.getTeam().leaveTeam(p);
 						}
 						else sender.sendMessage(Lang.NOTEAM.toString());
@@ -169,9 +155,7 @@ public class TeamCommand implements CommandExecutor, Listener
 					if(t != null)
 					{
 						//THIS IS WHERE WE SHOULD JOIN THEM IN A TEAM
-						//p.setTeam(t);
 						this.joinCheck(t, p);
-						//sender.sendMessage(g+"You joined "+t.Color+t.getName()+" team");
 					}
 					else
 						sender.sendMessage(Lang.INVALIDTEAM.toString());
@@ -240,8 +224,6 @@ public class TeamCommand implements CommandExecutor, Listener
 							AnniTeam t = AnniTeam.Teams[x];
 							if(!t.isTeamDead() && t.getPlayerCount() < smallest)
 								smallest = t.getPlayerCount();
-								//if(!t.equals(team) && !t.isTeamDead())
-								///	largest = t.getPlayerCount();
 
 						}
 
@@ -251,11 +233,6 @@ public class TeamCommand implements CommandExecutor, Listener
 							return;
 						}
 						
-//						if((currentTeamsPlayers+1) - largest > GameVars.getBalanceTolerance())
-//						{
-//							player.sendMessage(Lang.JOINANOTHERTEAM.toString());
-//							return;
-//						}
 					}
 					
 					joinTeam(p,team);
@@ -271,7 +248,6 @@ public class TeamCommand implements CommandExecutor, Listener
 		Player p = player.getPlayer();
 		ImageMessage m = messages.get(team.getColor());
 		m.sendToPlayer(p);
-		//player.sendMessage(ChatColor.DARK_PURPLE+"You have joined "+team.Color+team.toString()+ChatColor.DARK_PURPLE+" Team");
 		if(Game.isGameRunning())
 			p.setHealth(0);
 
