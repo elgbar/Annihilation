@@ -14,13 +14,11 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
  */
 public class SubMenuItem extends MenuItem
 {
-	//private final JavaPlugin plugin;
 	private final ItemMenu menu;
 
 	public SubMenuItem(String displayName, ItemMenu menu, ItemStack icon, String... lore)
 	{
 		super(displayName, icon, lore);
-		//this.plugin = plugin;
 		this.menu = menu;
 	}
 

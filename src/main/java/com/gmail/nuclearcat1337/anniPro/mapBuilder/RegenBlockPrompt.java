@@ -271,7 +271,6 @@ public class RegenBlockPrompt extends ValidatingPrompt
 				if(input.equals("natural"))
 				{
 					this.naturalBreak = true;
-					//return this.saveBlockAndQuit(context);
 					this.questionlvl = 7;
 				}
 				else if(input.equals("unnatural"))

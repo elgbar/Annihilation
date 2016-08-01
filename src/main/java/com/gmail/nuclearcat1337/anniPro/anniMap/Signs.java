@@ -92,7 +92,7 @@ public final class Signs implements Iterable<AnniSign>, Listener
 	private void placeSignInWorld(AnniSign asign, String[] lore)
 	{
 		Location loc = asign.getLocation().toLocation();
-		Block block = loc.getWorld().getBlockAt(loc);//asign.getLocation().toLocation().getBlock();
+		Block block = loc.getWorld().getBlockAt(loc);
 		if(block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
 			block.getWorld().getBlockAt(loc).setType(asign.isSignPost() ? Material.SIGN_POST : Material.WALL_SIGN);
 		

@@ -116,7 +116,6 @@ public class KitLoading implements Listener, CommandExecutor
 								Kit kit = k.newInstance();
 								if(kit.Initialize())
 								{
-									//AnniEvent.registerListener(kit);
 									Bukkit.getPluginManager().registerEvents(kit, p);	
 									Bukkit.getLogger().info("[Annihilation] --"+kit.getName());
 									Kit.registerKit(kit);
