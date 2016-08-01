@@ -25,122 +25,258 @@ public class BlockBreakListner implements Listener {
     			return;
     		}
     		Material bb = event.getBlock().getType(); //bb = broken block
-        	String bbName = bb.name();
-        	
-        	//Can be broken with anything
-    		if (bb.equals(Material.SNOW) ||
-    				bb.equals(Material.GLOWSTONE) ||
-    				
-    				//plants & flowers
-    				bb.equals(Material.LONG_GRASS) ||
-    				bb.equals(Material.DOUBLE_PLANT) ||
-    				bb.equals(Material.YELLOW_FLOWER) ||
-    				bb.equals(Material.RED_ROSE) ||
-    				
-    				//edible stuff
-    				bb.equals(Material.CROPS) ||
-    				bb.equals(Material.COCOA) ||
-    				bb.equals(Material.NETHER_WARTS) ||
-    				bb.equals(Material.CARROT) ||
-    				bb.equals(Material.POTATO) ||
-    				bb.equals(Material.RED_MUSHROOM) ||
-    				bb.equals(Material.BROWN_MUSHROOM) ||
-    				bb.equals(Material.SUGAR_CANE_BLOCK) ||
-					bb.equals(Material.MELON) ||
-    				
-    				bb.equals(Material.DAYLIGHT_DETECTOR) ||
-    				bb.equals(Material.DAYLIGHT_DETECTOR_INVERTED) ||
-    				bb.equals(Material.TORCH) ||
-    				bb.equals(Material.TRIPWIRE_HOOK) ||
-    				bb.equals(Material.TRIPWIRE) ||
-    				bb.equals(Material.LEVER) ||
-    				bb.equals(Material.CARPET) ||
-    				
-    				//These cannot in the original adventure mode (adv mode 1.7 and earlier)
-    				bb.equals(Material.FIRE) ||
-    				bb.equals(Material.CAKE) ||
-    				bb.equals(Material.TNT) ||
-    				bb.equals(Material.CACTUS) ||
-    				bb.equals(Material.BED) ||
-    				bb.equals(Material.SPONGE) ||
-    				bb.equals(Material.HAY_BLOCK) ||
-    				
-    				bbName.contains("GLASS") ||
-    				bbName.contains("PISTON")
-    				){
-    			return;
+        	switch(bb) {
+        		case SNOW:
+        		case GLOWSTONE:
+        		case TORCH:
+        		case CARPET:
+        		case SPONGE:
+        		case MELON_STEM:
+        		case PUMPKIN_STEM:
+				case ICE:
+        		case WATER_LILY:
+          		case SKULL:
+          		case SLIME_BLOCK:
+          		case FLOWER_POT:
+          		case SEA_LANTERN:
+          			
+        		/* Flowers & plants */
+        		case DOUBLE_PLANT:
+        		case LONG_GRASS:
+        		case YELLOW_FLOWER:
+        		case RED_ROSE:
+        			
+        		/* edible */
+        		case CROPS:
+        		case COCOA:
+        		case NETHER_WARTS:
+        		case CARROT:
+        		case POTATO:
+        		case RED_MUSHROOM:
+        		case BROWN_MUSHROOM:
+        		case SUGAR_CANE_BLOCK:
+        		case MELON_BLOCK:
+        		case HAY_BLOCK:
+        			
+        		/* Glass */
+        		case GLASS:
+        		case STAINED_GLASS:
+        		case THIN_GLASS:
+        		case STAINED_GLASS_PANE:
+        			
+        		/* Pistion */
+        		case PISTON_BASE:
+        		case PISTON_EXTENSION:
+        		case PISTON_MOVING_PIECE:
+        		case PISTON_STICKY_BASE:
+        		case BREWING_STAND:
+        			
+        		/* Button */	
+				case STONE_BUTTON:
+				case WOOD_BUTTON:
+					
+				/* Redstone */	
+				case REDSTONE_COMPARATOR_OFF:
+				case REDSTONE_COMPARATOR_ON:
+				case REDSTONE_LAMP_OFF:
+				case DIODE_BLOCK_OFF: //repeater off
+				case DIODE_BLOCK_ON: //repeater on
+				case REDSTONE_LAMP_ON:
+				case REDSTONE_TORCH_OFF:
+				case REDSTONE_TORCH_ON:
+				case REDSTONE_WIRE:
+        		case TRIPWIRE_HOOK:
+        		case TRIPWIRE:
+        		case LEVER:
+        		case DAYLIGHT_DETECTOR:
+        		case DAYLIGHT_DETECTOR_INVERTED:
+        			
+        		/* These cannot in the original adventure mode (adv mode 1.7 and earlier) */
+        		case FIRE:
+        		case TNT:
+        		case CACTUS:
+        		case BED_BLOCK:
+        		case CAKE_BLOCK:
+        			return;
+        		default:
+					/* falls through */
     		}
     		
         	String toolMat = p.getInventory().getItemInHand().getType().name();
     		if (toolMat != null){
     			if (toolMat.contains("_PICKAXE")) {
-    				if (bbName.contains("ORE") || //anything that is ore/stone(inc Cobble and sandstone)//nether/iron
-    						bbName.contains("STONE") ||
-    						bbName.contains("NETHER") ||
-    						bbName.contains("IRON") ||
-    						bbName.contains("QUARTZ") ||
-    						bbName.contains("BRICK") ||
-    						bbName.contains("SMOOTH") ||
-    						bbName.contains("FURNACE") ||
-    						bbName.contains("RAIL") ||
-    						bb.equals(Material.COAL_BLOCK) ||
-    						bb.equals(Material.OBSIDIAN) ||
-    						bb.equals(Material.HOPPER) ||
-    						bb.equals(Material.ENDER_CHEST) ||
-    						bb.equals(Material.DISPENSER) ||
-    						bb.equals(Material.DROPPER) ||
-    						bb.equals(Material.ANVIL) ||
-    						bb.equals(Material.MOB_SPAWNER) ||
-    						
-    						//pressure plates
-    						bb.equals(Material.STONE_PLATE) ||
-    						bb.equals(Material.IRON_PLATE) ||
-    						bb.equals(Material.GOLD_PLATE)
-    						){
-    					return;
+    				switch(bb){
+						/* Ore */
+						case COAL_ORE:
+						case DIAMOND_ORE:
+						case EMERALD_ORE:
+						case GOLD_ORE:
+						case IRON_ORE:
+						case LAPIS_ORE:
+						case QUARTZ_ORE:
+						case REDSTONE_ORE:
+						case GLOWING_REDSTONE_ORE:
+    					/* Ore blocks */
+    					case COAL_BLOCK:
+    					case DIAMOND_BLOCK:
+    					case EMERALD_BLOCK:
+    					case REDSTONE_BLOCK:
+    					case GOLD_BLOCK:
+    					case IRON_BLOCK:
+    					case LAPIS_BLOCK:
+    					/* Pressure plates */
+    					case STONE_PLATE:
+    					case GOLD_PLATE:
+    					case IRON_PLATE:
+    					case STONE_SLAB2:
+    					case DOUBLE_STONE_SLAB2:
+    					/* Rails */
+       					case RAILS:
+    					case POWERED_RAIL:
+    					case ACTIVATOR_RAIL:
+    					case DETECTOR_RAIL:
+    					/* Stone */
+    					case STONE:
+    					case COBBLESTONE:
+    					case COBBLE_WALL:
+    					case COBBLESTONE_STAIRS:
+    					case MOSSY_COBBLESTONE:
+    					case SANDSTONE:
+    					case SANDSTONE_STAIRS:
+    					case RED_SANDSTONE:
+    					case RED_SANDSTONE_STAIRS:
+    					case SMOOTH_BRICK:
+    					case SMOOTH_STAIRS:
+    					case STEP:
+    					case DOUBLE_STEP:
+    					/* Nether */
+    					case NETHER_BRICK:
+    					case NETHER_BRICK_STAIRS:
+    					case NETHER_FENCE:
+    					case NETHERRACK:
+    					/*Quartz*/
+    					case QUARTZ_BLOCK:
+    					case QUARTZ_STAIRS:
+    					/* Furnace */
+    					case FURNACE:
+    					case BURNING_FURNACE:
+    					/* clay & brick */
+    					case STAINED_CLAY:
+    					case HARD_CLAY:
+    					case BRICK:
+    					case BRICK_STAIRS:
+    					/* Usables */
+						case IRON_DOOR_BLOCK:
+						case HOPPER:
+						case ENDER_CHEST:
+						case DISPENSER:
+						case DROPPER:
+						case ANVIL:
+						/* Other */
+						case OBSIDIAN:
+						case MOB_SPAWNER:
+						case ENDER_STONE:
+						case IRON_FENCE:
+						case PACKED_ICE:
+						case IRON_TRAPDOOR:
+						case CAULDRON:
+						case BEACON:
+						case ENCHANTMENT_TABLE:
+						case PRISMARINE:
+    						return;
+    					default:
+    						/* falls through */
     				}
     			} else if (toolMat.contains("_AXE")) { //need the _ so it wont be confused with pickaxe
-    				if (bbName.contains("WOOD") || //anything that contains wood
-    						bbName.contains("DOOR") ||
-    						bb.equals(Material.BOOKSHELF) ||
-    						bb.equals(Material.CHEST) ||
-    						bb.equals(Material.WORKBENCH) ||
-    						bb.equals(Material.FENCE_GATE) ||
-    						bb.equals(Material.FENCE) ||
-    						bb.equals(Material.HUGE_MUSHROOM_1) ||
-    						bb.equals(Material.HUGE_MUSHROOM_2) ||
-    						bb.equals(Material.JUKEBOX) ||
-    						bb.equals(Material.SIGN) ||
-    						bb.equals(Material.SIGN_POST) ||
-    						bb.equals(Material.WALL_SIGN) ||
-    						bb.equals(Material.LADDER)
-    						){
-    					return;
+    				switch(bb){
+    					/* Doors */
+    					case WOODEN_DOOR:
+    					case ACACIA_DOOR:
+    					case BIRCH_DOOR:
+    					case JUNGLE_DOOR:
+    					case SPRUCE_DOOR:
+    					case DARK_OAK_DOOR:
+    					/* Gate */
+    					case FENCE_GATE:
+    					case ACACIA_FENCE_GATE:
+    					case BIRCH_FENCE_GATE:
+    					case DARK_OAK_FENCE_GATE:
+    					case JUNGLE_FENCE_GATE:
+    					case SPRUCE_FENCE_GATE:
+    					/* stairs */
+    					case WOOD_STAIRS:
+    					case SPRUCE_WOOD_STAIRS:
+    					case ACACIA_STAIRS:
+    					case BIRCH_WOOD_STAIRS:
+    					case DARK_OAK_STAIRS:
+    					case JUNGLE_WOOD_STAIRS:
+    					/*Fence*/
+    					case FENCE:
+    					case ACACIA_FENCE:
+    					case BIRCH_FENCE:
+    					case DARK_OAK_FENCE:
+    					case SPRUCE_FENCE:
+    					case JUNGLE_FENCE:
+    					/* other */
+    					case BOOKSHELF:
+    					case WORKBENCH:
+    					case CHEST:  						
+    					case WOOD:
+    					case NOTE_BLOCK:
+    					case HUGE_MUSHROOM_1:
+    					case HUGE_MUSHROOM_2:
+    					case JUKEBOX:
+    					case SIGN_POST:
+    					case WALL_SIGN:
+    					case LADDER:
+    					case LOG:
+    					case LOG_2:
+    					case WOOD_STEP:
+    					case WOOD_DOUBLE_STEP:
+    					case WOOD_PLATE:
+    					case TRAP_DOOR:
+    					case TRAPPED_CHEST:
+						case JACK_O_LANTERN:
+						case PUMPKIN:
+						case STANDING_BANNER:
+						case WALL_BANNER:
+							
+    						return;
+						default:
+							/* falls through */
     				}
     			} else if (toolMat.contains("_SPADE")) {
-    				if (bb.equals(Material.GRASS) ||
-    						bb.equals(Material.GRAVEL) ||
-    						bb.equals(Material.DIRT) ||
-    						bb.equals(Material.SAND) ||
-    						bb.equals(Material.SNOW_BLOCK)
-    						){
-    					return;
+    				switch(bb){
+						case GRASS:
+						case DIRT:
+						case GRAVEL:
+						case SAND:
+						case SOIL:
+						case SNOW_BLOCK:
+	  					case CLAY:
+	  					case SOUL_SAND:
+	  					case MYCEL:
+							return;
+						default:
+							/* falls through */
     				}
     			} else if (toolMat.contains("SHEARS")) {
-    				if (bb.equals(Material.LEAVES) ||
-    						bb.equals(Material.LEAVES_2) ||
-    						bb.equals(Material.WOOL)
-    						){
-    					return;
+    				switch(bb){
+						case LEAVES:
+						case LEAVES_2:
+						case WOOL:
+							return;
+						default:
+							/* falls through */
     				}
     			} else if (toolMat.contains("_SWORD")) {
-    				if (bb.equals(Material.JACK_O_LANTERN) ||
-    						bb.equals(Material.PUMPKIN) ||
-    						bb.equals(Material.LEAVES) ||
-    						bb.equals(Material.LEAVES_2) ||
-    						bb.equals(Material.WEB)
-    						){
-    					return;
+    				switch(bb){
+						case LEAVES:
+						case LEAVES_2:
+						case WEB:
+							return;
+						default:
+							/* falls through */
     				}
     			}
     		}
