@@ -38,6 +38,7 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 import com.gmail.nuclearcat1337.anniPro.utils.MapKey;
 import com.gmail.nuclearcat1337.anniPro.voting.AutoRestarter;
+import com.hcs.boss.Golem;
 
 public final class GameMap extends AnniMap implements Listener
 {
@@ -120,7 +121,7 @@ public final class GameMap extends AnniMap implements Listener
 						team.clearSpawns();
 						ConfigurationSection spawns = teamSection.getConfigurationSection("Spawns");
 						if(spawns != null)
-						{	
+						{
 							for(String key : spawns.getKeys(false))
 							{
 								Loc loc = new Loc(spawns.getConfigurationSection(key));
@@ -144,6 +145,20 @@ public final class GameMap extends AnniMap implements Listener
 					if(b != null)
 						for(Byte bt : b)
 							addUnplaceableBlock(mat,bt);
+				}
+			}
+			ConfigurationSection golemBossSec = section.getConfigurationSection("GolemBosses");
+			if(golemBossSec != null) {
+				for(Golem golem : Golem.Golems){
+					ConfigurationSection spawns = golemBossSec.getConfigurationSection(golem.getName());
+					if(spawns != null)
+					{
+						Loc loc = new Loc(spawns);
+						if(loc != null)
+						{
+							golem.setSpawn(loc);
+						}
+					}
 				}
 			}
 		}
@@ -233,6 +248,12 @@ public final class GameMap extends AnniMap implements Listener
 				ConfigurationSection matSec = unplaceableSec.createSection(entry.getKey().toString());
 				matSec.set("Material", entry.getKey().toString());
 				matSec.set("Values", entry.getValue().getValues());
+			}
+			
+			ConfigurationSection golemBossSec = section.createSection("GolemBosses");
+			for(Golem golem : Golem.Golems){
+				if (golem.getSpawn() != null)
+					golem.getSpawn().saveToConfig(golemBossSec.createSection(golem.getName()));
 			}
 		}
 		

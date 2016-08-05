@@ -9,9 +9,9 @@ import java.lang.reflect.Field;
 public class NPCNetworkManager extends NetworkManager {
 
 	public NPCNetworkManager() {
-		super(EnumProtocolDirection.CLIENTBOUND); //MCP = isClientSide ---- SRG=field_150747_h
-		Field channel = ReflectUtil.makeField(NetworkManager.class, "k"); //MCP = channel ---- SRG=field_150746_k
-		Field address = ReflectUtil.makeField(NetworkManager.class, "l"); //MCP = address ---- SRG=field_77527_e
+		super(EnumProtocolDirection.CLIENTBOUND);
+		Field channel = ReflectUtil.makeField(NetworkManager.class, "channel"); 
+		Field address = ReflectUtil.makeField(NetworkManager.class, "l");
 		
 		ReflectUtil.setField(channel, this, new NullChannel());
 		ReflectUtil.setField(address, this, new NullSocketAddress());

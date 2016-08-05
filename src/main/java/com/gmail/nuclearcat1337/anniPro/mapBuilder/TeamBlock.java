@@ -53,7 +53,7 @@ public class TeamBlock
 		else if(team.equals(AnniTeam.Green))
 			datavalue = (byte)13;
 		else
-			datavalue = (byte)4;
+			datavalue = (byte)4; //yellow
 	}
 	
 	public TeamBlock addLine(Action action, ChatColor color1, String message)

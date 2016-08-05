@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -155,9 +156,13 @@ public class VoteMapManager
 					@Override
 					public void onItemClick(ItemClickEvent event)
 					{
-						event.getPlayer().performCommand("Vote "+str);
+						if (event.getClickType() == ClickType.SHIFT_LEFT || event.getClickType() == ClickType.SHIFT_RIGHT) {
+							event.getPlayer().performCommand("tellraw @p [\"\",{\"text\":\"Click me to preview "+str+"\",\"color\":\"dark_purple\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://imgur.com/\"}}]");
+						} else {
+							event.getPlayer().performCommand("vote "+str);
+						}
 						event.setWillClose(true);
-					}}, new ItemStack(Material.TRIPWIRE_HOOK), new String[]{});
+					}}, new ItemStack(Material.MAP), new String[]{ChatColor.DARK_PURPLE + "Click to vote",ChatColor.DARK_PURPLE + "Shift click to preview map"});
 				menu.setItem(x, item);
 				x++;
 			}

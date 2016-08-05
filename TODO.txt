@@ -1,0 +1,14 @@
++Launch pads
+++ iron 5 blocks hor
+++ red lamps 20 blocks hor
+++ emerald blocks 10? blocks vert
+
++Add golem boss
+(item has been added to menu, just figure out where it checks if you activate a tool and add code to GOlem.spawn)
+++takes 10-20%(?) dmg from arrows, which forces players to melee it
+++it has an lage amount of health
+++The red golem have red name and the blue a blue name (ask ben for the names)
+
+++No knockback to golem
+++Chat on death: <team> killed the <color> golem
+++

@@ -2,13 +2,14 @@ package com.gmail.nuclearcat1337.anniPro.mapBuilder;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.LazyMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -43,18 +45,20 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ComboMenuItem;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickHandler;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu;
-import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
+import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.CustomItem;
 import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.mapBuilder.TeamBlock.TeamBlockHandler;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
+import com.hcs.boss.Golem;
+import com.hcs.boss.Golem.GolemBlockHandler;
 
 
 public class MapBuilder implements Listener
 {
-	private enum X
+	private enum Tool
 	{
 		AreaWand,
 		Nexus,
@@ -68,6 +72,7 @@ public class MapBuilder implements Listener
 		RegeneratingBlocks,
 		Diamond,
 		UnplaceableBlockWand,
+		Golemboss,
 	}
 	private class Wrapper
 	{
@@ -81,7 +86,7 @@ public class MapBuilder implements Listener
 	}
 	private final Map<UUID,Wrapper> mapBuilders;
 	private final ConversationFactory factory;
-	private final Map<X,MenuItem> items;
+	private final Map<Tool,MenuItem> items;
 	
 	public static TimeUnit getUnit(String input)
 	{
@@ -141,8 +146,8 @@ public class MapBuilder implements Listener
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 		this.mapBuilders = new HashMap<UUID,Wrapper>();
 		factory = new ConversationFactory(plugin);
-		items = new EnumMap<X,MenuItem>(X.class);
-		this.items.put(X.AreaWand, new ActionMenuItem("Protected Area Helper", new ItemClickHandler(){
+		items = new EnumMap<Tool,MenuItem>(Tool.class);
+		this.items.put(Tool.AreaWand, new ActionMenuItem("Protected Area Helper", new ItemClickHandler(){
 			@Override
 			public void onItemClick(ItemClickEvent event)
 			{
@@ -151,7 +156,7 @@ public class MapBuilder implements Listener
 			}}, 
 			new ItemStack(Material.BLAZE_ROD), ChatColor.GREEN+"Click to get the",ChatColor.GREEN+"Area Helper Wand"));
 	
-		this.items.put(X.Spawns,new ActionMenuItem("Set Team Spawns", new ItemClickHandler(){
+		this.items.put(Tool.Spawns,new ActionMenuItem("Set Team Spawns", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -180,7 +185,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.BED),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Team Spawns"));
 		
-		this.items.put(X.SpectatorSpawns,new ActionMenuItem("Set Team Spectator Spawns", new ItemClickHandler(){
+		this.items.put(Tool.SpectatorSpawns,new ActionMenuItem("Set Team Spectator Spawns", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -210,7 +215,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.FEATHER),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Team Spectator Spawns"));
 		
-		this.items.put(X.Nexus, new ActionMenuItem("Nexus Helper", new ItemClickHandler(){
+		this.items.put(Tool.Nexus, new ActionMenuItem("Nexus Helper", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -240,7 +245,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.BEACON),ChatColor.GREEN+"Click to setup Nexuses."));
 		
-		this.items.put(X.TeamSigns, new ActionMenuItem("Set Team Signs", new ItemClickHandler(){
+		this.items.put(Tool.TeamSigns, new ActionMenuItem("Set Team Signs", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -299,7 +304,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.SIGN),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Team Join Signs"));
 		
-		this.items.put(X.BrewingShop, new ActionMenuItem("Set Brewing Shop", new ItemClickHandler(){
+		this.items.put(Tool.BrewingShop, new ActionMenuItem("Set Brewing Shop", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -308,7 +313,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.BREWING_STAND_ITEM),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Brewing Shops"));
 		
-		this.items.put(X.WeaponShop, new ActionMenuItem("Set Weapon Shop", new ItemClickHandler(){
+		this.items.put(Tool.WeaponShop, new ActionMenuItem("Set Weapon Shop", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -317,7 +322,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.ARROW),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Weapon Shops"));
 		
-		this.items.put(X.Diamond, new ActionMenuItem("Set Diamond Spawns", new ItemClickHandler(){
+		this.items.put(Tool.Diamond, new ActionMenuItem("Set Diamond Spawns", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -326,7 +331,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.DIAMOND),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Diamond Spawns"));
 		
-		this.items.put(X.EnderFurnaces, new ActionMenuItem("Set Ender Furnace", new ItemClickHandler(){
+		this.items.put(Tool.EnderFurnaces, new ActionMenuItem("Set Ender Furnace", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -335,12 +340,12 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.EYE_OF_ENDER),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Ender Furnaces"));
 		
-		this.items.put(X.PhaseTime, new ActionMenuItem("Set Phase Time", new ItemClickHandler(){
+		this.items.put(Tool.PhaseTime, new ActionMenuItem("Set Phase Time", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(final ItemClickEvent event)
 			{
-				SingleQuestionPrompt.newPrompt(event.getPlayer(), ChatColor.LIGHT_PURPLE+"Please enter how long you want each phase to be.", new AcceptAnswer(){
+				SingleQuestionPrompt.newPrompt(event.getPlayer(), ChatColor.LIGHT_PURPLE+"Please enter how long you want each phase to be. \nEnter a value in the format: "+ChatColor.RED+"["+ChatColor.GREEN+"Number"+ChatColor.RED+"] ["+ChatColor.GREEN+"Unit"+ChatColor.RED+"]"+ChatColor.LIGHT_PURPLE+" (omit the brackets)", new AcceptAnswer(){
 
 					@Override
 					public boolean onAnswer(String input)
@@ -369,7 +374,7 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.WATCH),ChatColor.GREEN+"Click to set:",ChatColor.GREEN+"Game Phase Time"));
 		
-		this.items.put(X.RegeneratingBlocks, new ActionMenuItem("Regenerating Block Helper", new ItemClickHandler(){
+		this.items.put(Tool.RegeneratingBlocks, new ActionMenuItem("Regenerating Block Helper", new ItemClickHandler(){
 
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -378,13 +383,48 @@ public class MapBuilder implements Listener
 				event.setWillClose(true);
 			}},new ItemStack(Material.STICK),ChatColor.GREEN+"Click to setup:",ChatColor.GREEN+"Regenerating Blocks"));
 		
-		this.items.put(X.UnplaceableBlockWand, new ActionMenuItem("Unplaceable Block Wand", new ItemClickHandler(){
+		this.items.put(Tool.UnplaceableBlockWand, new ActionMenuItem("Unplaceable Block Wand", new ItemClickHandler(){
 			@Override
 			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.UNPLACEABLEBLOCKSWAND.toItemStack(1));
 				event.setWillClose(true);
 			}},new ItemStack(Material.DIAMOND_SPADE),ChatColor.GREEN+"Click to setup:",ChatColor.GREEN+"Unplaceable Blocks"));
+		
+		this.items.put(Tool.Golemboss, new ActionMenuItem("Golem Boss Helper", new ItemClickHandler(){
+
+			@Override
+			public void onItemClick(ItemClickEvent event)
+			{
+				for(Golem golem : Golem.Golems)
+				{
+					@SuppressWarnings("deprecation")
+					ItemStack golemBlock = new ItemStack(Material.WOOL, 1,  golem.getWoolColor().getData());
+					ItemMeta meta = golemBlock.getItemMeta();
+
+					String loreTxt = ChatColor.DARK_PURPLE+"Left click to set the "+ golem.getColor()+golem.getName() + " golem to your location.";
+					meta.setLore(Arrays.asList(loreTxt));
+					meta.setDisplayName(golem.getDisplayName());
+					golemBlock.setItemMeta(meta);
+					event.getPlayer().getInventory().addItem(KitUtils.addSoulbound(golemBlock));
+				}
+				Object obj = new GolemBlockHandler()
+				{
+					@Override
+					public void onBlockClick(Player player,
+							Golem golem, Action action, Block block)
+					{
+						if(action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+							golem.setSpawn(player.getLocation());
+							player.sendMessage(ChatColor.LIGHT_PURPLE+"The "+golem.getColor()+golem.getName()+" golem "+ChatColor.LIGHT_PURPLE+"spawn has been set to "+getReadableLocation(player.getLocation(),ChatColor.GOLD,ChatColor.LIGHT_PURPLE, false));
+						}
+					}
+				};
+				setPlayerMeta(event.getPlayer(),"GolemHandler",obj);
+				event.setWillClose(true);
+			}},new ItemStack(Material.IRON_BLOCK),ChatColor.GREEN+"Click to setup:",ChatColor.GREEN+"Golem Boss"));
+	
+		
 	}
 	
 	private void setPlayerMeta(Player player, String key, final Object meta)
@@ -414,11 +454,12 @@ public class MapBuilder implements Listener
 	
 	private void buildMapMenu(ItemMenu menu)
 	{
-		menu.setItem(4, this.items.get(X.UnplaceableBlockWand));
-		menu.setItem(9, this.items.get(X.EnderFurnaces));
-		menu.setItem(10, this.items.get(X.Diamond));
-		menu.setItem(11, this.items.get(X.RegeneratingBlocks));
-		menu.setItem(12, this.items.get(X.AreaWand));
+		menu.setItem(3, this.items.get(Tool.Golemboss));
+		menu.setItem(4, this.items.get(Tool.UnplaceableBlockWand));
+		menu.setItem(9, this.items.get(Tool.EnderFurnaces));
+		menu.setItem(10, this.items.get(Tool.Diamond));
+		menu.setItem(11, this.items.get(Tool.RegeneratingBlocks));
+		menu.setItem(12, this.items.get(Tool.AreaWand));
 		
 		menu.setItem(13, new ActionMenuItem("Back to Main Menu",new ItemClickHandler(){
 
@@ -442,14 +483,14 @@ public class MapBuilder implements Listener
 				}, 3);
 			}},new ItemStack(Material.STAINED_GLASS_PANE),"Click to return to the Main menu."));
 		
-		menu.setItem(14, this.items.get(X.Nexus));
-		menu.setItem(15, this.items.get(X.Spawns));
-		menu.setItem(16, this.items.get(X.TeamSigns));
-		menu.setItem(17, this.items.get(X.SpectatorSpawns));
+		menu.setItem(14, this.items.get(Tool.Nexus));
+		menu.setItem(15, this.items.get(Tool.Spawns));
+		menu.setItem(16, this.items.get(Tool.TeamSigns));
+		menu.setItem(17, this.items.get(Tool.SpectatorSpawns));
 		
-		menu.setItem(21, this.items.get(X.BrewingShop));
-		menu.setItem(22, this.items.get(X.PhaseTime));
-		menu.setItem(23, this.items.get(X.WeaponShop));
+		menu.setItem(21, this.items.get(Tool.BrewingShop));
+		menu.setItem(22, this.items.get(Tool.PhaseTime));
+		menu.setItem(23, this.items.get(Tool.WeaponShop));
 	}
 	
 	public void openMapBuilder(Player player)
@@ -498,8 +539,8 @@ public class MapBuilder implements Listener
 				}},new ItemStack(Material.FEATHER),ChatColor.GREEN+"Click to:",ChatColor.GREEN+"Teleport to the Lobby.");
 			mainMenu.setItem(4, tpItem);
 			mainMenu.setItem(13, lobby);
-			mainMenu.setItem(11, items.get(X.TeamSigns));
-			mainMenu.setItem(12, this.items.get(X.AreaWand));
+			mainMenu.setItem(11, items.get(Tool.TeamSigns));
+			mainMenu.setItem(12, this.items.get(Tool.AreaWand));
 			ActionMenuItem loadWorld = new ActionMenuItem("Load New Map", new ItemClickHandler(){
 				@Override
 				public void onItemClick(ItemClickEvent event)
@@ -877,6 +918,13 @@ public class MapBuilder implements Listener
 				t = TeamBlock.Green;
 			else if(KitUtils.itemHasName(player.getItemInHand(), TeamBlock.Yellow.getName()))
 				t = TeamBlock.Yellow;
+			
+			Golem g = null;
+			if(KitUtils.itemHasName(player.getItemInHand(), Golem.Red.getDisplayName()))
+				g = Golem.Red;
+			else if(KitUtils.itemHasName(player.getItemInHand(), Golem.Blue.getDisplayName()))
+				g = Golem.Blue;
+			
 			if(t != null)
 			{
 				//They made a click with a team block
@@ -888,6 +936,19 @@ public class MapBuilder implements Listener
 					if(obj != null && obj instanceof TeamBlockHandler)
 					{
 						((TeamBlockHandler)obj).onBlockClick(player, t.Team, event.getAction(), event.getClickedBlock(),event.getBlockFace());
+					}
+				}
+			} else if (g != null) {
+				
+				//They made a click with a golem block
+				event.setCancelled(true);
+				List<MetadataValue> vals = player.getMetadata("GolemHandler");
+				if(vals != null && vals.size() == 1)
+				{
+					Object obj = vals.get(0).value();
+					if(obj != null && obj instanceof GolemBlockHandler)
+					{
+						((GolemBlockHandler)obj).onBlockClick(player, g, event.getAction(), event.getClickedBlock());
 					}
 				}
 			}

@@ -12,8 +12,8 @@ import com.gmail.nuclearcat1337.anniPro.main.Lang;
 public enum CustomItem
 {
 	NAVCOMPASS(ChatColor.DARK_PURPLE+"Right click to change target nexus", Material.COMPASS, true, null),
-	KITMAP(ChatColor.AQUA+"Right click to choose a kit",Material.BOOK,true,null),
-	VOTEMAP(ChatColor.AQUA+"Right click to vote for a map",Material.GRASS,true,null),
+	KITMAP(ChatColor.AQUA+"Right click to choose a kit",Material.CHEST,true,null),
+	VOTEMAP(ChatColor.AQUA+"Right click to vote for a map",Material.EMPTY_MAP,true,null),
 	TEAMMAP(ChatColor.AQUA+"Right click to join a team",Material.WOOL,true,null),
 	MAPBUILDER(ChatColor.AQUA+"Right click to open the map builder",Material.DIAMOND_PICKAXE,true,null),
 	BREWINGSHOP(ChatColor.AQUA+"Brewing Shop Helper",Material.BREWING_STAND_ITEM,true, new String[] 
@@ -49,13 +49,13 @@ public enum CustomItem
 							{
 								ChatColor.DARK_PURPLE+"Left click a block to add it as unplaceable",
 								ChatColor.DARK_PURPLE+"Right click a block to remove it as a diamond."
-							});
-							
+							});	
 	
+	//The actual order
 	private String name;
-	private String[] lore;
 	private Material type;
 	private boolean soulBound;
+	private String[] lore;
 
 	CustomItem(String name, Material type, boolean soulBound, String[] lore) 
 	{

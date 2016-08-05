@@ -25,7 +25,6 @@ public class FoodLvlChangeListner implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
 	public void onFoodLevelChange(FoodLevelChangeEvent event){
 		Player p = (Player) event.getEntity();
-		
 		//player gains food
 		if (p.getFoodLevel() < event.getFoodLevel()) {
 			return;

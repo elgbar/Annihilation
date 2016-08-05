@@ -46,6 +46,7 @@ import com.gmail.nuclearcat1337.anniPro.voting.VoteMapManager;
 import com.hcs.Listners.BlockBreakListner;
 import com.hcs.Listners.FoodLvlChangeListner;
 import com.hcs.Listners.TrampleListner;
+import com.hcs.boss.GolemListner;
 
 import net.techcable.npclib.api.NPCMain;
 
@@ -100,6 +101,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		new BlockBreakListner(this);
 		new FoodLvlChangeListner(this);
 		new TrampleListner(this);
+		new GolemListner(this);
 		new KitLoading(this); //No real reason to come last, but I kind of feel since its the heaviest processing power user, it should be last	
 
 	}
