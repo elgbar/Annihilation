@@ -44,88 +44,88 @@ public final class GameMap extends AnniMap implements Listener
 {
 	private RegeneratingBlocks blocks;
 	private List<Loc> diamondLocs;
-	private Map<MapKey,FacingObject> enderFurnaces;
-	private Map<Material,UnplaceableBlock> unplaceableBlocks;
+	private Map<MapKey, FacingObject> enderFurnaces;
+	private Map<Material, UnplaceableBlock> unplaceableBlocks;
 	private int currentphase;
 	private int PhaseTime;
 	private boolean canDamageNexus;
 	private int damageMultiplier;
 	private AutoRestarter restarter = null;
-	
-	public GameMap(String worldName, File mapDirectory)
+
+	public GameMap (String worldName, File mapDirectory)
 	{
-		super(worldName, new File(mapDirectory,"AnniMapConfig.yml"));
-		if(GameVars.getAutoRestart())
-			restarter = new AutoRestarter(AnnihilationMain.getInstance(),GameVars.getPlayersToRestart(),GameVars.getCountdownToRestart());
+		super(worldName, new File(mapDirectory, "AnniMapConfig.yml"));
+		if (GameVars.getAutoRestart())
+			restarter = new AutoRestarter(AnnihilationMain.getInstance(), GameVars.getPlayersToRestart(), GameVars.getCountdownToRestart());
 	}
-	
+
 	@Override
-	protected void loadFromConfig(ConfigurationSection section)
+	protected void loadFromConfig (ConfigurationSection section)
 	{
-		blocks = new RegeneratingBlocks(this.getWorldName(),section.getConfigurationSection("RegeneratingBlocks"));
-		unplaceableBlocks = new EnumMap<Material,UnplaceableBlock>(Material.class);
+		blocks = new RegeneratingBlocks(this.getWorldName(), section.getConfigurationSection("RegeneratingBlocks"));
+		unplaceableBlocks = new EnumMap<Material, UnplaceableBlock>(Material.class);
 		diamondLocs = new ArrayList<Loc>();
-		enderFurnaces = new HashMap<MapKey,FacingObject>();
+		enderFurnaces = new HashMap<MapKey, FacingObject>();
 		this.currentphase = 0;
 		this.canDamageNexus = false;
 		this.damageMultiplier = 1;
-		this.PhaseTime = (int)TimeUnit.SECONDS.convert(10, TimeUnit.MINUTES);
-		if(section != null)
+		this.PhaseTime = (int) TimeUnit.SECONDS.convert(10, TimeUnit.MINUTES);
+		if (section != null)
 		{
-			if(section.isInt("PhaseTime"))
+			if (section.isInt("PhaseTime"))
 				this.PhaseTime = section.getInt("PhaseTime");
 			ConfigurationSection furnaces = section.getConfigurationSection("EnderFurnaces");
-			if(furnaces != null)
+			if (furnaces != null)
 			{
-				for(String key : furnaces.getKeys(false))
+				for (String key : furnaces.getKeys(false))
 				{
 					FacingObject obj = FacingObject.loadFromConfig(furnaces.getConfigurationSection(key));
 					this.addEnderFurnace(obj);
 				}
 			}
 			ConfigurationSection diamonds = section.getConfigurationSection("DiamondLocations");
-			if(diamonds != null)
+			if (diamonds != null)
 			{
-				for(String key : diamonds.getKeys(false))
+				for (String key : diamonds.getKeys(false))
 				{
 					Loc loc = new Loc(diamonds.getConfigurationSection(key));
 					diamondLocs.add(loc);
 				}
 			}
 			ConfigurationSection teams = section.getConfigurationSection("Teams");
-			if(teams != null)
+			if (teams != null)
 			{
-				for(AnniTeam team : AnniTeam.Teams)
+				for (AnniTeam team : AnniTeam.Teams)
 				{
-					ConfigurationSection teamSection = teams.getConfigurationSection(team.getName()+" Team");
-					if(teamSection != null)
+					ConfigurationSection teamSection = teams.getConfigurationSection(team.getName() + " Team");
+					if (teamSection != null)
 					{
 						ConfigurationSection nexSec = teamSection.getConfigurationSection("Nexus.Location");
-						if(nexSec == null)
+						if (nexSec == null)
 							team.getNexus().setLocation(null);
 						else
 						{
 							Loc nexusloc = new Loc(teamSection.getConfigurationSection("Nexus.Location"));
 							team.getNexus().setLocation(nexusloc);
 						}
-						
+
 						ConfigurationSection specSec = teamSection.getConfigurationSection("SpectatorLocation");
-						if(specSec == null)
-							team.setSpectatorLocation((Loc)null);
+						if (specSec == null)
+							team.setSpectatorLocation((Loc) null);
 						else
 						{
 							Loc spectatorspawn = new Loc(teamSection.getConfigurationSection("SpectatorLocation"));
 							team.setSpectatorLocation(spectatorspawn);
 						}
-						
+
 						team.clearSpawns();
 						ConfigurationSection spawns = teamSection.getConfigurationSection("Spawns");
-						if(spawns != null)
+						if (spawns != null)
 						{
-							for(String key : spawns.getKeys(false))
+							for (String key : spawns.getKeys(false))
 							{
 								Loc loc = new Loc(spawns.getConfigurationSection(key));
-								if(loc != null)
+								if (loc != null)
 								{
 									team.addSpawn(loc.toLocation());
 								}
@@ -135,26 +135,28 @@ public final class GameMap extends AnniMap implements Listener
 				}
 			}
 			ConfigurationSection unplaceableSec = section.getConfigurationSection("UnplaceableBlocks");
-			if(unplaceableSec != null)
+			if (unplaceableSec != null)
 			{
-				for(String key : unplaceableSec.getKeys(false))
+				for (String key : unplaceableSec.getKeys(false))
 				{
 					ConfigurationSection matSec = unplaceableSec.getConfigurationSection(key);
 					Material mat = Material.valueOf(matSec.getString("Material"));
 					List<Byte> b = matSec.getByteList("Values");
-					if(b != null)
-						for(Byte bt : b)
-							addUnplaceableBlock(mat,bt);
+					if (b != null)
+						for (Byte bt : b)
+							addUnplaceableBlock(mat, bt);
 				}
 			}
 			ConfigurationSection golemBossSec = section.getConfigurationSection("GolemBosses");
-			if(golemBossSec != null) {
-				for(Golem golem : Golem.Golems){
+			if (golemBossSec != null)
+			{
+				for (Golem golem : Golem.Golems)
+				{
 					ConfigurationSection spawns = golemBossSec.getConfigurationSection(golem.getName());
-					if(spawns != null)
+					if (spawns != null)
 					{
 						Loc loc = new Loc(spawns);
-						if(loc != null)
+						if (loc != null)
 						{
 							golem.setSpawn(loc);
 						}
@@ -163,17 +165,17 @@ public final class GameMap extends AnniMap implements Listener
 			}
 		}
 	}
-	
-	public void unLoadMap()
+
+	public void unLoadMap ()
 	{
 		World tpworld = Game.LobbyMap != null ? Game.LobbyMap.getWorld() : null;
-		if(tpworld == null)
+		if (tpworld == null)
 			tpworld = Bukkit.getWorlds().size() > 0 ? Bukkit.getWorlds().get(0) : null;
-		for(Player p : Bukkit.getOnlinePlayers())
+		for (Player p : Bukkit.getOnlinePlayers())
 		{
-			if(p.getWorld().getName().equals(this.getWorldName()))
+			if (p.getWorld().getName().equals(this.getWorldName()))
 			{
-				if(tpworld != null)
+				if (tpworld != null)
 					p.teleport(tpworld.getSpawnLocation());
 				else
 					p.kickPlayer("Unloading the world and we dont want you to get trapped or glitched!");
@@ -182,149 +184,150 @@ public final class GameMap extends AnniMap implements Listener
 		this.unregisterListeners();
 
 		boolean b = Bukkit.unloadWorld(super.getWorldName(), false);
-        Bukkit.getLogger().info("[Annihilation] "+super.getNiceWorldName()+" was unloaded successfully: "+b);
+		Bukkit.getLogger().info("[Annihilation] " + super.getNiceWorldName() + " was unloaded successfully: " + b);
 	}
-	
-	public void backUpWorld()
+
+	public void backUpWorld ()
 	{
 		super.getWorld().save();
 
 	}
-	
-	public void backupConfig()
+
+	public void backupConfig ()
 	{
 		super.saveToConfig();
 	}
 
 	@Override
-	protected void saveToConfig(ConfigurationSection section)
+	protected void saveToConfig (ConfigurationSection section)
 	{
-		if(section != null)
+		if (section != null)
 		{
 			blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
 			section.set("PhaseTime", this.PhaseTime);
 			int counter = 1;
 			ConfigurationSection enderFurnaces = section.createSection("EnderFurnaces");
-			for(FacingObject obj : this.enderFurnaces.values())
+			for (FacingObject obj : this.enderFurnaces.values())
 			{
-				obj.saveToConfig(enderFurnaces.createSection(""+counter	));
+				obj.saveToConfig(enderFurnaces.createSection("" + counter));
 				counter++;
 			}
-			counter=1;
+			counter = 1;
 			ConfigurationSection diamonds = section.createSection("DiamondLocations");
-			for(Loc loc : this.diamondLocs)
+			for (Loc loc : this.diamondLocs)
 			{
-				loc.saveToConfig(diamonds.createSection(""+counter));
+				loc.saveToConfig(diamonds.createSection("" + counter));
 				counter++;
 			}
-			counter=1;
+			counter = 1;
 			blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
 			ConfigurationSection teams = section.createSection("Teams");
-			for(AnniTeam team : AnniTeam.Teams)
+			for (AnniTeam team : AnniTeam.Teams)
 			{
-				ConfigurationSection teamSection = teams.createSection(team.getName()+" Team");
-				
+				ConfigurationSection teamSection = teams.createSection(team.getName() + " Team");
+
 				Loc nexusLoc = team.getNexus().getLocation();
-				if(nexusLoc != null)
+				if (nexusLoc != null)
 					nexusLoc.saveToConfig(teamSection.createSection("Nexus.Location"));
-				
+
 				Loc spectatorspawn = team.getSpectatorLocation();
-				if(spectatorspawn != null)
+				if (spectatorspawn != null)
 					spectatorspawn.saveToConfig(teamSection.createSection("SpectatorLocation"));
-				
+
 				ConfigurationSection spawnSection = teamSection.createSection("Spawns");
 				List<Loc> spawns = team.getSpawnList();
-				if(spawns != null && !spawns.isEmpty())
+				if (spawns != null && !spawns.isEmpty())
 				{
-					for(int x = 0; x < spawns.size(); x++)
+					for (int x = 0; x < spawns.size(); x++)
 					{
-						spawns.get(x).saveToConfig(spawnSection.createSection(x+""));
+						spawns.get(x).saveToConfig(spawnSection.createSection(x + ""));
 					}
 				}
 			}
 			ConfigurationSection unplaceableSec = section.createSection("UnplaceableBlocks");
-			for(Entry<Material,UnplaceableBlock> entry : this.unplaceableBlocks.entrySet())
+			for (Entry<Material, UnplaceableBlock> entry : this.unplaceableBlocks.entrySet())
 			{
 				ConfigurationSection matSec = unplaceableSec.createSection(entry.getKey().toString());
 				matSec.set("Material", entry.getKey().toString());
 				matSec.set("Values", entry.getValue().getValues());
 			}
-			
+
 			ConfigurationSection golemBossSec = section.createSection("GolemBosses");
-			for(Golem golem : Golem.Golems){
+			for (Golem golem : Golem.Golems)
+			{
 				if (golem.getSpawn() != null)
 					golem.getSpawn().saveToConfig(golemBossSec.createSection(golem.getName()));
 			}
 		}
-		
+
 	}
-	
-	public boolean addUnplaceableBlock(Material mat, byte b)
+
+	public boolean addUnplaceableBlock (Material mat, byte b)
 	{
 		UnplaceableBlock block = unplaceableBlocks.get(mat);
-		if(block == null)
+		if (block == null)
 		{
 			block = new UnplaceableBlock();
 			unplaceableBlocks.put(mat, block);
 		}
 		return block.addData(b);
 	}
-	
-	public boolean removeUnplaceableBlock(Material mat, byte b)
+
+	public boolean removeUnplaceableBlock (Material mat, byte b)
 	{
 		UnplaceableBlock block = unplaceableBlocks.get(mat);
-		if(block == null)
+		if (block == null)
 		{
 			block = new UnplaceableBlock();
 			unplaceableBlocks.put(mat, block);
 		}
 		return block.removeData(b);
 	}
-	
+
 	@Override
-	public void registerListeners(Plugin plugin)
+	public void registerListeners (Plugin plugin)
 	{
 		super.registerListeners(plugin);
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 		blocks.registerListeners(plugin);
 	}
-	
+
 	@Override
-	public void unregisterListeners()
+	public void unregisterListeners ()
 	{
 		super.unregisterListeners();
 		HandlerList.unregisterAll(this);
 		blocks.unregisterListeners();
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void blockPlaceCheck(BlockPlaceEvent event)
+	public void blockPlaceCheck (BlockPlaceEvent event)
 	{
-		if(event.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
 			Block b = event.getBlock();
 			UnplaceableBlock block = this.unplaceableBlocks.get(b.getType());
-			if(block != null)
+			if (block != null)
 			{
-				if(block.isData((byte)-1) || block.isData(b.getData()))
+				if (block.isData((byte) -1) || block.isData(b.getData()))
 					event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void signClickCheck(PlayerInteractEvent event)
+	public void signClickCheck (PlayerInteractEvent event)
 	{
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK)
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
 			Block b = event.getClickedBlock();
-			if(b != null)
+			if (b != null)
 			{
-				if(b.getType() == Material.FURNACE || b.getType() == Material.BURNING_FURNACE)
+				if (b.getType() == Material.FURNACE || b.getType() == Material.BURNING_FURNACE)
 				{
 					MapKey key = MapKey.getKey(b.getLocation());
-					if(this.enderFurnaces.containsKey(key))
+					if (this.enderFurnaces.containsKey(key))
 					{
 						event.setCancelled(true);
 					}
@@ -332,123 +335,122 @@ public final class GameMap extends AnniMap implements Listener
 			}
 		}
 	}
-	
-	@EventHandler(priority = EventPriority.LOW,ignoreCancelled = true)
-	public void signBreakCheck(BlockBreakEvent event)
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void signBreakCheck (BlockBreakEvent event)
 	{
-		if(event.getBlock() != null && event.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (event.getBlock() != null && event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
-			if(event.getBlock().getType() == Material.FURNACE || event.getBlock().getType() == Material.BURNING_FURNACE)
+			if (event.getBlock().getType() == Material.FURNACE || event.getBlock().getType() == Material.BURNING_FURNACE)
 			{
 				MapKey key = MapKey.getKey(event.getBlock().getLocation());
-				if(this.enderFurnaces.containsKey(key))
+				if (this.enderFurnaces.containsKey(key))
 					event.setCancelled(true);
 			}
 		}
 	}
-	
-	public int getPhaseTime()
+
+	public int getPhaseTime ()
 	{
 		return this.PhaseTime;
 	}
-	
-	public boolean setPhaseTime(int time)
+
+	public boolean setPhaseTime (int time)
 	{
-		if(time > 0)
+		if (time > 0)
 			this.PhaseTime = time;
 		return time > 0;
 	}
-	
-	public int getDamageMultiplier()
+
+	public int getDamageMultiplier ()
 	{
 		return this.damageMultiplier;
 	}
-	
-	public boolean setDamageMultiplier(int multiplier)
+
+	public boolean setDamageMultiplier (int multiplier)
 	{
-		if(multiplier > 0)
+		if (multiplier > 0)
 			this.damageMultiplier = multiplier;
 		return multiplier > 0;
 	}
-	
-	public int getCurrentPhase()
+
+	public int getCurrentPhase ()
 	{
 		return currentphase;
 	}
-	
-	public boolean setPhase(int phase)
+
+	public boolean setPhase (int phase)
 	{
-		if(phase > -1)
+		if (phase > -1)
 			this.currentphase = phase;
-		if(restarter != null)
+		if (restarter != null)
 			restarter.check();
 		return phase > -1;
 	}
-	
-	public boolean canDamageNexus()
+
+	public boolean canDamageNexus ()
 	{
 		return this.canDamageNexus;
 	}
-	
-	public void setCanDamageNexus(boolean canDamage)
+
+	public void setCanDamageNexus (boolean canDamage)
 	{
 		this.canDamageNexus = canDamage;
 	}
-	
-	public RegeneratingBlocks getRegeneratingBlocks()
+
+	public RegeneratingBlocks getRegeneratingBlocks ()
 	{
 		return blocks;
 	}
-	
-	public List<Loc> getDiamondLocations()
+
+	public List<Loc> getDiamondLocations ()
 	{
 		return Collections.unmodifiableList(diamondLocs);
 	}
-	
-	public Map<MapKey,FacingObject> getEnderFurnaces()
+
+	public Map<MapKey, FacingObject> getEnderFurnaces ()
 	{
 		return Collections.unmodifiableMap(enderFurnaces);
 	}
-	
-	public void addEnderFurnace(Loc loc, BlockFace direction)
+
+	public void addEnderFurnace (Loc loc, BlockFace direction)
 	{
-		this.addEnderFurnace(new FacingObject(direction,loc));
+		this.addEnderFurnace(new FacingObject(direction, loc));
 	}
-	
-	public void addEnderFurnace(FacingObject furnace)
+
+	public void addEnderFurnace (FacingObject furnace)
 	{
 		MapKey key = MapKey.getKey(furnace.getLocation());
-		if(!enderFurnaces.containsKey(key))
+		if (!enderFurnaces.containsKey(key))
 		{
 			try
 			{
 				Block block = furnace.getLocation().toLocation().getBlock();
-				if(block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE)
+				if (block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE)
 					block.setType(Material.BURNING_FURNACE);
-				
+
 				Furnace f = new Furnace(Material.BURNING_FURNACE);
 				f.setFacingDirection(furnace.getFacingDirection());
 				BlockState s = block.getState();
 				s.setData(f);
 				s.update(true);
-			}
-			catch(Exception e)
+			} catch (Exception e)
 			{
-				
+
 			}
 			enderFurnaces.put(key, furnace);
 		}
 	}
-	
-	public boolean removeEnderFurnace(Loc loc)
+
+	public boolean removeEnderFurnace (Loc loc)
 	{
 		return removeEnderFurnace(loc.toLocation());
 	}
-	
-	public boolean removeEnderFurnace(Location loc)
+
+	public boolean removeEnderFurnace (Location loc)
 	{
 		MapKey key = MapKey.getKey(loc);
-		if(enderFurnaces.containsKey(key))
+		if (enderFurnaces.containsKey(key))
 		{
 			enderFurnaces.remove(key);
 			loc.getWorld().getBlockAt(loc).setType(Material.AIR);
@@ -456,18 +458,18 @@ public final class GameMap extends AnniMap implements Listener
 		}
 		return false;
 	}
-	
-	public void addDiamond(Loc loc)
+
+	public void addDiamond (Loc loc)
 	{
 		diamondLocs.add(loc);
 	}
-	
-	public boolean removeDiamond(Loc loc)
+
+	public boolean removeDiamond (Loc loc)
 	{
-		for(int x = 0; x < diamondLocs.size(); x++)
+		for (int x = 0; x < diamondLocs.size(); x++)
 		{
 			Loc l = diamondLocs.get(x);
-			if(l.equals(loc))
+			if (l.equals(loc))
 			{
 				diamondLocs.remove(x);
 				return true;
@@ -475,31 +477,32 @@ public final class GameMap extends AnniMap implements Listener
 		}
 		return false;
 	}
-	
+
 	private class UnplaceableBlock
 	{
 		private ArrayList<Byte> dataVals;
-		public UnplaceableBlock()
+
+		public UnplaceableBlock ()
 		{
 			dataVals = new ArrayList<Byte>();
 		}
-		
-		public boolean addData(Byte b)
+
+		public boolean addData (Byte b)
 		{
 			return dataVals.add(b);
 		}
-		
-		public boolean removeData(Byte b)
+
+		public boolean removeData (Byte b)
 		{
 			return dataVals.remove(b);
 		}
-		
-		public boolean isData(Byte b)
+
+		public boolean isData (Byte b)
 		{
 			return dataVals.contains(b);
 		}
-		
-		public List<Byte> getValues()
+
+		public List<Byte> getValues ()
 		{
 			return Collections.unmodifiableList(dataVals);
 		}
