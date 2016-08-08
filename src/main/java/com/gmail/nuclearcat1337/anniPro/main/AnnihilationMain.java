@@ -43,11 +43,11 @@ import com.gmail.nuclearcat1337.anniPro.voting.AutoStarter;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
 import com.gmail.nuclearcat1337.anniPro.voting.ScoreboardAPI;
 import com.gmail.nuclearcat1337.anniPro.voting.VoteMapManager;
-import com.hcs.Listners.BlockBreakListner;
-import com.hcs.Listners.FoodLvlChangeListner;
-import com.hcs.Listners.LaunchPadListner;
-import com.hcs.Listners.TrampleListner;
-import com.hcs.boss.GolemListner;
+import com.hcs.anniPro.Listners.BlockBreakListner;
+import com.hcs.anniPro.Listners.FoodLvlChangeListner;
+import com.hcs.anniPro.Listners.LaunchPadListner;
+import com.hcs.anniPro.Listners.TrampleListner;
+import com.hcs.anniPro.boss.GolemListner;
 
 import net.techcable.npclib.api.NPCMain;
 
@@ -422,8 +422,17 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		File lobbyFile = new File(this.getDataFolder(),"AnniLobbyConfig.yml");
 		if(lobbyFile.exists())
 		{
-			Game.LobbyMap = new LobbyMap(lobbyFile);
-			Game.LobbyMap.registerListeners(this);
+			
+			try
+			{
+				Game.LobbyMap = new LobbyMap(lobbyFile);
+				Game.LobbyMap.registerListeners(this);
+			} catch (NullPointerException e)
+			{
+				System.out.println("Invalid lobbymap! Please change it in AnniLobbyConfig.yml");
+				e.printStackTrace();
+				this.setEnabled(false);
+			}
 		}
 	}
 }

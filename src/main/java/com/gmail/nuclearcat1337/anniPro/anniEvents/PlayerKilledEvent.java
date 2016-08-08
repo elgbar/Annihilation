@@ -7,6 +7,8 @@ import java.util.List;
 import org.bukkit.Location;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
+import com.gmail.nuclearcat1337.anniPro.utils.Loc;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -44,7 +46,8 @@ public final class PlayerKilledEvent extends Event
 			else
 			{
 				Location killerLoc = killer.getPlayer().getLocation();
-				if(killer.getTeam().getNexus().getLocation() != null && killerLoc.getWorld().getName().equalsIgnoreCase(killer.getTeam().getNexus().getLocation().getWorld()))
+				Loc nexusLoc = killer.getTeam().getNexus().getLocation();
+				if(nexusLoc != null && killerLoc.getWorld().getName().equalsIgnoreCase(killer.getTeam().getNexus().getLocation().getWorld()))
 				{
 					if(killer.getTeam().getNexus().getLocation().toLocation().distanceSquared(killerLoc) <= 20*20)
 						att.add(KillAttribute.NEXUSDEFENSE);

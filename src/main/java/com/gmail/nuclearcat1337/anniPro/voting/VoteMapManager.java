@@ -43,50 +43,51 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 
 public class VoteMapManager
 {
-	private static Map<String,String> voteMap;
+	private static Map<String, String> voteMap;
 	private static String[] maps = null;
 	private static Scoreboard board;
 	private static Objective obj;
 	private static ItemMenu menu;
-	
+
 	public static void registerListener(JavaPlugin plugin)
 	{
-		voteMap = new HashMap<String,String>();
+		voteMap = new HashMap<String, String>();
 		board = Bukkit.getScoreboardManager().getNewScoreboard();
 		obj = board.registerNewObjective("Voting", "CAT CERASET");
-		
+
 		Loader l = new Loader();
 		plugin.getCommand("Vote").setExecutor(l);
 		Bukkit.getPluginManager().registerEvents(l, plugin);
 	}
-	
+
 	private static class Loader implements CommandExecutor, Listener
-	{	
+	{
 		@EventHandler
 		public void clearPlayers(GameStartEvent event)
 		{
 			voteMap.clear();
 		}
-		
+
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void playerCheck(PlayerJoinEvent event)
 		{
 			final AnniPlayer p = AnniPlayer.getPlayer(event.getPlayer().getUniqueId());
-			if(p != null && !Game.isGameRunning())
+			if (p != null && !Game.isGameRunning())
 				event.getPlayer().setScoreboard(board);
 		}
-		
-		@EventHandler(priority=EventPriority.HIGH)
+
+		@EventHandler(priority = EventPriority.HIGH)
 		public void voteGUIcheck(PlayerInteractEvent event)
 		{
-			if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
 			{
 				final Player player = event.getPlayer();
-				if(KitUtils.itemHasName(player.getItemInHand(), CustomItem.VOTEMAP.getName()))
+				if (KitUtils.itemHasName(player.getItemInHand(), CustomItem.VOTEMAP.getName()))
 				{
-					if(menu != null)
+					if (menu != null)
 						menu.open(player);
-					else player.sendMessage(ChatColor.RED+"There are no maps for voting!");
+					else
+						player.sendMessage(ChatColor.RED + "There are no maps for voting!");
 					event.setCancelled(true);
 				}
 			}
@@ -95,82 +96,95 @@ public class VoteMapManager
 		@Override
 		public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 		{
-			if(!Game.isGameRunning())
+			if (!Game.isGameRunning())
 			{
-				if(sender instanceof Player)
+				if (sender instanceof Player)
 				{
-					if(maps != null)
+					if (maps != null)
 					{
-						if(args.length > 0)
+						if (args.length > 0)
 						{
 							String str = args[0];
 							String match = getMatch(str);
-							if(match != null)
+							if (match != null)
 							{
-								String old = voteForMap(sender.getName(),match);
-								if(old == null)
-									sender.sendMessage(ChatColor.DARK_PURPLE+"You voted for "+match);
+								String old = voteForMap(sender.getName(), match);
+								if (old == null)
+									sender.sendMessage(ChatColor.DARK_PURPLE + "You voted for " + match);
 								else
-									sender.sendMessage(ChatColor.DARK_PURPLE+"You changed your vote from "+ChatColor.GOLD+old+ChatColor.DARK_PURPLE+" to "+ChatColor.GOLD+match);
-							}
-							else sender.sendMessage(ChatColor.GOLD+str+ChatColor.RED+" is not a valid map.");	
+									sender.sendMessage(ChatColor.DARK_PURPLE + "You changed your vote from " + ChatColor.GOLD + old
+											+ ChatColor.DARK_PURPLE + " to " + ChatColor.GOLD + match);
+							} else
+								sender.sendMessage(ChatColor.GOLD + str + ChatColor.RED + " is not a valid map.");
 						}
-					}
-					else sender.sendMessage(ChatColor.RED+"There are no maps for voting!");
+					} else
+						sender.sendMessage(ChatColor.RED + "There are no maps for voting!");
 				}
 			}
 			return true;
 		}
 	}
-	
+
 	public static void beginVoting()
 	{
-		obj.setDisplayName(ChatColor.GREEN+"/vote [map name] to vote");
+		obj.setDisplayName(ChatColor.GREEN + "/vote [map name] to vote");
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-		
-		if(maps != null)
+
+		if (maps != null)
 		{
-			for(String str : maps)
+			for (String str : maps)
 			{
 				board.resetScores(str);
 			}
 		}
-		
+
 		maps = getWorlds();
-		if(maps != null)
+		if (maps != null)
 		{
-			for(String str : maps)
+			for (String str : maps)
 			{
 				Score score = obj.getScore(str);
 				score.setScore(0);
 			}
 		}
-		
-		if(maps != null)
+
+		if (maps != null)
 		{
-			menu = new ItemMenu("Vote for a Map",Size.fit(maps.length));
+			menu = new ItemMenu("Vote for a Map", Size.fit(maps.length));
 			int x = 0;
-			for(final String str : maps)
+			for (final String str : maps)
 			{
-				ActionMenuItem item = new ActionMenuItem(ChatColor.GOLD+str, new ItemClickHandler(){
+				ActionMenuItem item = new ActionMenuItem(ChatColor.GOLD + str, new ItemClickHandler()
+				{
 					@Override
 					public void onItemClick(ItemClickEvent event)
 					{
-						if (event.getClickType() == ClickType.SHIFT_LEFT || event.getClickType() == ClickType.SHIFT_RIGHT) {
-							event.getPlayer().performCommand("tellraw @p [\"\",{\"text\":\"Click me to preview "+str+"\",\"color\":\"dark_purple\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://imgur.com/\"}}]");
-						} else {
-							event.getPlayer().performCommand("vote "+str);
+						Player p = event.getPlayer();
+						if (event.getClickType() == ClickType.SHIFT_LEFT || event.getClickType() == ClickType.SHIFT_RIGHT)
+						{
+							Boolean wasOp = p.isOp();
+							if (!wasOp)
+								p.setOp(true);
+							event.getPlayer().performCommand("tellraw @p [\"\",{\"text\":\"Click me to preview " + str
+									+ "\",\"color\":\"dark_purple\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://imgur.com/\"}}]");
+							if (!wasOp)
+								p.setOp(false);
+						} else
+						{
+							event.getPlayer().performCommand("vote " + str);
 						}
 						event.setWillClose(true);
-					}}, new ItemStack(Material.MAP), new String[]{ChatColor.DARK_PURPLE + "Click to vote",ChatColor.DARK_PURPLE + "Shift click to preview map"});
+					}
+				}, new ItemStack(Material.MAP),
+						new String[] { ChatColor.DARK_PURPLE + "Click to vote", ChatColor.DARK_PURPLE + "Shift click to preview map" });
 				menu.setItem(x, item);
 				x++;
 			}
 		}
-		
-		if(!Game.isGameRunning())
+
+		if (!Game.isGameRunning())
 		{
-			for(Player pl : Bukkit.getOnlinePlayers())
+			for (Player pl : Bukkit.getOnlinePlayers())
 				pl.setScoreboard(board);
 		}
 	}
@@ -178,13 +192,13 @@ public class VoteMapManager
 	public static String getWinningMap()
 	{
 		assert maps != null;
-		
+
 		int score = 0;
 		String winner = null;
-		for(String entry : maps)
+		for (String entry : maps)
 		{
 			Score s = obj.getScore(entry);
-			if(s.getScore() >= score)
+			if (s.getScore() >= score)
 			{
 				score = s.getScore();
 				winner = entry;
@@ -192,13 +206,13 @@ public class VoteMapManager
 		}
 		return winner;
 	}
-	
+
 	private static String[] getWorlds()
 	{
 		File maps = new File(AnnihilationMain.getInstance().getDataFolder().getAbsolutePath(), "Worlds");
-		if(!maps.exists())
+		if (!maps.exists())
 			maps.mkdirs();
-		
+
 		File[] files = maps.listFiles(new FilenameFilter()
 		{
 			public boolean accept(File file, String name)
@@ -206,52 +220,51 @@ public class VoteMapManager
 				return file.isDirectory();
 			}
 		});
-		
+
 		if ((files != null) && (files.length > 0))
 		{
-			if(files.length <= GameVars.getMaxMapsForVoting())
+			if (files.length <= GameVars.getMaxMapsForVoting())
 			{
 				String[] str = new String[files.length];
-				for(int x = 0; x < str.length; x++)
+				for (int x = 0; x < str.length; x++)
 					str[x] = files[x].getName();
 				return str;
-			}
-			else
+			} else
 			{
 				ArrayList<String> list = new ArrayList<String>();
-				for(File f : files)
+				for (File f : files)
 					list.add(f.getName());
 				String[] str = new String[GameVars.getMaxMapsForVoting()];
 				Random rand = new Random(System.currentTimeMillis());
-				for(int x =0; x < GameVars.getMaxMapsForVoting(); x++)
+				for (int x = 0; x < GameVars.getMaxMapsForVoting(); x++)
 					str[x] = list.remove(rand.nextInt(list.size()));
 				return str;
 			}
-			
+
 		}
 		return null;
 	}
-	
+
 	private static String getMatch(String str)
 	{
-		for(String s : maps)
+		for (String s : maps)
 		{
-			if(s.equalsIgnoreCase(str))
+			if (s.equalsIgnoreCase(str))
 				return s;
 		}
 		return null;
 	}
-	
-	private static String voteForMap(String player,String map)
+
+	private static String voteForMap(String player, String map)
 	{
 		String old = voteMap.put(player, map);
-		if(old != null)
+		if (old != null)
 		{
 			Score s = obj.getScore(old);
-			s.setScore(s.getScore()-1);
+			s.setScore(s.getScore() - 1);
 		}
 		Score s = obj.getScore(map);
-		s.setScore(s.getScore()+1);
+		s.setScore(s.getScore() + 1);
 		return old;
 	}
 

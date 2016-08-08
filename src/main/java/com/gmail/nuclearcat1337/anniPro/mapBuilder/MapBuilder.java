@@ -52,8 +52,8 @@ import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.mapBuilder.TeamBlock.TeamBlockHandler;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
-import com.hcs.boss.Golem;
-import com.hcs.boss.Golem.GolemBlockHandler;
+import com.hcs.anniPro.boss.Golem;
+import com.hcs.anniPro.boss.Golem.GolemBlockHandler;
 
 public class MapBuilder implements Listener
 {
@@ -440,7 +440,7 @@ public class MapBuilder implements Listener
 					ItemStack golemBlock = new ItemStack(Material.WOOL, 1, golem.getWoolColor().getData());
 					ItemMeta meta = golemBlock.getItemMeta();
 
-					String loreTxt = ChatColor.DARK_PURPLE + "Left click to set the " + golem.getColor() + golem.getName() + " Golem"
+					String loreTxt = ChatColor.DARK_PURPLE + "Left click to set the " + golem.getColor() + golem.getInternalName() + " Golem"
 							+ ChatColor.DARK_PURPLE + " to your location.";
 					meta.setLore(Arrays.asList(loreTxt));
 					meta.setDisplayName(golem.getDisplayName());
@@ -455,7 +455,7 @@ public class MapBuilder implements Listener
 						if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR)
 						{
 							golem.setSpawn(player.getLocation());
-							player.sendMessage(ChatColor.LIGHT_PURPLE + "The " + golem.getColor() + golem.getName() + " golem "
+							player.sendMessage(ChatColor.LIGHT_PURPLE + "The " + golem.getColor() + golem.getInternalName() + " golem "
 									+ ChatColor.LIGHT_PURPLE + "spawn has been set to "
 									+ getReadableLocation(player.getLocation(), ChatColor.GOLD, ChatColor.LIGHT_PURPLE, false));
 						}

@@ -23,7 +23,7 @@ import com.gmail.nuclearcat1337.anniPro.main.Lang;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 import com.gmail.nuclearcat1337.anniPro.utils.ShopMenu;
 import com.gmail.nuclearcat1337.anniPro.voting.ScoreboardAPI;
-import com.hcs.boss.Golem;
+import com.hcs.anniPro.boss.Golem;
 
 public class StandardPhaseHandler implements Runnable
 {
@@ -57,7 +57,7 @@ public class StandardPhaseHandler implements Runnable
 		}
 		sendImage(1);
 	}
-	
+
 	private void sendImage(int x)
 	{
 		ImageMessage m = images.get(x);

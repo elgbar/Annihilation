@@ -38,7 +38,7 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 import com.gmail.nuclearcat1337.anniPro.utils.MapKey;
 import com.gmail.nuclearcat1337.anniPro.voting.AutoRestarter;
-import com.hcs.boss.Golem;
+import com.hcs.anniPro.boss.Golem;
 
 public final class GameMap extends AnniMap implements Listener
 {
@@ -52,7 +52,7 @@ public final class GameMap extends AnniMap implements Listener
 	private int damageMultiplier;
 	private AutoRestarter restarter = null;
 
-	public GameMap (String worldName, File mapDirectory)
+	public GameMap(String worldName, File mapDirectory)
 	{
 		super(worldName, new File(mapDirectory, "AnniMapConfig.yml"));
 		if (GameVars.getAutoRestart())
@@ -60,7 +60,7 @@ public final class GameMap extends AnniMap implements Listener
 	}
 
 	@Override
-	protected void loadFromConfig (ConfigurationSection section)
+	protected void loadFromConfig(ConfigurationSection section)
 	{
 		blocks = new RegeneratingBlocks(this.getWorldName(), section.getConfigurationSection("RegeneratingBlocks"));
 		unplaceableBlocks = new EnumMap<Material, UnplaceableBlock>(Material.class);
@@ -152,7 +152,10 @@ public final class GameMap extends AnniMap implements Listener
 			{
 				for (Golem golem : Golem.Golems)
 				{
-					ConfigurationSection spawns = golemBossSec.getConfigurationSection(golem.getName());
+					ConfigurationSection golemBossUnderSec = golemBossSec.getConfigurationSection(golem.getInternalName());
+
+					golem.setDisplayName(golemBossUnderSec.getString("Name"));
+					ConfigurationSection spawns = golemBossUnderSec.getConfigurationSection("Spawns");
 					if (spawns != null)
 					{
 						Loc loc = new Loc(spawns);
@@ -166,7 +169,7 @@ public final class GameMap extends AnniMap implements Listener
 		}
 	}
 
-	public void unLoadMap ()
+	public void unLoadMap()
 	{
 		World tpworld = Game.LobbyMap != null ? Game.LobbyMap.getWorld() : null;
 		if (tpworld == null)
@@ -187,19 +190,19 @@ public final class GameMap extends AnniMap implements Listener
 		Bukkit.getLogger().info("[Annihilation] " + super.getNiceWorldName() + " was unloaded successfully: " + b);
 	}
 
-	public void backUpWorld ()
+	public void backUpWorld()
 	{
 		super.getWorld().save();
 
 	}
 
-	public void backupConfig ()
+	public void backupConfig()
 	{
 		super.saveToConfig();
 	}
 
 	@Override
-	protected void saveToConfig (ConfigurationSection section)
+	protected void saveToConfig(ConfigurationSection section)
 	{
 		if (section != null)
 		{
@@ -255,14 +258,17 @@ public final class GameMap extends AnniMap implements Listener
 			ConfigurationSection golemBossSec = section.createSection("GolemBosses");
 			for (Golem golem : Golem.Golems)
 			{
+				ConfigurationSection golemBossUnderSec = golemBossSec.createSection(golem.getInternalName());
+				if (golem.getDisplayName() != null)
+					golemBossUnderSec.set("Name", golem.getDisplayName());
 				if (golem.getSpawn() != null)
-					golem.getSpawn().saveToConfig(golemBossSec.createSection(golem.getName()));
+					golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
 			}
 		}
 
 	}
 
-	public boolean addUnplaceableBlock (Material mat, byte b)
+	public boolean addUnplaceableBlock(Material mat, byte b)
 	{
 		UnplaceableBlock block = unplaceableBlocks.get(mat);
 		if (block == null)
@@ -273,7 +279,7 @@ public final class GameMap extends AnniMap implements Listener
 		return block.addData(b);
 	}
 
-	public boolean removeUnplaceableBlock (Material mat, byte b)
+	public boolean removeUnplaceableBlock(Material mat, byte b)
 	{
 		UnplaceableBlock block = unplaceableBlocks.get(mat);
 		if (block == null)
@@ -285,7 +291,7 @@ public final class GameMap extends AnniMap implements Listener
 	}
 
 	@Override
-	public void registerListeners (Plugin plugin)
+	public void registerListeners(Plugin plugin)
 	{
 		super.registerListeners(plugin);
 		Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -293,7 +299,7 @@ public final class GameMap extends AnniMap implements Listener
 	}
 
 	@Override
-	public void unregisterListeners ()
+	public void unregisterListeners()
 	{
 		super.unregisterListeners();
 		HandlerList.unregisterAll(this);
@@ -302,7 +308,7 @@ public final class GameMap extends AnniMap implements Listener
 
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void blockPlaceCheck (BlockPlaceEvent event)
+	public void blockPlaceCheck(BlockPlaceEvent event)
 	{
 		if (event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
@@ -317,7 +323,7 @@ public final class GameMap extends AnniMap implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void signClickCheck (PlayerInteractEvent event)
+	public void signClickCheck(PlayerInteractEvent event)
 	{
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
@@ -337,7 +343,7 @@ public final class GameMap extends AnniMap implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void signBreakCheck (BlockBreakEvent event)
+	public void signBreakCheck(BlockBreakEvent event)
 	{
 		if (event.getBlock() != null && event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
@@ -350,36 +356,36 @@ public final class GameMap extends AnniMap implements Listener
 		}
 	}
 
-	public int getPhaseTime ()
+	public int getPhaseTime()
 	{
 		return this.PhaseTime;
 	}
 
-	public boolean setPhaseTime (int time)
+	public boolean setPhaseTime(int time)
 	{
 		if (time > 0)
 			this.PhaseTime = time;
 		return time > 0;
 	}
 
-	public int getDamageMultiplier ()
+	public int getDamageMultiplier()
 	{
 		return this.damageMultiplier;
 	}
 
-	public boolean setDamageMultiplier (int multiplier)
+	public boolean setDamageMultiplier(int multiplier)
 	{
 		if (multiplier > 0)
 			this.damageMultiplier = multiplier;
 		return multiplier > 0;
 	}
 
-	public int getCurrentPhase ()
+	public int getCurrentPhase()
 	{
 		return currentphase;
 	}
 
-	public boolean setPhase (int phase)
+	public boolean setPhase(int phase)
 	{
 		if (phase > -1)
 			this.currentphase = phase;
@@ -388,37 +394,37 @@ public final class GameMap extends AnniMap implements Listener
 		return phase > -1;
 	}
 
-	public boolean canDamageNexus ()
+	public boolean canDamageNexus()
 	{
 		return this.canDamageNexus;
 	}
 
-	public void setCanDamageNexus (boolean canDamage)
+	public void setCanDamageNexus(boolean canDamage)
 	{
 		this.canDamageNexus = canDamage;
 	}
 
-	public RegeneratingBlocks getRegeneratingBlocks ()
+	public RegeneratingBlocks getRegeneratingBlocks()
 	{
 		return blocks;
 	}
 
-	public List<Loc> getDiamondLocations ()
+	public List<Loc> getDiamondLocations()
 	{
 		return Collections.unmodifiableList(diamondLocs);
 	}
 
-	public Map<MapKey, FacingObject> getEnderFurnaces ()
+	public Map<MapKey, FacingObject> getEnderFurnaces()
 	{
 		return Collections.unmodifiableMap(enderFurnaces);
 	}
 
-	public void addEnderFurnace (Loc loc, BlockFace direction)
+	public void addEnderFurnace(Loc loc, BlockFace direction)
 	{
 		this.addEnderFurnace(new FacingObject(direction, loc));
 	}
 
-	public void addEnderFurnace (FacingObject furnace)
+	public void addEnderFurnace(FacingObject furnace)
 	{
 		MapKey key = MapKey.getKey(furnace.getLocation());
 		if (!enderFurnaces.containsKey(key))
@@ -442,12 +448,12 @@ public final class GameMap extends AnniMap implements Listener
 		}
 	}
 
-	public boolean removeEnderFurnace (Loc loc)
+	public boolean removeEnderFurnace(Loc loc)
 	{
 		return removeEnderFurnace(loc.toLocation());
 	}
 
-	public boolean removeEnderFurnace (Location loc)
+	public boolean removeEnderFurnace(Location loc)
 	{
 		MapKey key = MapKey.getKey(loc);
 		if (enderFurnaces.containsKey(key))
@@ -459,12 +465,12 @@ public final class GameMap extends AnniMap implements Listener
 		return false;
 	}
 
-	public void addDiamond (Loc loc)
+	public void addDiamond(Loc loc)
 	{
 		diamondLocs.add(loc);
 	}
 
-	public boolean removeDiamond (Loc loc)
+	public boolean removeDiamond(Loc loc)
 	{
 		for (int x = 0; x < diamondLocs.size(); x++)
 		{
@@ -482,27 +488,27 @@ public final class GameMap extends AnniMap implements Listener
 	{
 		private ArrayList<Byte> dataVals;
 
-		public UnplaceableBlock ()
+		public UnplaceableBlock()
 		{
 			dataVals = new ArrayList<Byte>();
 		}
 
-		public boolean addData (Byte b)
+		public boolean addData(Byte b)
 		{
 			return dataVals.add(b);
 		}
 
-		public boolean removeData (Byte b)
+		public boolean removeData(Byte b)
 		{
 			return dataVals.remove(b);
 		}
 
-		public boolean isData (Byte b)
+		public boolean isData(Byte b)
 		{
 			return dataVals.contains(b);
 		}
 
-		public List<Byte> getValues ()
+		public List<Byte> getValues()
 		{
 			return Collections.unmodifiableList(dataVals);
 		}

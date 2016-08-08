@@ -141,11 +141,10 @@ public final class RegeneratingBlocks implements Listener
 			final AnniPlayer player = AnniPlayer.getPlayer(p.getUniqueId());
 			if(player != null)
 			{
-				RegeneratingBlock b = getRegeneratingBlock(block.getType(),-1); //switched it up tp try the global data value (-1) first
-				if(b == null)
-					b = getRegeneratingBlock(block.getType(),(Integer)((int)block.getData()));
-				
-				
+				RegeneratingBlock b = getRegeneratingBlock(block.getType(),(int) block.getData());
+				if(b == null){
+					b = getRegeneratingBlock(block.getType(),-1);
+				}
 				if(b != null)
 				{
 					if(b.NaturalBreak)
