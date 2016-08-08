@@ -86,7 +86,7 @@ public class Golem
 
 	public String getDisplayName()
 	{
-		return this.color + this.displayName;
+		return this.displayName;
 	}
 
 	public void setDisplayName(final String newName)

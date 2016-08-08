@@ -88,7 +88,7 @@ public class GolemListner implements Listener
 				if (meta)
 				{
 					golem.setAlive(false);
-					
+
 					Location spawnLoc = golem.getSpawn().toLocation();
 
 					Player killer = event.getEntity().getKiller();
@@ -123,24 +123,41 @@ public class GolemListner implements Listener
 					if (chest != null)
 					{
 						List<ItemStack> l = new ArrayList<ItemStack>();
-						
+
 						List<GolemReward> common = GolemReward.getAllRarity(Rarity.COMMON);
 						List<GolemReward> uncommon = GolemReward.getAllRarity(Rarity.UNCOMMON);
 						List<GolemReward> rare = GolemReward.getAllRarity(Rarity.RARE);
+
+						int z;
+						int z2;
+						// for (int i = 0; i < 2; i++){
+						// z = rand.nextInt(common.size());
+						// l.add(GolemReward.toItemStack(common.get(z)));
+						// }
+
+						// for (int i = 0; i < 2; i++){
+						// z = rand.nextInt(uncommon.size());
+						// l.add(GolemReward.toItemStack(uncommon.get(z)));
+						// }
+
+						z = rand.nextInt(common.size());
+						z2 = rand.nextInt(common.size());
+						l.add(GolemReward.toItemStack(common.get(z)));
+						while (z == z2)
+							z2 = rand.nextInt(common.size());
+						l.add(GolemReward.toItemStack(common.get(z2)));
 						
-						//TODO Give no items twice
-						for (int i = 0; i < 2; i++){
-							int z = rand.nextInt(common.size());
-							l.add(GolemReward.toItemStack(common.get(z)));
-						}
 						
-						for (int i = 0; i < 2; i++){
-							int z = rand.nextInt(uncommon.size());
-							l.add(GolemReward.toItemStack(uncommon.get(z)));
-						}
-						int z = rand.nextInt(rare.size());
+						z = rand.nextInt(uncommon.size());
+						z2 = rand.nextInt(uncommon.size());
+						l.add(GolemReward.toItemStack(uncommon.get(z)));
+						while (z == z2)
+							z2 = rand.nextInt(uncommon.size());
+						l.add(GolemReward.toItemStack(uncommon.get(z2)));
+
+						z = rand.nextInt(rare.size());
 						l.add(GolemReward.toItemStack(rare.get(z)));
-						
+
 						inv.setContents(l.toArray(new ItemStack[l.size()]));
 					}
 					/*
@@ -150,11 +167,12 @@ public class GolemListner implements Listener
 					{
 						public void run()
 						{
+							inv.setContents(null);
 							spawnLoc.getBlock().setType(Material.AIR);
 							if (Game.isGameRunning())
 								Golem.spawnGolem(golem);
 						}
-					}, 20L * 60L * 10L); //10 min
+					}, 20L * 60L * 10L); // 10 min
 				}
 			}
 		}
@@ -164,7 +182,8 @@ public class GolemListner implements Listener
 	public void onGolemDespawn(ItemDespawnEvent event)
 	{
 		Entity ent = event.getEntity();
-		if (ent.getType().equals(EntityType.IRON_GOLEM)){
+		if (ent.getType().equals(EntityType.IRON_GOLEM))
+		{
 			for (Golem golem : Golem.Golems)
 			{
 				Entity golEnt = event.getEntity();
