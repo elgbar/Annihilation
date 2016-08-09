@@ -42,12 +42,12 @@ public final class PlayerParties
 		}
 		return false;
 	}
-	
+
 	public static boolean removeParty(Player p)
 	{
 		return removeParty(p.getUniqueId());
 	}
-	
+
 	public static boolean removeParty(PlayerParty pp)
 	{
 		return removeParty(pp.getTeamLeader().getUniqueId());
@@ -55,12 +55,12 @@ public final class PlayerParties
 
 	public static void clearParties()
 	{
-		//TODO test if this works
+		// TODO test if this works
 		parties = new TreeMap<UUID, PlayerParty>();
 	}
-	
-	
-	public static boolean isPlayerLeader(Player player){
+
+	public static boolean isPlayerLeader(Player player)
+	{
 		UUID u = player.getUniqueId();
 		return parties.containsKey(u);
 	}
@@ -68,6 +68,6 @@ public final class PlayerParties
 	public static void leaderQuit(Player p)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -27,26 +27,24 @@ public final class PlayerParty
 			this.setAnniTeam(team);
 		PlayerParties.addParty(this);
 	}
-	
-	public static boolean isInATeam(Player player){
-		if (player.hasMetadata(META_KEY)){
+
+	public static boolean isInATeam(Player player)
+	{
+		if (player.hasMetadata(META_KEY))
+		{
 			return player.getMetadata(META_KEY).get(0).asBoolean();
 		}
 		return false;
 	}
 
-	/**
-	 * @return the players
-	 */
+	/** @return the players */
 	public List<Player> getPlayers()
 	{
 		return players;
 	}
 
-	/**
-	 * @param player
-	 *            the players to add
-	 */
+	/** @param player
+	 *            the players to add */
 	public void addPlayer(Player player)
 	{
 		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), true));
@@ -67,28 +65,21 @@ public final class PlayerParty
 		return PlayerParties.updateParty(this);
 	}
 
-	/**
-	 * @return the AnniTeam the party is a part of (or will be if the game is
-	 *         not started)
-	 */
+	/** @return the AnniTeam the party is a part of (or will be if the game is not started) */
 	public AnniTeam getAnniTeam()
 	{
 		return team != null ? team : null;
 	}
 
-	/**
-	 * @param team
-	 *            the team to set
-	 */
+	/** @param team
+	 *            the team to set */
 	public boolean setAnniTeam(AnniTeam team)
 	{
 		this.team = team;
 		return PlayerParties.updateParty(this);
 	}
 
-	/**
-	 * @return the teamLeader
-	 */
+	/** @return the teamLeader */
 	public Player getTeamLeader()
 	{
 		return teamLeader;
@@ -96,7 +87,8 @@ public final class PlayerParty
 
 	public boolean isInThisParty(Player player)
 	{
-		for (Player p : this.getPlayers()){
+		for (Player p : this.getPlayers())
+		{
 			if (p.equals(player))
 				return true;
 		}
@@ -106,12 +98,12 @@ public final class PlayerParty
 	public static void playerQuit(Player player)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public static void leaderQuit(Player p)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

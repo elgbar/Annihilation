@@ -22,14 +22,14 @@ public class FoodLvlChangeListner implements Listener
 	private final static int FOOD_MIN = 1; // when to loose hunger
 	private Plugin plugin; // plugin that is used by the metadata
 
-	public FoodLvlChangeListner (Plugin p)
+	public FoodLvlChangeListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 		plugin = p;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onFoodLevelChange (FoodLevelChangeEvent event)
+	public void onFoodLevelChange(FoodLevelChangeEvent event)
 	{
 		Player p = (Player) event.getEntity();
 		// player gains food

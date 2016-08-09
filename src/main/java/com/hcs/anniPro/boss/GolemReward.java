@@ -13,11 +13,9 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 @SuppressWarnings("serial")
-/**
- * Rewards you get after you kill one of the golems
- * @author kh498
- *
- */
+/** Rewards you get after you kill one of the golems
+ * 
+ * @author kh498 */
 public enum GolemReward
 {
 	// Common items
@@ -177,44 +175,39 @@ public enum GolemReward
 		return item;
 	}
 
-	/**
-	 * @return the enchantments
-	 */
+	/** @return the enchantments */
 	public Map<Enchantment, Integer> getEnchantments()
 	{
 		return enchantments;
 	}
-	
-	public static List<GolemReward> getAllRarity(Rarity rar){
+
+	public static List<GolemReward> getAllRarity(Rarity rar)
+	{
 		List<GolemReward> l = new ArrayList<GolemReward>();
-		for (GolemReward gr : GolemReward.values()){
-			if (gr.getRarity().equals(rar)){
+		for (GolemReward gr : GolemReward.values())
+		{
+			if (gr.getRarity().equals(rar))
+			{
 				l.add(gr);
 			}
 		}
-		
+
 		return l != null ? l : null;
 	}
 
-	/**
-	 * @return the quantity
-	 */
+	/** @return the quantity */
 	public int getQuantity()
 	{
 		return quantity;
 	}
 
-	/**
-	 * @return the material
-	 */
+	/** @return the material */
 	public Material getMaterial()
 	{
 		return material;
 	}
 
-	/**
-	 * @return the rarity
-	 */
+	/** @return the rarity */
 	public Rarity getRarity()
 	{
 		return rarity;

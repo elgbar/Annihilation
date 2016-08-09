@@ -21,10 +21,10 @@ public class EnderDragonXPSpawn
 
 		int expToDrop = 12000; // found on the mc wiki (http://minecraft.gamepedia.com/Ender_Dragon)
 
-//		int i = expToDrop / 1200;
+		// int i = expToDrop / 1200;
 
 		final int k = -5; // makes sure it can be a number between -5 and 5
-//		System.out.println("" + expToDrop);
+		// System.out.println("" + expToDrop);
 
 		for (int l = 0; l < 5; l++)
 		{
@@ -34,12 +34,12 @@ public class EnderDragonXPSpawn
 				int j = EntityExperienceOrb.getOrbValue(expToDrop);
 
 				expToDrop -= j;
-//				System.out.println(expToDrop + " | " + j);
+				// System.out.println(expToDrop + " | " + j);
 				AnnihilationMain.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(AnnihilationMain.getInstance(), new Runnable()
 				{
 					public void run()
 					{
-//						System.out.println("Spawned xp!");
+						// System.out.println("Spawned xp!");
 						world.addEntity(new EntityExperienceOrb(world, loc.getX() + (k + rand.nextInt(100) / 10),
 								loc.getY() + 1 + rand.nextInt(20) / 10, loc.getZ() + (k + rand.nextInt(100) / 10), j));
 					}

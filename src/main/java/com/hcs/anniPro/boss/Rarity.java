@@ -1,11 +1,8 @@
 package com.hcs.anniPro.boss;
 
-/**
- * The rarity of the golemreward
+/** The rarity of the golemreward
  * 
- * @author kh498
- *
- */
+ * @author kh498 */
 public enum Rarity
 {
 	COMMON,

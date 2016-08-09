@@ -15,7 +15,8 @@ public class PartyCommands implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
-		if (cmd.toString().equals("Party")){
+		if (cmd.toString().equals("Party"))
+		{
 			if (!(sender instanceof Player))
 			{
 				if (args.length == 0)
@@ -24,8 +25,9 @@ public class PartyCommands implements CommandExecutor
 				} else
 				{
 					Player player = (Player) sender;
-					if (args[0].equalsIgnoreCase("Create")){
-						
+					if (args[0].equalsIgnoreCase("Create"))
+					{
+
 						AnniPlayer ap = AnniPlayer.getPlayer(player.getUniqueId());
 						AnniTeam at = null;
 						try
@@ -34,11 +36,11 @@ public class PartyCommands implements CommandExecutor
 						} catch (NullPointerException e)
 						{
 						}
-						
-						//create a new party
+
+						// create a new party
 						if (!PlayerParty.isInATeam(player))
 							new PlayerParty(player, at);
-						
+
 						return true;
 					}
 				}

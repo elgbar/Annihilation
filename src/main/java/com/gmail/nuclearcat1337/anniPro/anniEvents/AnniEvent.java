@@ -5,9 +5,9 @@ import org.bukkit.event.Event;
 
 public final class AnniEvent
 {
-    public static void callEvent(Event event)
-    {
-        Bukkit.getPluginManager().callEvent(event);
-    }
+	public static void callEvent(Event event)
+	{
+		Bukkit.getPluginManager().callEvent(event);
+	}
 
 }

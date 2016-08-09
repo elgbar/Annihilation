@@ -8,69 +8,84 @@ import io.netty.channel.EventLoop;
 
 import java.net.SocketAddress;
 
-public class NullChannel extends AbstractChannel {
+public class NullChannel extends AbstractChannel
+{
 
-	public NullChannel() {
+	public NullChannel()
+	{
 		super(null);
 	}
 
 	@Override
-	public ChannelConfig config() {
+	public ChannelConfig config()
+	{
 		return null;
 	}
 
 	@Override
-	public boolean isActive() {
+	public boolean isActive()
+	{
 		return false;
 	}
 
 	@Override
-	public boolean isOpen() {
+	public boolean isOpen()
+	{
 		return false;
 	}
 
 	@Override
-	public ChannelMetadata metadata() {
+	public ChannelMetadata metadata()
+	{
 		return null;
 	}
 
 	@Override
-	protected void doBeginRead() throws Exception {
+	protected void doBeginRead() throws Exception
+	{
 	}
 
 	@Override
-	protected void doBind(SocketAddress arg0) throws Exception {
+	protected void doBind(SocketAddress arg0) throws Exception
+	{
 	}
 
 	@Override
-	protected void doClose() throws Exception {
+	protected void doClose() throws Exception
+	{
 	}
 
 	@Override
-	protected void doDisconnect() throws Exception {
+	protected void doDisconnect() throws Exception
+	{
 	}
 
 	@Override
-	protected void doWrite(ChannelOutboundBuffer arg0) throws Exception {
+	protected void doWrite(ChannelOutboundBuffer arg0) throws Exception
+	{
 	}
 
 	@Override
-	protected boolean isCompatible(EventLoop arg0) {
+	protected boolean isCompatible(EventLoop arg0)
+	{
 		return false;
 	}
 
 	@Override
-	protected SocketAddress localAddress0() {
+	protected SocketAddress localAddress0()
+	{
 		return null;
 	}
 
 	@Override
-	protected AbstractUnsafe newUnsafe() {
+	protected AbstractUnsafe newUnsafe()
+	{
 		return null;
 	}
 
 	@Override
-	protected SocketAddress remoteAddress0() {
+	protected SocketAddress remoteAddress0()
+	{
 		return null;
 	}
 

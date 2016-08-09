@@ -25,14 +25,14 @@ public class LaunchPadListner implements Listener
 	private final String LAUNCHPAD_KEY = "LaunchPad_isStillInAir";
 	private Plugin plugin;
 
-	public LaunchPadListner (Plugin p)
+	public LaunchPadListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 		this.plugin = p;
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onLaunchPadWalk (PlayerInteractEvent event)
+	public void onLaunchPadWalk(PlayerInteractEvent event)
 	{
 		if (event.getAction() == Action.PHYSICAL)
 		{
@@ -98,7 +98,7 @@ public class LaunchPadListner implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onLaunchLand (EntityDamageEvent event)
+	public void onLaunchLand(EntityDamageEvent event)
 	{
 		if (!(event.getEntity() instanceof Player))
 		{

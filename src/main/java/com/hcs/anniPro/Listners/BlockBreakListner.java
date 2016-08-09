@@ -14,13 +14,13 @@ import com.gmail.nuclearcat1337.anniPro.anniGame.GameVars;
 public class BlockBreakListner implements Listener
 {
 
-	public BlockBreakListner (Plugin p)
+	public BlockBreakListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
-	public void onBlockBreak (BlockBreakEvent event)
+	public void onBlockBreak(BlockBreakEvent event)
 	{
 		if (!event.isCancelled())
 		{
@@ -98,8 +98,7 @@ public class BlockBreakListner implements Listener
 				case DAYLIGHT_DETECTOR_INVERTED:
 
 					/*
-					 * These cannot in the original adventure mode (adv mode 1.7
-					 * and earlier)
+					 * These cannot in the original adventure mode (adv mode 1.7 and earlier)
 					 */
 				case FIRE:
 				case TNT:

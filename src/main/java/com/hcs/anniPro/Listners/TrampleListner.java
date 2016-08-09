@@ -13,13 +13,13 @@ import org.bukkit.plugin.Plugin;
 public class TrampleListner implements Listener
 {
 
-	public TrampleListner (Plugin p)
+	public TrampleListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
-	public void onSoilTrample (PlayerInteractEvent event)
+	public void onSoilTrample(PlayerInteractEvent event)
 	{
 		if (!event.isCancelled())
 		{

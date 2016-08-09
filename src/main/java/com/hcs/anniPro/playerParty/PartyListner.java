@@ -15,21 +15,24 @@ public class PartyListner implements Listener
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerQuit(PlayerQuitEvent event){
+	public void onPlayerQuit(PlayerQuitEvent event)
+	{
 		playerLeave(event.getPlayer());
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerQuit(PlayerKickEvent event){
+	public void onPlayerQuit(PlayerKickEvent event)
+	{
 		playerLeave(event.getPlayer());
 	}
-	
-	public void playerLeave(Player p){
+
+	public void playerLeave(Player p)
+	{
 		if (!PlayerParties.isPlayerLeader(p))
 			PlayerParty.playerQuit(p);
-		else 
+		else
 			PlayerParties.removeParty(p);
 	}
 }
