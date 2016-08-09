@@ -34,32 +34,33 @@ import com.gmail.nuclearcat1337.anniPro.mapBuilder.FutureBlockReplace;
 
 public final class RegeneratingBlocks implements Listener
 {
-	private Map<Material,Map<Integer,RegeneratingBlock>> blocks;
+	private Map<Material, Map<Integer, RegeneratingBlock>> blocks;
 	private String world;
 	private final ScheduledExecutorService executor;
 	private final Random rand;
+
 	public RegeneratingBlocks(String world)
 	{
 		this.world = world;
-		blocks = new EnumMap<Material,Map<Integer,RegeneratingBlock>>(Material.class);
+		blocks = new EnumMap<Material, Map<Integer, RegeneratingBlock>>(Material.class);
 		rand = new Random(System.currentTimeMillis());
 		executor = Executors.newScheduledThreadPool(3);
 	}
-	
+
 	public RegeneratingBlocks(String world, ConfigurationSection configSection)
 	{
 		this(world);
-		if(configSection != null)
+		if (configSection != null)
 		{
-			for(String key : configSection.getKeys(false))
+			for (String key : configSection.getKeys(false))
 			{
 				ConfigurationSection matSection = configSection.getConfigurationSection(key);
-				if(matSection != null)
+				if (matSection != null)
 				{
-					for(String dataKey : matSection.getKeys(false))
+					for (String dataKey : matSection.getKeys(false))
 					{
 						ConfigurationSection dataSection = matSection.getConfigurationSection(dataKey);
-						if(dataSection != null)
+						if (dataSection != null)
 						{
 							Material mat = Material.getMaterial(dataSection.getString("Type"));
 							Integer matData = dataSection.getInt("MaterialData");
@@ -71,8 +72,7 @@ public final class RegeneratingBlocks implements Listener
 							try
 							{
 								unit = TimeUnit.valueOf(dataSection.getString("Unit"));
-							}
-							catch(IllegalArgumentException e)
+							} catch (IllegalArgumentException e)
 							{
 								unit = null;
 							}
@@ -81,41 +81,41 @@ public final class RegeneratingBlocks implements Listener
 							try
 							{
 								product = Material.getMaterial(dataSection.getString("Product"));
-							}
-							catch(Exception e)
+							} catch (Exception e)
 							{
 								product = null;
 							}
 							String amount = dataSection.getString("Amount");
 							Integer productData = dataSection.getInt("ProductData");
 							String effect = dataSection.getString("Effect");
-								this.addRegeneratingBlock(new RegeneratingBlock(mat,matData,regen,cobbleReplace,naturalBreak,time,unit,xp,product,amount,
-										productData,effect));
+							this.addRegeneratingBlock(new RegeneratingBlock(mat, matData, regen, cobbleReplace, naturalBreak, time, unit, xp, product,
+									amount, productData, effect));
 						}
 					}
 				}
 			}
 		}
 	}
-	
+
 	public void addRegeneratingBlock(RegeneratingBlock block)
 	{
-		Map<Integer,RegeneratingBlock> datas = blocks.get(block.Type);
-		if(datas == null)
-			datas = new HashMap<Integer,RegeneratingBlock>();
+		Map<Integer, RegeneratingBlock> datas = blocks.get(block.Type);
+		if (datas == null)
+			datas = new HashMap<Integer, RegeneratingBlock>();
 		datas.put(block.MaterialData, block);
 		blocks.put(block.Type, datas);
 	}
-	
+
 	public RegeneratingBlock getRegeneratingBlock(Material type, Integer data)
 	{
-		Map<Integer,RegeneratingBlock> datas = blocks.get(type);
-		if(datas != null)
+		Map<Integer, RegeneratingBlock> datas = blocks.get(type);
+		if (datas != null)
 			return datas.get(data);
-		else return null;
+		else
+			return null;
 	}
-	
-	public Map<Material,Map<Integer,RegeneratingBlock>> getRegeneratingBlocks()
+
+	public Map<Material, Map<Integer, RegeneratingBlock>> getRegeneratingBlocks()
 	{
 		return Collections.unmodifiableMap(blocks);
 	}
@@ -124,73 +124,71 @@ public final class RegeneratingBlocks implements Listener
 	{
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
-	
+
 	public void unregisterListeners()
 	{
 		HandlerList.unregisterAll(this);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void oreBreak(BlockBreakEvent event)
 	{
-		if(event.getPlayer().getGameMode() != GameMode.CREATIVE && event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase(world))
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE && event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase(world))
 		{
 			final Player p = event.getPlayer();
 			final Block block = event.getBlock();
 			final AnniPlayer player = AnniPlayer.getPlayer(p.getUniqueId());
-			if(player != null)
+			if (player != null)
 			{
-				RegeneratingBlock b = getRegeneratingBlock(block.getType(),(int) block.getData());
-				if(b == null){
-					b = getRegeneratingBlock(block.getType(),-1);
-				}
-				if(b != null)
+				RegeneratingBlock b = getRegeneratingBlock(block.getType(), (int) block.getData());
+				if (b == null)
 				{
-					if(b.NaturalBreak)
+					b = getRegeneratingBlock(block.getType(), -1);
+				}
+				if (b != null)
+				{
+					if (b.NaturalBreak)
 					{
-						ResourceBreakEvent e = new ResourceBreakEvent(player,b,0,(ItemStack[])null);
+						ResourceBreakEvent e = new ResourceBreakEvent(player, b, 0, (ItemStack[]) null);
 						AnniEvent.callEvent(e);
-						if(!e.isCancelled())
-							executor.schedule(new FutureBlockReplace(event.getBlock()), b.Time, b.Unit); 
-						else 
+						if (!e.isCancelled())
+							executor.schedule(new FutureBlockReplace(event.getBlock()), b.Time, b.Unit);
+						else
 							event.setCancelled(true);
 						return;
 					}
 					event.setCancelled(true);
-					if(!b.Regenerate)
+					if (!b.Regenerate)
 						return;
-					if(b.Effect == null)
+					if (b.Effect == null)
 					{
 						int amount = 0;
 						try
 						{
 							amount = Integer.parseInt(b.Amount);
-						}
-						catch(NumberFormatException e)
+						} catch (NumberFormatException e)
 						{
 							try
 							{
-								if(b.Amount.contains("RANDOM"))
+								if (b.Amount.contains("RANDOM"))
 								{
-									String x,y;
-									x=b.Amount.split(",")[0];
-									y=b.Amount.split(",")[1];
+									String x, y;
+									x = b.Amount.split(",")[0];
+									y = b.Amount.split(",")[1];
 									x = x.substring(7);
-									y = y.substring(0,y.length()-1);
+									y = y.substring(0, y.length() - 1);
 									try
 									{
 										int min = Integer.parseInt(x);
 										int max = Integer.parseInt(y);
-										amount = min + (int)(Math.random() * ((max - min) + 1));
-									}
-									catch(NumberFormatException exx)
+										amount = min + (int) (Math.random() * ((max - min) + 1));
+									} catch (NumberFormatException exx)
 									{
 										return;
 									}
 								}
-							}
-							catch(ArrayIndexOutOfBoundsException ex)
+							} catch (ArrayIndexOutOfBoundsException ex)
 							{
 								return;
 							}
@@ -198,81 +196,80 @@ public final class RegeneratingBlocks implements Listener
 
 						ItemStack stack;
 						int xp = b.XP;
-						if(b.ProductData != -1)
-							stack = new ItemStack(b.Product, amount,(byte)b.ProductData);
-						else 
+						if (b.ProductData != -1)
+							stack = new ItemStack(b.Product, amount, (byte) b.ProductData);
+						else
 							stack = new ItemStack(b.Product, amount);
-						ResourceBreakEvent e = new ResourceBreakEvent(player,b,xp,stack);
+						ResourceBreakEvent e = new ResourceBreakEvent(player, b, xp, stack);
 						AnniEvent.callEvent(e);
-						if(!e.isCancelled())
+						if (!e.isCancelled())
 						{
-							if(e.getXP() > 0)
+							if (e.getXP() > 0)
 								p.playSound(p.getLocation(), Sound.ORB_PICKUP, 0.6F, rand.nextFloat());
 							p.giveExp(e.getXP());
-							
-							if(e.getProducts() != null)
+
+							if (e.getProducts() != null)
 							{
-								for(ItemStack s : e.getProducts())
+								for (ItemStack s : e.getProducts())
 								{
-									if(s != null)
+									if (s != null)
 									{
 										p.getInventory().addItem(s);
 									}
 								}
 							}
-							executor.schedule(new FutureBlockReplace(event.getBlock(), b.CobbleReplace), b.Time, b.Unit); 
+							executor.schedule(new FutureBlockReplace(event.getBlock(), b.CobbleReplace), b.Time, b.Unit);
 						}
-					}
-					else if (b.Effect.equalsIgnoreCase("Gravel"))
+					} else if (b.Effect.equalsIgnoreCase("Gravel"))
 					{
 						List<ItemStack> l = new ArrayList<ItemStack>();
-						for(int x = 0; x <5; x++)
+						for (int x = 0; x < 5; x++)
 						{
 							int z;
-							switch(x)
+							switch (x)
 							{
-								//bone
+								// bone
 								case 0:
 									z = rand.nextInt(2);
-									if(z != 0)
+									if (z != 0)
 										l.add(new ItemStack(Material.BONE, z));
 									break;
-									//feather
+								// feather
 								case 1:
 									z = rand.nextInt(3);
-									if(z != 0)
+									if (z != 0)
 										l.add(new ItemStack(Material.FEATHER, z));
 									break;
-									///arrow
+								/// arrow
 								case 2:
 									z = rand.nextInt(4);
-									if(z != 0)
+									if (z != 0)
 										l.add(new ItemStack(Material.ARROW, z));
 									break;
-									//string
+								// string
 								case 3:
 									z = rand.nextInt(2);
-									if(z != 0)
+									if (z != 0)
 										l.add(new ItemStack(Material.STRING, z));
 									break;
-									//flint
+								// flint
 								case 4:
 									z = rand.nextInt(3);
-									if(z != 0)
+									if (z != 0)
 										l.add(new ItemStack(Material.FLINT, z));
 									break;
 							}
 						}
-						ResourceBreakEvent e = new ResourceBreakEvent(player,b,b.XP,l.toArray(new ItemStack[l.size()]));
+						ResourceBreakEvent e = new ResourceBreakEvent(player, b, b.XP, l.toArray(new ItemStack[l.size()]));
 						AnniEvent.callEvent(e);
-						if(!e.isCancelled())
+						if (!e.isCancelled())
 						{
-							if(e.getXP() > 0)
+							if (e.getXP() > 0)
 								p.playSound(p.getLocation(), Sound.ORB_PICKUP, 0.6F, rand.nextFloat());
 							p.giveExp(e.getXP());
-							if(e.getProducts() != null)
+							if (e.getProducts() != null)
 							{
-								for(ItemStack s : e.getProducts())
+								for (ItemStack s : e.getProducts())
 									p.getInventory().addItem(s);
 							}
 							executor.schedule(new FutureBlockReplace(event.getBlock(), b.CobbleReplace), b.Time, b.Unit);
@@ -283,21 +280,21 @@ public final class RegeneratingBlocks implements Listener
 			}
 		}
 	}
-	
+
 	public boolean removeRegeneratingBlock(Material type, Integer data)
 	{
-		if(blocks.containsKey(type))
+		if (blocks.containsKey(type))
 		{
-			if(data == -1)
+			if (data == -1)
 			{
 				blocks.remove(type);
 				return true;
 			}
-			
-			Map<Integer,RegeneratingBlock> datas = blocks.get(type);
-			if(datas != null)
+
+			Map<Integer, RegeneratingBlock> datas = blocks.get(type);
+			if (datas != null)
 			{
-				if(datas.containsKey(data))
+				if (datas.containsKey(data))
 				{
 					datas.remove(data);
 					return true;
@@ -306,15 +303,15 @@ public final class RegeneratingBlocks implements Listener
 		}
 		return false;
 	}
-	
+
 	public void saveToConfig(ConfigurationSection configSection)
 	{
-		if(configSection != null)
+		if (configSection != null)
 		{
-			for(Entry<Material, Map<Integer,RegeneratingBlock>> entry : blocks.entrySet())
+			for (Entry<Material, Map<Integer, RegeneratingBlock>> entry : blocks.entrySet())
 			{
 				ConfigurationSection matSection = configSection.createSection(entry.getKey().name());
-				for(Entry<Integer,RegeneratingBlock> map : entry.getValue().entrySet())
+				for (Entry<Integer, RegeneratingBlock> map : entry.getValue().entrySet())
 				{
 					ConfigurationSection dataSection = matSection.createSection(map.getKey().toString());
 					RegeneratingBlock b = map.getValue();

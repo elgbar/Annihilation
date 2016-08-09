@@ -5,15 +5,16 @@ import org.bukkit.event.HandlerList;
 
 public final class GameStartEvent extends Event
 {
-    private static final HandlerList list = new HandlerList();
-    @Override
-    public HandlerList getHandlers()
-    {
-        return list;
-    }
+	private static final HandlerList list = new HandlerList();
 
-    public static HandlerList getHandlerList()
-    {
-        return list;
-    }
+	@Override
+	public HandlerList getHandlers()
+	{
+		return list;
+	}
+
+	public static HandlerList getHandlerList()
+	{
+		return list;
+	}
 }

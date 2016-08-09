@@ -45,7 +45,6 @@ public class VoteMapManager
 {
 	private static Map<String, String> voteMap;
 	private static String[] maps = null;
-	private static ArrayList<String> mapsLinks = null;
 	private static Scoreboard board;
 	private static Objective obj;
 	private static ItemMenu menu;

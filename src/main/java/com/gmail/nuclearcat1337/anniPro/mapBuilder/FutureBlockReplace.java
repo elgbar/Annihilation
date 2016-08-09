@@ -7,18 +7,18 @@ import org.bukkit.block.BlockState;
 
 public class FutureBlockReplace implements Runnable
 {
-	//private final Block	b;
+	// private final Block b;
 	private final BlockState state;
-	
+
 	public FutureBlockReplace(Block b)
 	{
-		this.state = b.getState();		
+		this.state = b.getState();
 	}
 
 	public FutureBlockReplace(Block b, boolean cobble)
 	{
 		this.state = b.getState();
-		b.setType(cobble? Material.COBBLESTONE:Material.AIR);
+		b.setType(cobble ? Material.COBBLESTONE : Material.AIR);
 	}
 
 	public void run()
@@ -29,8 +29,7 @@ public class FutureBlockReplace implements Runnable
 			public void run()
 			{
 				state.update(true);
-			}	
-		}
-		);	
+			}
+		});
 	}
 }

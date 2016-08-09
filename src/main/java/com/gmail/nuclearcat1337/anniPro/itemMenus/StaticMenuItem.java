@@ -1,5 +1,5 @@
 /*
- * This file is part of AmpMenus.
+F * This file is part of AmpMenus.
  *
  * Copyright (c) 2014 <http://github.com/ampayne2/AmpMenus/>
  *

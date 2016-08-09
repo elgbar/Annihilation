@@ -1,6 +1,5 @@
 package com.gmail.nuclearcat1337.anniPro.voting;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -25,34 +24,35 @@ public class ScoreboardAPI
 	public static void registerListener(JavaPlugin p)
 	{
 		final BoardListeners l = new BoardListeners();
-		Bukkit.getPluginManager().registerEvents(l,p);
+		Bukkit.getPluginManager().registerEvents(l, p);
 	}
-	
+
 	private static class BoardListeners implements Listener
 	{
 		public BoardListeners()
 		{
-			if(Game.isGameRunning())
-				for(Player pl : Bukkit.getOnlinePlayers())
+			if (Game.isGameRunning())
+				for (Player pl : Bukkit.getOnlinePlayers())
 					ScoreboardAPI.setScoreboard(pl);
 		}
-		
+
 		@EventHandler
 		public void onGameStart(GameStartEvent event)
 		{
-			ScoreboardAPI.showGameBoard(ChatColor.BOLD+(ChatColor.GOLD+Lang.SCOREBOARDMAP.toString()+" "+(Game.getGameMap().getNiceWorldName())));
-			for(Player pl : Bukkit.getOnlinePlayers())
+			ScoreboardAPI
+					.showGameBoard(ChatColor.BOLD + (ChatColor.GOLD + Lang.SCOREBOARDMAP.toString() + " " + (Game.getGameMap().getNiceWorldName())));
+			for (Player pl : Bukkit.getOnlinePlayers())
 				ScoreboardAPI.setScoreboard(pl);
 		}
-				
+
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void playerCheck(PlayerJoinEvent event)
 		{
-			if(Game.isGameRunning())
+			if (Game.isGameRunning())
 				ScoreboardAPI.setScoreboard(event.getPlayer());
 		}
 	}
-	
+
 	private static final Scoreboard anniScoreboard;
 	private static final Objective obj;
 	static
@@ -61,44 +61,44 @@ public class ScoreboardAPI
 		obj = anniScoreboard.registerNewObjective("CAT", "MEOW MEOW");
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
-	
+
 	public static Scoreboard getScoreboard()
 	{
 		return anniScoreboard;
 	}
-	
+
 	private static void showGameBoard(String name)
 	{
 		obj.setDisplayName(name);
-		for(AnniTeam team : AnniTeam.Teams)
+		for (AnniTeam team : AnniTeam.Teams)
 		{
-			Score score = obj.getScore(Util.shortenString(team.getExternalColoredName()+" Nexus", 16));
+			Score score = obj.getScore(Util.shortenString(team.getExternalColoredName() + " Nexus", 16));
 			score.setScore(team.getHealth());
 		}
 		Score score = obj.getScore(Util.shortenString(Lang.SCOREBOARDPHASE.toString(), 16));
 		score.setScore(1);
 	}
-	
+
 	public static void updatePhase()
 	{
-		if(Game.isGameRunning() && Game.getGameMap() != null)
+		if (Game.isGameRunning() && Game.getGameMap() != null)
 		{
 			Score score = obj.getScore(Util.shortenString(Lang.SCOREBOARDPHASE.toString(), 16));
 			score.setScore(Game.getGameMap().getCurrentPhase());
 		}
 	}
-	
+
 	public static void setScore(AnniTeam team, int score)
 	{
-		if(obj != null)
-			obj.getScore(Util.shortenString(team.getExternalColoredName()+" Nexus", 16)).setScore(score);	
+		if (obj != null)
+			obj.getScore(Util.shortenString(team.getExternalColoredName() + " Nexus", 16)).setScore(score);
 	}
-	
+
 	public static void removeTeam(AnniTeam team)
 	{
-		anniScoreboard.resetScores(Util.shortenString(team.getExternalColoredName()+" Nexus", 16));
+		anniScoreboard.resetScores(Util.shortenString(team.getExternalColoredName() + " Nexus", 16));
 	}
-	
+
 	public static void setScoreboard(final Player player)
 	{
 		player.setScoreboard(anniScoreboard);

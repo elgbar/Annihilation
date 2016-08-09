@@ -24,22 +24,23 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 public class AnniCommand
 {
 	private static boolean registered = false;
-	private static Map<String,AnniArgument> arguments;
+	private static Map<String, AnniArgument> arguments;
 	private static ItemMenu menu;
-	
+
 	public static void register(JavaPlugin plugin)
 	{
-		if(registered == false)
+		if (registered == false)
 		{
 			registered = true;
-			arguments = new TreeMap<String,AnniArgument>();
+			arguments = new TreeMap<String, AnniArgument>();
 			recalcItemMenu();
 			plugin.getCommand("Anni").setExecutor(new Executor());
-			registerArgument(new AnniArgument(){
+			registerArgument(new AnniArgument()
+			{
 				@Override
 				public String getHelp()
 				{
-					return ChatColor.RED+"Help--"+ChatColor.GREEN+"Returns the help for the /Anni command";
+					return ChatColor.RED + "Help--" + ChatColor.GREEN + "Returns the help for the /Anni command";
 				}
 
 				@Override
@@ -69,36 +70,39 @@ public class AnniCommand
 				@Override
 				public MenuItem getMenuItem()
 				{
-					return new ActionMenuItem("Show Anni Help",new ItemClickHandler(){
+					return new ActionMenuItem("Show Anni Help", new ItemClickHandler()
+					{
 						@Override
 						public void onItemClick(ItemClickEvent event)
 						{
-							executeCommand(event.getPlayer(),null,null);
+							executeCommand(event.getPlayer(), null, null);
 							event.setWillClose(true);
-						}},new ItemStack(Material.BOOK),ChatColor.GREEN+"Click to show help for the /Anni command");
-				}});
+						}
+					}, new ItemStack(Material.BOOK), ChatColor.GREEN + "Click to show help for the /Anni command");
+				}
+			});
 		}
 	}
-	
+
 	private static void recalcItemMenu()
 	{
-		menu = new ItemMenu("Annihilation Command Menu",arguments.isEmpty() ? Size.ONE_LINE : Size.fit(arguments.size()));
+		menu = new ItemMenu("Annihilation Command Menu", arguments.isEmpty() ? Size.ONE_LINE : Size.fit(arguments.size()));
 		int x = 0;
-		for(AnniArgument arg : arguments.values())
+		for (AnniArgument arg : arguments.values())
 		{
-			if(arg.getMenuItem() != null)
+			if (arg.getMenuItem() != null)
 			{
 				menu.setItem(x, arg.getMenuItem());
 				x++;
 			}
 		}
 	}
-	
+
 	public static void registerArgument(AnniArgument argument)
 	{
-		if(argument != null)
+		if (argument != null)
 		{
-			if(argument.getPermission() != null)
+			if (argument.getPermission() != null)
 			{
 				Permission perm = new Permission(argument.getPermission());
 				Bukkit.getPluginManager().addPermission(perm);
@@ -108,67 +112,68 @@ public class AnniCommand
 			recalcItemMenu();
 		}
 	}
-	
+
 	private static void sendHelp(CommandSender sender)
 	{
-		if(arguments.isEmpty())
-			sender.sendMessage(ChatColor.RED+"There are currently no registered arguments for the /Anni command!");
+		if (arguments.isEmpty())
+			sender.sendMessage(ChatColor.RED + "There are currently no registered arguments for the /Anni command!");
 		else
 		{
-			for(AnniArgument arg : arguments.values())
+			for (AnniArgument arg : arguments.values())
 				sender.sendMessage(arg.getHelp());
 		}
 	}
-	
+
 	private static void openMenu(Player player)
 	{
 		recalcItemMenu();
 		menu.open(player);
 	}
-	
+
 	private static class Executor implements CommandExecutor
 	{
 		@Override
 		public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 		{
-			if(!(sender instanceof Player) || sender.hasPermission("A.anni"))
+			if (!(sender instanceof Player) || sender.hasPermission("A.anni"))
 			{
-				if(args.length == 0)
+				if (args.length == 0)
 				{
-					if(sender instanceof Player)
-						openMenu((Player)sender);
-					else sender.sendMessage(ChatColor.RED+"You must be a player to use /Anni item menu.");
-				}
-				else
+					if (sender instanceof Player)
+						openMenu((Player) sender);
+					else
+						sender.sendMessage(ChatColor.RED + "You must be a player to use /Anni item menu.");
+				} else
 				{
 					AnniArgument arg = arguments.get(args[0].toLowerCase());
-					if(arg != null)
+					if (arg != null)
 					{
-						if(arg.useByPlayerOnly())
+						if (arg.useByPlayerOnly())
 						{
-							if(!(sender instanceof Player))
+							if (!(sender instanceof Player))
 							{
-								sender.sendMessage(ChatColor.RED+"The argument "+ChatColor.GOLD+arg.getArgumentName()+ChatColor.RED+" must be used by a player.");
+								sender.sendMessage(ChatColor.RED + "The argument " + ChatColor.GOLD + arg.getArgumentName() + ChatColor.RED
+										+ " must be used by a player.");
 								return true;
 							}
 						}
 						arg.executeCommand(sender, label, excludeFirstArgument(args));
-					}
-					else sendHelp(sender);
+					} else
+						sendHelp(sender);
 				}
-			}
-			else sender.sendMessage(ChatColor.RED+"You do not have permission to use this command!");
+			} else
+				sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
 			return true;
 		}
-		
+
 		private String[] excludeFirstArgument(String[] args)
 		{
-			String[] r = new String[args.length-1];
-			if(r.length == 0)
+			String[] r = new String[args.length - 1];
+			if (r.length == 0)
 				return r;
-			for(int x = 1; x < args.length; x++)
-				r[x-1] = args[x];
+			for (int x = 1; x < args.length; x++)
+				r[x - 1] = args[x];
 			return r;
-		}		
+		}
 	}
 }

@@ -17,24 +17,13 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 
-/**
- * Golems are bosses in annihiliation that will spawn in the forth phase. They
- * are iron golems that have a high amount of health. Arrows do little damage to
- * the golems and therefore the only way to kill the golems quickly, are to go
- * into melee with the golems. The golems does not take any knockback damage and
- * will not go off the map. They have no restriction when it comes to where they
- * walk. Player may lure the golem into your own base to get the kill. It can
- * also be used as an distraction when luring it into an enemy base and then
- * attack their nexus.
+/** Golems are bosses in annihiliation that will spawn in the forth phase. They are iron golems that have a high amount of health. Arrows do little
+ * damage to the golems and therefore the only way to kill the golems quickly, are to go into melee with the golems. The golems does not take any
+ * knockback damage and will not go off the map. They have no restriction when it comes to where they walk. Player may lure the golem into your own
+ * base to get the kill. It can also be used as an distraction when luring it into an enemy base and then attack their nexus. Two golems is spawned
+ * between two team bases. This promotes rivaly between those two teams. It will respawn 10 minutes form when its killed.
  * 
- * Two golems is spawned between two team bases. This promotes rivaly between
- * those two teams.
- * 
- * It will respawn 10 minutes form when its killed.
- * 
- * @author kh498
- *
- */
+ * @author kh498 */
 public class Golem
 {
 	public static final Golem Red = new Golem(ChatColor.RED, "Drakons");
@@ -95,9 +84,7 @@ public class Golem
 		return;
 	}
 
-	/**
-	 * Spawn both golems
-	 */
+	/** Spawn both golems */
 	public static void spawnGolems()
 	{
 		for (Golem golem : Golem.Golems)
@@ -106,11 +93,8 @@ public class Golem
 		}
 	}
 
-	/**
-	 * 
-	 * @param golem
-	 *            The golem you want to spawn
-	 */
+	/** @param golem
+	 *            The golem you want to spawn */
 	public static void spawnGolem(Golem golem)
 	{
 		if (golem.isAlive())
@@ -165,18 +149,14 @@ public class Golem
 		return internalName;
 	}
 
-	/**
-	 * @return the alive
-	 */
+	/** @return the alive */
 	public Boolean isAlive()
 	{
 		return alive;
 	}
 
-	/**
-	 * @param alive
-	 *            Set if the golem is alive or not
-	 */
+	/** @param alive
+	 *            Set if the golem is alive or not */
 	public void setAlive(Boolean alive)
 	{
 		this.alive = alive;

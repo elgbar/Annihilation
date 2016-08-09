@@ -24,95 +24,95 @@ import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 
 public final class Areas implements Iterable<Area>, Listener
 {
-	private final Map<String,Area> areas;
-	
+	private final Map<String, Area> areas;
+
 	@SuppressWarnings("unused")
 	private final String world;
+
 	public Areas(String world)
 	{
 		this.world = world;
-		areas = new HashMap<String,Area>();
+		areas = new HashMap<String, Area>();
 	}
-	
 
-    public void addArea(Area a)
-    {
-        this.areas.put(a.getName().toLowerCase(),a);
-    }
+	public void addArea(Area a)
+	{
+		this.areas.put(a.getName().toLowerCase(), a);
+	}
 
-    public void removeArea(String name)
-    {
-        this.areas.remove(name.toLowerCase());
-    }
+	public void removeArea(String name)
+	{
+		this.areas.remove(name.toLowerCase());
+	}
 
-    public boolean hasArea(String name)
-    {
-        return areas.containsKey(name.toLowerCase());
-    }
-	
+	public boolean hasArea(String name)
+	{
+		return areas.containsKey(name.toLowerCase());
+	}
+
 	public Areas loadAreas(ConfigurationSection areaSection)
 	{
-		if(areaSection != null)
+		if (areaSection != null)
 		{
-			for(String key : areaSection.getKeys(false))
+			for (String key : areaSection.getKeys(false))
 			{
 				ConfigurationSection area = areaSection.getConfigurationSection(key);
-                Area a = new Area(area);
-                areas.put(a.getName().toLowerCase(),a);
+				Area a = new Area(area);
+				areas.put(a.getName().toLowerCase(), a);
 			}
 		}
 		return this;
 	}
-	
+
 	public Area getArea(String name)
 	{
 		return areas.get(name.toLowerCase());
 	}
-	
+
 	public Area getArea(Loc loc)
 	{
-		for(Area a : areas.values())
+		for (Area a : areas.values())
 		{
-            if(a.isInArea(loc))
-                return a;
+			if (a.isInArea(loc))
+				return a;
 		}
 		return null;
 	}
-	
+
 	public void saveToConfig(ConfigurationSection areaSection)
 	{
 		int counter = 1;
-		for(Area a : areas.values())
+		for (Area a : areas.values())
 		{
-			ConfigurationSection sec = areaSection.createSection(counter+"");
-            a.saveToConfig(sec);
+			ConfigurationSection sec = areaSection.createSection(counter + "");
+			a.saveToConfig(sec);
 			counter++;
 		}
 	}
-	
+
 	public void registerListener(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
-	
+
 	public void unregisterListener()
 	{
 		HandlerList.unregisterAll(this);
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void checkBreaks(EntityDamageByEntityEvent e)
 	{
-		if(e.getDamager().getType() == EntityType.PLAYER && e.getEntity().getType() == EntityType.PLAYER)
+		if (e.getDamager().getType() == EntityType.PLAYER && e.getEntity().getType() == EntityType.PLAYER)
 		{
-			Area a = this.getArea(new Loc(e.getDamager().getLocation(),false));
-			if(a != null && !a.getAllowPVP())
+			Area a = this.getArea(new Loc(e.getDamager().getLocation(), false));
+			if (a != null && !a.getAllowPVP())
 			{
 				e.setCancelled(true);
 				return;
 			}
-			a = this.getArea(new Loc(e.getEntity().getLocation(),false));
-			if(a != null && !a.getAllowPVP())
+			a = this.getArea(new Loc(e.getEntity().getLocation(), false));
+			if (a != null && !a.getAllowPVP())
 			{
 				e.setCancelled(true);
 				return;
@@ -120,57 +120,57 @@ public final class Areas implements Iterable<Area>, Listener
 		}
 	}
 
-    @EventHandler(ignoreCancelled = true,priority = EventPriority.LOW)
-    public void checkFood(FoodLevelChangeEvent event)
-    {
-        Area a = getArea(new Loc(event.getEntity().getLocation(),false));
-        if(a != null && !a.getAllowHunger())
-        {
-            event.setFoodLevel(20);
-        }
-    }
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	public void checkFood(FoodLevelChangeEvent event)
+	{
+		Area a = getArea(new Loc(event.getEntity().getLocation(), false));
+		if (a != null && !a.getAllowHunger())
+		{
+			event.setFoodLevel(20);
+		}
+	}
 
-    @EventHandler(ignoreCancelled = true,priority = EventPriority.LOW)
-    public void checkDamage(EntityDamageEvent event)
-    {
-        Area a = getArea(new Loc(event.getEntity().getLocation(), false));
-        if(a != null && !a.getAllowDamage())
-            event.setCancelled(true);
-    }
-	
-	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	public void checkDamage(EntityDamageEvent event)
+	{
+		Area a = getArea(new Loc(event.getEntity().getLocation(), false));
+		if (a != null && !a.getAllowDamage())
+			event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void checkBreaks(BlockBreakEvent e)
 	{
-		if(e.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (e.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
-			Area a = this.getArea(new Loc(e.getBlock().getLocation(),false));
-			if(a != null)
+			Area a = this.getArea(new Loc(e.getBlock().getLocation(), false));
+			if (a != null)
 			{
 				e.setCancelled(true);
 			}
 		}
 	}
-	
-	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled = true)
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void checkBreaks(BlockPlaceEvent e)
 	{
-		if(e.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (e.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
-			Area a = this.getArea(new Loc(e.getBlock().getLocation(),false));
-			if(a != null)
+			Area a = this.getArea(new Loc(e.getBlock().getLocation(), false));
+			if (a != null)
 			{
 				e.setCancelled(true);
 			}
 		}
 	}
-	
-	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled = true)
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void checkBreaks(PlayerBucketEmptyEvent event)
 	{
-		if(event.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
-			Area a = this.getArea(new Loc(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation(),false));
-			if(a != null)
+			Area a = this.getArea(new Loc(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation(), false));
+			if (a != null)
 			{
 				event.setCancelled(true);
 			}

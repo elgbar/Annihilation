@@ -8,16 +8,17 @@ import org.bukkit.entity.Player;
 
 public class v1_8_R3Packet implements RespawnPacket
 {
-    private final PacketPlayInClientCommand packet;
-    public v1_8_R3Packet()
-    {
-        packet = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
-    }
+	private final PacketPlayInClientCommand packet;
 
-    @Override
-    public void sendToPlayer(final Player player)
-    {
-        CraftPlayer p = (CraftPlayer)player;
-        p.getHandle().playerConnection.a(packet);
-    }
+	public v1_8_R3Packet()
+	{
+		packet = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
+	}
+
+	@Override
+	public void sendToPlayer(final Player player)
+	{
+		CraftPlayer p = (CraftPlayer) player;
+		p.getHandle().playerConnection.a(packet);
+	}
 }

@@ -21,18 +21,18 @@ public class AutoRestarter implements Listener
 {
 	private final int players;
 	private final int countdown;
-	
+
 	private boolean canRun;
 	private boolean countingDown;
-	
+
 	private TempData data;
-	
+
 	public AutoRestarter(Plugin p, int playersToRestart, int countdown)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
-		if(playersToRestart < 0)
+		if (playersToRestart < 0)
 			playersToRestart = 0;
-		if(countdown < 1)
+		if (countdown < 1)
 			countdown = 1;
 		this.players = playersToRestart;
 		this.countdown = countdown;
@@ -40,90 +40,90 @@ public class AutoRestarter implements Listener
 		countingDown = false;
 		data = null;
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerCheck(PlayerQuitEvent event)
 	{
 		check();
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void teleportCheck(PlayerKickEvent event)
 	{
 		check();
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerCheck(PlayerJoinEvent event)
 	{
 		check();
 	}
-	
+
 	private void beginRestart()
 	{
 		canRun = false;
 		countingDown = true;
 		data = AnnounceBar.getInstance().getData();
-		if(GameVars.getEndOfGameCommand().equals(""))
+		if (GameVars.getEndOfGameCommand().equals(""))
 		{
 			Bukkit.broadcastMessage("The auto restart feature has been activated, but no end of game command was specified.");
 			Bukkit.broadcastMessage("Please have an admin set an end of game command if he wants this feature to work.");
-		}
-		else
+		} else
 		{
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"Auto-restart actvated! restarting the server in "+this.countdown+" seconds.");
-            Announcement ann = new Announcement(ChatColor.DARK_PURPLE + "Auto-restart in: {#}");
-            ann.setTime(this.countdown).setCallback(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    countingDown = false;
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), GameVars.getEndOfGameCommand());
-                }
-            });
-            AnnounceBar.getInstance().countDown(ann);
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Auto-restart actvated! restarting the server in " + this.countdown + " seconds.");
+			Announcement ann = new Announcement(ChatColor.DARK_PURPLE + "Auto-restart in: {#}");
+			ann.setTime(this.countdown).setCallback(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					countingDown = false;
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), GameVars.getEndOfGameCommand());
+				}
+			});
+			AnnounceBar.getInstance().countDown(ann);
 		}
 	}
-	
+
 	public void check()
 	{
-		Bukkit.getScheduler().runTaskLater(AnnihilationMain.getInstance(), new Runnable(){
+		Bukkit.getScheduler().runTaskLater(AnnihilationMain.getInstance(), new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
-				if(Game.isGameRunning() && Game.getGameMap().getCurrentPhase() > 2)
+				if (Game.isGameRunning() && Game.getGameMap().getCurrentPhase() > 2)
 				{
-					if(countingDown && !canRun)
+					if (countingDown && !canRun)
 					{
 						int count = Bukkit.getOnlinePlayers().size();
-						if(count > players)
+						if (count > players)
 						{
 
-                            AnnounceBar.getInstance().countDown(new Announcement(ChatColor.RED + "Auto-restart aborted!").setTime(2).setCallback(new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    AnnounceBar.getInstance().countDown(data);
-                                    data = null;
-                                }
-                            }));
+							AnnounceBar.getInstance()
+									.countDown(new Announcement(ChatColor.RED + "Auto-restart aborted!").setTime(2).setCallback(new Runnable()
+									{
+										@Override
+										public void run()
+										{
+											AnnounceBar.getInstance().countDown(data);
+											data = null;
+										}
+									}));
 							canRun = true;
 							countingDown = false;
 						}
-					}
-					else if(canRun)
+					} else if (canRun)
 					{
 						int count = Bukkit.getOnlinePlayers().size();
-						
-						if(count <= players)
+
+						if (count <= players)
 							beginRestart();
 					}
 				}
-			}}, 40);
+			}
+		}, 40);
 	}
-	
-	
+
 }

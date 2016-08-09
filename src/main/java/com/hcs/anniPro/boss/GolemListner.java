@@ -181,7 +181,7 @@ public class GolemListner implements Listener
 								Inventory inv = chest.getInventory();
 								inv.setContents(null);
 							}
-							
+
 							spawnLoc.getBlock().setType(Material.AIR);
 							if (Game.isGameRunning())
 								Golem.spawnGolem(golem);
@@ -208,5 +208,5 @@ public class GolemListner implements Listener
 			}
 		}
 	}
-	
+
 }

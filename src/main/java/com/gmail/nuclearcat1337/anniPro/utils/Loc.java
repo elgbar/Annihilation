@@ -6,22 +6,21 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public final class Loc
 {
-	private Number x,y,z;
-	private float pitch,yaw;
+	private Number x, y, z;
+	private float pitch, yaw;
 	private String world;
-	
+
 	public Loc(Location loc, boolean precise)
 	{
 		this.world = loc.getWorld().getName();
-		if(precise)
+		if (precise)
 		{
 			x = loc.getX();
 			y = loc.getY();
 			z = loc.getZ();
 			pitch = loc.getPitch();
 			yaw = loc.getYaw();
-		}
-		else
+		} else
 		{
 			x = loc.getBlockX();
 			y = loc.getBlockY();
@@ -30,12 +29,12 @@ public final class Loc
 			yaw = 0;
 		}
 	}
-	
+
 	public Loc(String world, Number x, Number y, Number z)
 	{
-		this(world,x,y,z,0,0);
+		this(world, x, y, z, 0, 0);
 	}
-	
+
 	public Loc(String world, Number x, Number y, Number z, float pitch, float yaw)
 	{
 		this.world = world;
@@ -45,74 +44,78 @@ public final class Loc
 		this.pitch = pitch;
 		this.yaw = yaw;
 	}
-	
+
 	public Loc(ConfigurationSection section)
 	{
 		assert section != null;
 		this.world = section.getString("World");
-		this.pitch = (float)section.getDouble("Pitch");
-		this.yaw = (float)section.getDouble("Yaw");
-		if(section.isDouble("X"))
+		this.pitch = (float) section.getDouble("Pitch");
+		this.yaw = (float) section.getDouble("Yaw");
+		if (section.isDouble("X"))
 			x = section.getDouble("X");
-		else x = section.getInt("X");
-		if(section.isDouble("Y"))
+		else
+			x = section.getInt("X");
+		if (section.isDouble("Y"))
 			y = section.getDouble("Y");
-		else y = section.getInt("Y");
-		if(section.isDouble("Z"))
+		else
+			y = section.getInt("Y");
+		if (section.isDouble("Z"))
 			z = section.getDouble("Z");
-		else z = section.getInt("Z");
+		else
+			z = section.getInt("Z");
 	}
-	
+
 	public int getBlockX()
 	{
 		return x.intValue();
 	}
-	
+
 	public int getBlockY()
 	{
 		return y.intValue();
 	}
-	
+
 	public int getBlockZ()
 	{
 		return z.intValue();
 	}
-	
+
 	public String getWorld()
 	{
 		return world;
 	}
-	
+
 	public Location toLocation()
 	{
-		return new Location(Bukkit.getWorld(world),x.doubleValue(),y.doubleValue(),z.doubleValue(),yaw,pitch);
+		return new Location(Bukkit.getWorld(world), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw, pitch);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
-		if(obj == this)
+		if (obj == this)
 			return true;
-		if(obj instanceof Loc)
+		if (obj instanceof Loc)
 		{
-			Loc l = (Loc)obj;
-			return this.world.equals(l.world) && this.getBlockX() == l.getBlockX() && this.getBlockY() == l.getBlockY() && this.getBlockZ() == l.getBlockZ();
-		}
-		else if(obj instanceof Location)
+			Loc l = (Loc) obj;
+			return this.world.equals(l.world) && this.getBlockX() == l.getBlockX() && this.getBlockY() == l.getBlockY()
+					&& this.getBlockZ() == l.getBlockZ();
+		} else if (obj instanceof Location)
 		{
-			Location l = (Location)obj;
-			return this.world.equals(l.getWorld().getName()) && this.getBlockX() == l.getBlockX() && this.getBlockY() == l.getBlockY() && this.getBlockZ() == l.getBlockZ();
+			Location l = (Location) obj;
+			return this.world.equals(l.getWorld().getName()) && this.getBlockX() == l.getBlockX() && this.getBlockY() == l.getBlockY()
+					&& this.getBlockZ() == l.getBlockZ();
 		}
 		return false;
 	}
-	
+
 	public void saveToConfig(ConfigurationSection section)
 	{
 		section.set("World", world);
 		section.set("X", x);
 		section.set("Y", y);
 		section.set("Z", z);
-		section.set("Pitch", (double)pitch);
-		section.set("Yaw", (double)yaw);
+		section.set("Pitch", (double) pitch);
+		section.set("Yaw", (double) yaw);
 	}
 }

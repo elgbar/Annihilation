@@ -31,75 +31,76 @@ import com.gmail.nuclearcat1337.anniPro.utils.ShopMenu;
 
 public final class Signs implements Iterable<AnniSign>, Listener
 {
-	private Map<MapKey,AnniSign> signs;
+	private Map<MapKey, AnniSign> signs;
+
 	public Signs()
 	{
-		signs = new HashMap<MapKey,AnniSign>();
+		signs = new HashMap<MapKey, AnniSign>();
 	}
-	
+
 	public Signs(ConfigurationSection configSection)
 	{
 		this();
-		if(configSection != null)
+		if (configSection != null)
 		{
-			for(String key : configSection.getKeys(false))
+			for (String key : configSection.getKeys(false))
 			{
 				ConfigurationSection sign = configSection.getConfigurationSection(key);
 				addSign(new AnniSign(sign));
 			}
 		}
 	}
-	
+
 	public void registerListener(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
-	
+
 	public void unregisterListener()
 	{
 		HandlerList.unregisterAll(this);
 	}
-	
+
 	@Override
 	public Iterator<AnniSign> iterator()
 	{
 		return Collections.unmodifiableMap(signs).values().iterator();
 	}
-	
+
 	public boolean addSign(AnniSign sign)
 	{
 		ChatColor g = ChatColor.DARK_GRAY;
 		MapKey key = MapKey.getKey(sign.getLocation());
-		if(!signs.containsKey(key))
+		if (!signs.containsKey(key))
 		{
 			String[] lore;
-			if(sign.getType().equals(SignType.Brewing))
-				lore = new String[]{g+"["+Lang.SHOP.toString()+g+"]",Lang.BREWINGSIGN.toString()};
-			else if(sign.getType().equals(SignType.Weapon))
-				lore = new String[]{g+"["+Lang.SHOP.toString()+g+"]",Lang.WEAPONSIGN.toString()};
+			if (sign.getType().equals(SignType.Brewing))
+				lore = new String[] { g + "[" + Lang.SHOP.toString() + g + "]", Lang.BREWINGSIGN.toString() };
+			else if (sign.getType().equals(SignType.Weapon))
+				lore = new String[] { g + "[" + Lang.SHOP.toString() + g + "]", Lang.WEAPONSIGN.toString() };
 			else
 			{
 				AnniTeam team = sign.getType().getTeam();
 				lore = Lang.TEAMSIGN.toStringArray(team.getExternalColoredName());
 			}
-			placeSignInWorld(sign,lore);
+			placeSignInWorld(sign, lore);
 			signs.put(key, sign);
 			return true;
 		}
 		return false;
 	}
-	
+
 	private void placeSignInWorld(AnniSign asign, String[] lore)
 	{
 		Location loc = asign.getLocation().toLocation();
 		Block block = loc.getWorld().getBlockAt(loc);
-		if(block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
+		if (block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
 			block.getWorld().getBlockAt(loc).setType(asign.isSignPost() ? Material.SIGN_POST : Material.WALL_SIGN);
-		
-		Sign sign = (Sign)block.getState();
-		if(sign != null)
+
+		Sign sign = (Sign) block.getState();
+		if (sign != null)
 		{
-			for(int x = 0; x < lore.length; x++)
+			for (int x = 0; x < lore.length; x++)
 				sign.setLine(x, lore[x]);
 			org.bukkit.material.Sign matSign = new org.bukkit.material.Sign(block.getType());
 			matSign.setFacingDirection(asign.getFacingDirection());
@@ -107,49 +108,47 @@ public final class Signs implements Iterable<AnniSign>, Listener
 			sign.update(true);
 		}
 	}
-	
+
 	public boolean removeSign(Loc sign)
 	{
 		return removeSign(sign.toLocation());
 	}
-	
+
 	public boolean removeSign(Location sign)
 	{
 		boolean b = signs.remove(MapKey.getKey(sign)) == null ? false : true;
-		if(b)
+		if (b)
 			sign.getWorld().getBlockAt(sign).setType(Material.AIR);
 		return b;
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void signClickCheck(PlayerInteractEvent event)
 	{
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK)
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
 			Block b = event.getClickedBlock();
-			if(b != null)
+			if (b != null)
 			{
-				if(b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST)
+				if (b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST)
 				{
 					final Location loc = b.getLocation();
 					final Player p = event.getPlayer();
 					AnniSign sign = this.signs.get(MapKey.getKey(loc));
-					if(sign != null)
+					if (sign != null)
 					{
 						event.setCancelled(true);
-						if(sign.getType().equals(SignType.Team))
+						if (sign.getType().equals(SignType.Team))
 						{
 							AnniTeam team = sign.getType().getTeam();
-							if(team != null)
+							if (team != null)
 							{
-								p.performCommand("team "+team.getName());
+								p.performCommand("team " + team.getName());
 							}
-						}
-						else if(sign.getType().equals(SignType.Brewing))
+						} else if (sign.getType().equals(SignType.Brewing))
 						{
 							ShopMenu.openBrewingShop(p);
-						}
-						else if(sign.getType().equals(SignType.Weapon))
+						} else if (sign.getType().equals(SignType.Weapon))
 						{
 							ShopMenu.openWeaponShop(p);
 						}
@@ -158,29 +157,29 @@ public final class Signs implements Iterable<AnniSign>, Listener
 			}
 		}
 	}
-	
-	@EventHandler(priority = EventPriority.LOW,ignoreCancelled = true)
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void signBreakCheck(BlockBreakEvent event)
 	{
-		if(event.getBlock() != null && event.getPlayer().getGameMode() != GameMode.CREATIVE)
+		if (event.getBlock() != null && event.getPlayer().getGameMode() != GameMode.CREATIVE)
 		{
-			if(event.getBlock().getType() == Material.WALL_SIGN || event.getBlock().getType() == Material.SIGN_POST)
+			if (event.getBlock().getType() == Material.WALL_SIGN || event.getBlock().getType() == Material.SIGN_POST)
 			{
 				MapKey key = MapKey.getKey(event.getBlock().getLocation());
-				if(this.signs.containsKey(key))
+				if (this.signs.containsKey(key))
 					event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	public void saveToConfig(ConfigurationSection configSection)
 	{
-		if(configSection != null)
+		if (configSection != null)
 		{
 			int counter = 1;
-			for(AnniSign sign : this)
+			for (AnniSign sign : this)
 			{
-				sign.saveToConfig(configSection.createSection(counter+""));
+				sign.saveToConfig(configSection.createSection(counter + ""));
 				counter++;
 			}
 		}

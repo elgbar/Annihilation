@@ -14,42 +14,43 @@ import org.bukkit.event.HandlerList;
 
 public final class PlayerKilledEvent extends Event
 {
-    private static final HandlerList list = new HandlerList();
-    @Override
-    public HandlerList getHandlers()
-    {
-        return list;
-    }
+	private static final HandlerList list = new HandlerList();
 
-    public enum KillAttribute
+	@Override
+	public HandlerList getHandlers()
+	{
+		return list;
+	}
+
+	public enum KillAttribute
 	{
 		REMEMBRANCE,
 		NEXUSDEFENSE,
 		NEXUSATTACK,
 	}
 
-    private AnniPlayer player;
+	private AnniPlayer player;
 	private AnniPlayer killer;
 	private boolean dropXP;
 	private final List<KillAttribute> attributes;
-	
+
 	public PlayerKilledEvent(AnniPlayer killer, AnniPlayer player)
 	{
 		this.player = player;
 		this.killer = killer;
 		dropXP = false;
 		List<KillAttribute> att = new ArrayList<KillAttribute>();
-		if(killer.getTeam() != null)
+		if (killer.getTeam() != null)
 		{
-			if(killer.getTeam().isTeamDead())
+			if (killer.getTeam().isTeamDead())
 				att.add(KillAttribute.REMEMBRANCE);
 			else
 			{
 				Location killerLoc = killer.getPlayer().getLocation();
 				Loc nexusLoc = killer.getTeam().getNexus().getLocation();
-				if(nexusLoc != null && killerLoc.getWorld().getName().equalsIgnoreCase(killer.getTeam().getNexus().getLocation().getWorld()))
+				if (nexusLoc != null && killerLoc.getWorld().getName().equalsIgnoreCase(killer.getTeam().getNexus().getLocation().getWorld()))
 				{
-					if(killer.getTeam().getNexus().getLocation().toLocation().distanceSquared(killerLoc) <= 20*20)
+					if (killer.getTeam().getNexus().getLocation().toLocation().distanceSquared(killerLoc) <= 20 * 20)
 						att.add(KillAttribute.NEXUSDEFENSE);
 				}
 			}
@@ -57,31 +58,31 @@ public final class PlayerKilledEvent extends Event
 		this.attributes = Collections.unmodifiableList(att);
 	}
 
-    public AnniPlayer getPlayer()
-    {
-        return player;
-    }
+	public AnniPlayer getPlayer()
+	{
+		return player;
+	}
 
-    public static HandlerList getHandlerList()
-    {
-        return list;
-    }
-	
+	public static HandlerList getHandlerList()
+	{
+		return list;
+	}
+
 	public AnniPlayer getKiller()
 	{
 		return killer;
 	}
-	
+
 	public boolean shouldDropXP()
 	{
 		return dropXP;
 	}
-	
+
 	public void setShouldDropXP(boolean dropXP)
 	{
 		this.dropXP = dropXP;
 	}
-	
+
 	public List<KillAttribute> getAttributes()
 	{
 		return this.attributes;

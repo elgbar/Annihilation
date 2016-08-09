@@ -4,5 +4,5 @@ import org.bukkit.entity.Player;
 
 public interface RespawnPacket
 {
-    void sendToPlayer(Player player);
+	void sendToPlayer(Player player);
 }

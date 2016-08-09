@@ -34,101 +34,97 @@ public class Nexus implements Listener
 		this.Team = team;
 		this.Location = null;
 	}
-	
+
 	public final AnniTeam Team;
 	private Loc Location;
-	
+
 	public void setLocation(Loc loc)
 	{
 		this.Location = loc;
 	}
-	
+
 	public Loc getLocation()
 	{
 		return Location;
 	}
-	
+
 	private void gameOverCheck()
 	{
 		int total = AnniTeam.Teams.length;
 		int destroyed = 0;
 		AnniTeam winner = null;
-		for(AnniTeam team : AnniTeam.Teams)
+		for (AnniTeam team : AnniTeam.Teams)
 		{
-			if(team.isTeamDead())
+			if (team.isTeamDead())
 				destroyed++;
-			else winner = team;
+			else
+				winner = team;
 		}
-		
-		if(destroyed == total-1)
+
+		if (destroyed == total - 1)
 		{
 			AnniEvent.callEvent(new GameEndEvent(winner));
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void NexusCheck(BlockBreakEvent event)
 	{
-		if(event.getPlayer().getGameMode() != GameMode.CREATIVE && Game.isGameRunning() && Game.getGameMap() != null)
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE && Game.isGameRunning() && Game.getGameMap() != null)
 		{
-			if(Location != null && !Team.isTeamDead())
+			if (Location != null && !Team.isTeamDead())
 			{
 				Location loc = event.getBlock().getLocation();
-				if(this.Location.equals(loc))
+				if (this.Location.equals(loc))
 				{
 					event.setCancelled(true);
-					if(Game.getGameMap().canDamageNexus())
+					if (Game.getGameMap().canDamageNexus())
 					{
 						AnniPlayer p = AnniPlayer.getPlayer(event.getPlayer().getUniqueId());
-						if(p != null && p.getTeam() != null && !p.getTeam().equals(Team))	
+						if (p != null && p.getTeam() != null && !p.getTeam().equals(Team))
 						{
-							NexusHitEvent e = new NexusHitEvent(p,this,1*Game.getGameMap().getDamageMultiplier());
+							NexusHitEvent e = new NexusHitEvent(p, this, 1 * Game.getGameMap().getDamageMultiplier());
 							AnniEvent.callEvent(e);
-							if(!e.isCancelled() && e.getDamage() > 0)
+							if (!e.isCancelled() && e.getDamage() > 0)
 							{
-								loc.getWorld().playSound(loc, Sound.ANVIL_LAND, 1F, (float)Math.random());
-								Team.setHealth(Team.getHealth()-(e.getDamage()));
-								
-								for(AnniPlayer player : Team.getPlayers())
+								loc.getWorld().playSound(loc, Sound.ANVIL_LAND, 1F, (float) Math.random());
+								Team.setHealth(Team.getHealth() - (e.getDamage()));
+
+								for (AnniPlayer player : Team.getPlayers())
 								{
 									Player pl = player.getPlayer();
-									if(pl != null)
+									if (pl != null)
 										pl.playSound(pl.getLocation(), Sound.NOTE_PIANO, 1f, 2.1f);
 								}
-								
-								for(AnniPlayer pl : p.getTeam().getPlayers())
+
+								for (AnniPlayer pl : p.getTeam().getPlayers())
 								{
-									pl.sendMessage(p.getTeam().getColor()+p.getName()+ChatColor.GRAY+" has damaged "+this.Team.getColor()+this.Team.getName()+" nexus");
+									pl.sendMessage(p.getTeam().getColor() + p.getName() + ChatColor.GRAY + " has damaged " + this.Team.getColor()
+											+ this.Team.getName() + " nexus");
 								}
-								
-								if(Team.isTeamDead())
+
+								if (Team.isTeamDead())
 								{
 									ScoreboardAPI.removeTeam(Team);
 									World w = loc.getWorld();
 									w.getBlockAt(loc).setType(Material.BEDROCK);
 									try
 									{
-										BufferedImage image = ImageIO.read(AnnihilationMain.getInstance().getResource("Images/"+Team.getName()+"Team.png"));
-										String[] lore = new String[]
-										{
-											"",
-											"",
-											"",
-											"",
-											Lang.TEAMDESTROYED.toStringReplacement(Team.getExternalColoredName()),
-										};
-										ImageMessage message =  new ImageMessage(image, 10, ImageChar.MEDIUM_SHADE.getChar()).appendText(lore);
-										for(Player pl : Bukkit.getOnlinePlayers())
+										BufferedImage image = ImageIO
+												.read(AnnihilationMain.getInstance().getResource("Images/" + Team.getName() + "Team.png"));
+										String[] lore = new String[] { "", "", "", "",
+												Lang.TEAMDESTROYED.toStringReplacement(Team.getExternalColoredName()), };
+										ImageMessage message = new ImageMessage(image, 10, ImageChar.MEDIUM_SHADE.getChar()).appendText(lore);
+										for (Player pl : Bukkit.getOnlinePlayers())
 										{
 											pl.getWorld().playSound(pl.getLocation(), Sound.EXPLODE, 1F, .8F);
 											message.sendToPlayer(pl);
 										}
-									}
-									catch(Throwable t)
+									} catch (Throwable t)
 									{
-										
+
 									}
-									gameOverCheck();									
+									gameOverCheck();
 								}
 							}
 						}

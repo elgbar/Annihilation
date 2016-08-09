@@ -14,32 +14,32 @@ import com.gmail.nuclearcat1337.anniPro.utils.Loc;
 public class LobbyMap extends AnniMap
 {
 	private Location spawn;
-	
+
 	public LobbyMap(Location spawn)
 	{
-		super(spawn.getWorld().getName(),new File(AnnihilationMain.getInstance().getDataFolder(),"AnniLobbyConfig.yml"));
+		super(spawn.getWorld().getName(), new File(AnnihilationMain.getInstance().getDataFolder(), "AnniLobbyConfig.yml"));
 		this.spawn = spawn;
 	}
-	
+
 	public LobbyMap(File configFile)
 	{
-		super(null,configFile);
+		super(null, configFile);
 	}
-	
+
 	public Location getSpawn()
 	{
 		return spawn;
 	}
-	
+
 	public void setSpawn(Location newSpawn)
 	{
 		this.spawn = newSpawn;
 		super.setWorldName(newSpawn.getWorld().getName());
 	}
-	
+
 	public void sendToSpawn(final Player player)
 	{
-		if(spawn != null && player != null)
+		if (spawn != null && player != null)
 		{
 			player.getInventory().clear();
 			player.getInventory().setArmorContents(null);
@@ -50,7 +50,7 @@ public class LobbyMap extends AnniMap
 			player.setGameMode(GameVars.getDefaultGamemode());
 			player.getInventory().addItem(CustomItem.KITMAP.toItemStack());
 			player.getInventory().addItem(CustomItem.TEAMMAP.toItemStack());
-			if(GameVars.getVoting())
+			if (GameVars.getVoting())
 				player.getInventory().addItem(CustomItem.VOTEMAP.toItemStack());
 			player.teleport(getSpawn());
 		}
@@ -59,7 +59,7 @@ public class LobbyMap extends AnniMap
 	@Override
 	protected void loadFromConfig(ConfigurationSection section)
 	{
-		if(section != null && section.isConfigurationSection("SpawnLocation"))
+		if (section != null && section.isConfigurationSection("SpawnLocation"))
 		{
 			spawn = new Loc(section.getConfigurationSection("SpawnLocation")).toLocation();
 			super.setWorldName(spawn.getWorld().getName());
@@ -69,8 +69,8 @@ public class LobbyMap extends AnniMap
 	@Override
 	protected void saveToConfig(ConfigurationSection section)
 	{
-		if(this.getSpawn() != null && section != null)
-			new Loc(this.getSpawn(),true).saveToConfig(section.createSection("SpawnLocation"));
+		if (this.getSpawn() != null && section != null)
+			new Loc(this.getSpawn(), true).saveToConfig(section.createSection("SpawnLocation"));
 	}
-	
+
 }

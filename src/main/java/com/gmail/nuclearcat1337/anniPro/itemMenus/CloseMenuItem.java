@@ -22,10 +22,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * A {@link com.gmail.nuclearcat1337.anniPro.itemMenus.StaticMenuItem} that closes the
- * {@link com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu}.
- */
+/** A {@link com.gmail.nuclearcat1337.anniPro.itemMenus.StaticMenuItem} that closes the
+ * {@link com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu}. */
 public class CloseMenuItem extends StaticMenuItem
 {
 

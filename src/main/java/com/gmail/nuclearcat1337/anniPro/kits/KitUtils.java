@@ -10,87 +10,85 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-
 public class KitUtils
-{	
+{
 	public static ItemStack[] getLeatherArmor()
 	{
-		ItemStack[] stacks = new ItemStack[]{ new ItemStack(Material.LEATHER_BOOTS),
-				new ItemStack(Material.LEATHER_LEGGINGS), 
-				new ItemStack(Material.LEATHER_CHESTPLATE),
-				new ItemStack(Material.LEATHER_HELMET)};
-		
-		for(int x = 0; x < stacks.length; x++)
+		ItemStack[] stacks = new ItemStack[] { new ItemStack(Material.LEATHER_BOOTS), new ItemStack(Material.LEATHER_LEGGINGS),
+				new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_HELMET) };
+
+		for (int x = 0; x < stacks.length; x++)
 			stacks[x] = KitUtils.addSoulbound(stacks[x]);
 		return stacks;
 	}
+
 	public static boolean isSoulbound(ItemStack stack)
 	{
 		ItemMeta meta = stack.getItemMeta();
-		if(meta == null)
+		if (meta == null)
 			return false;
 		List<String> lore = meta.getLore();
-		if(lore == null)
+		if (lore == null)
 			return false;
-		return lore.contains(ChatColor.GOLD+"Soulbound");
+		return lore.contains(ChatColor.GOLD + "Soulbound");
 	}
-	
+
 	public static ItemStack addSoulbound(ItemStack stack)
 	{
-		if(stack == null)
+		if (stack == null)
 			return stack;
 		ItemMeta meta = stack.getItemMeta();
-		if(meta == null)
+		if (meta == null)
 			meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
 		List<String> lore = meta.getLore();
-		if(lore == null)
+		if (lore == null)
 			lore = new ArrayList<String>();
-		lore.add(ChatColor.GOLD+"Soulbound");
+		lore.add(ChatColor.GOLD + "Soulbound");
 		meta.setLore(lore);
 		stack.setItemMeta(meta);
 		return stack;
 	}
-	
+
 	public static ItemStack addEnchant(ItemStack s, Enchantment m, int level)
 	{
 		s.addUnsafeEnchantment(m, level);
 		return s;
 	}
-	
+
 	public static boolean itemHasName(ItemStack stack, String name)
 	{
-		if(stack == null)
+		if (stack == null)
 			return false;
 		ItemMeta meta = stack.getItemMeta();
-		if(meta == null)
+		if (meta == null)
 			return false;
-		if(!meta.hasDisplayName())
+		if (!meta.hasDisplayName())
 			return false;
 		return meta.getDisplayName().equalsIgnoreCase(name);
 	}
-	
+
 	public static ItemStack setName(ItemStack itemStack, String name)
 	{
 		ItemMeta meta = itemStack.getItemMeta();
-		if(meta == null)
+		if (meta == null)
 			meta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
 		meta.setDisplayName(name);
 		itemStack.setItemMeta(meta);
 		return itemStack;
 	}
-	
+
 	public static ItemStack setLore(ItemStack itemStack, List<String> lore)
 	{
 		ItemMeta meta = itemStack.getItemMeta();
-		if(meta == null)
+		if (meta == null)
 			meta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		return itemStack;
 	}
-	
+
 	public static ItemStack setNameLore(ItemStack itemStack, String name, List<String> lore)
 	{
-		return setLore(setName(itemStack,name),lore);
+		return setLore(setName(itemStack, name), lore);
 	}
 }

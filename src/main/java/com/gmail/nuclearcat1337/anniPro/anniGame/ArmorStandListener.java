@@ -9,15 +9,15 @@ import org.bukkit.plugin.Plugin;
 
 public class ArmorStandListener implements Listener
 {
-    public ArmorStandListener(Plugin p)
-    {
-        Bukkit.getPluginManager().registerEvents(this,p);
-    }
+	public ArmorStandListener(Plugin p)
+	{
+		Bukkit.getPluginManager().registerEvents(this, p);
+	}
 
-    @EventHandler
-    public void armorStandStop(EntitySpawnEvent event)
-    {
-        if(event.getEntityType() == EntityType.ARMOR_STAND)
-            event.setCancelled(true);
-    }
+	@EventHandler
+	public void armorStandStop(EntitySpawnEvent event)
+	{
+		if (event.getEntityType() == EntityType.ARMOR_STAND)
+			event.setCancelled(true);
+	}
 }

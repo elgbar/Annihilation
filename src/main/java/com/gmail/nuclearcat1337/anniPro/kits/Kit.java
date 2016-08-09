@@ -12,54 +12,54 @@ import org.bukkit.event.Listener;
 public abstract class Kit implements Listener, Comparable<Kit>
 {
 	public static final Kit CivilianInstance;
-	private static final Map<String,Kit> kits;
+	private static final Map<String, Kit> kits;
 	static
 	{
-		kits = new TreeMap<String,Kit>();
+		kits = new TreeMap<String, Kit>();
 		CivilianInstance = new CivilianKit();
 		registerKit(CivilianInstance);
 	}
-	
+
 	static void registerKit(Kit kit)
 	{
 		kits.put(kit.getName().toLowerCase(), kit);
 	}
-	
+
 	public static Collection<Kit> getKits()
 	{
 		return Collections.unmodifiableCollection(kits.values());
 	}
-	
+
 	public static Kit getKit(String name)
 	{
 		return kits.get(ChatColor.stripColor(name).toLowerCase());
 	}
-	
+
 	protected final ChatColor aqua = ChatColor.AQUA;
-	
+
 	public abstract boolean Initialize();
-	
+
 	public String getName()
 	{
 		return ChatColor.stripColor(getDisplayName());
 	}
-	
+
 	public abstract String getDisplayName();
-	
+
 	public abstract IconPackage getIconPackage();
-	
+
 	public abstract boolean hasPermission(Player player);
-	
+
 	public abstract void onPlayerSpawn(Player player);
-	
+
 	public abstract void cleanup(Player player);
-	
+
 	@Override
 	public int compareTo(Kit kit)
 	{
 		return this.getName().compareTo(kit.getName());
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
@@ -83,8 +83,7 @@ public abstract class Kit implements Listener, Comparable<Kit>
 		{
 			if (other.getName() != null)
 				return false;
-		}
-		else if (!this.getName().equals(other.getName()))
+		} else if (!this.getName().equals(other.getName()))
 			return false;
 		return true;
 	}

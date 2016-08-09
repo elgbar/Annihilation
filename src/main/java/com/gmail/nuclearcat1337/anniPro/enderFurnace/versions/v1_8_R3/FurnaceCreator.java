@@ -6,12 +6,12 @@ import com.gmail.nuclearcat1337.anniPro.enderFurnace.api.IFurnace;
 
 public class FurnaceCreator implements com.gmail.nuclearcat1337.anniPro.enderFurnace.api.FurnaceCreator
 {
-    @Override
-    public IFurnace createFurnace(final AnniPlayer player)
-    {
-        IFurnace f = new Furnace_v1_8_R3(player.getPlayer());
-        if(EnderFurnace.getFurnaceData(player) != null)
-            f.load(EnderFurnace.getFurnaceData(player));
-        return f;
-    }
+	@Override
+	public IFurnace createFurnace(final AnniPlayer player)
+	{
+		IFurnace f = new Furnace_v1_8_R3(player.getPlayer());
+		if (EnderFurnace.getFurnaceData(player) != null)
+			f.load(EnderFurnace.getFurnaceData(player));
+		return f;
+	}
 }

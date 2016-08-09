@@ -4,5 +4,5 @@ import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 
 public interface FurnaceCreator
 {
-    IFurnace createFurnace(AnniPlayer player);
+	IFurnace createFurnace(AnniPlayer player);
 }

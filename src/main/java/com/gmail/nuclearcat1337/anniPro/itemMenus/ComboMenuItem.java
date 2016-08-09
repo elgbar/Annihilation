@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public class ComboMenuItem extends SubMenuItem
 {
 	private ItemClickHandler handler;
+
 	public ComboMenuItem(String displayName, ItemMenu menu, ItemClickHandler handler, ItemStack icon, String... lore)
 	{
 		super(displayName, menu, icon, lore);
@@ -14,7 +15,7 @@ public class ComboMenuItem extends SubMenuItem
 	@Override
 	public void onItemClick(ItemClickEvent event)
 	{
-		if(handler != null)
+		if (handler != null)
 			handler.onItemClick(event);
 		super.onItemClick(event);
 	}

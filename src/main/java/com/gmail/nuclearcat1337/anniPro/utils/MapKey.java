@@ -6,15 +6,18 @@ public class MapKey implements Comparable<MapKey>
 {
 	public static MapKey getKey(Location location)
 	{
-		return location != null ? new MapKey(location.getBlockX()+" "+location.getBlockY()+" "+location.getBlockZ()+" "+location.getWorld().getName()) : null;
+		return location != null
+				? new MapKey(location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ() + " " + location.getWorld().getName())
+				: null;
 	}
-	
+
 	public static MapKey getKey(Loc location)
 	{
 		return location != null ? getKey(location.toLocation()) : null;
 	}
-	
-	private String key;	
+
+	private String key;
+
 	private MapKey(String key)
 	{
 		this.key = key;
@@ -23,7 +26,7 @@ public class MapKey implements Comparable<MapKey>
 	@Override
 	public int hashCode()
 	{
-		final int prime = 31; //wtf magic numbers :/ --kh498
+		final int prime = 31; // wtf magic numbers :/ --kh498
 		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		return result;
@@ -43,8 +46,7 @@ public class MapKey implements Comparable<MapKey>
 		{
 			if (other.key != null)
 				return false;
-		}
-		else if (!key.equals(other.key))
+		} else if (!key.equals(other.key))
 			return false;
 		return true;
 	}

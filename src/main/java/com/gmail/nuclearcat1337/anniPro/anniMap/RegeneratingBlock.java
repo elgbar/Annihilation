@@ -23,7 +23,7 @@ public class RegeneratingBlock
 		this.Effect = Effect;
 		this.ProductData = ProductData;
 	}
-	
+
 	public final Material Type;
 	public final int MaterialData;
 	public final boolean Regenerate;
@@ -36,10 +36,10 @@ public class RegeneratingBlock
 	public final String Amount;
 	public final int ProductData;
 	public final String Effect;
-	
+
 	public void saveToConfig(ConfigurationSection configSection)
 	{
-		if(configSection != null)
+		if (configSection != null)
 		{
 			configSection.set("Type", Type.name());
 			configSection.set("MaterialData", MaterialData);

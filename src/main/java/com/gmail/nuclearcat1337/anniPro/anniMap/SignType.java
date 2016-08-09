@@ -4,23 +4,24 @@ import com.gmail.nuclearcat1337.anniPro.anniGame.AnniTeam;
 
 public final class SignType
 {
-	public static SignType Weapon = new SignType((byte)1,null);
-	public static SignType Brewing = new SignType((byte)2,null); 
-	public static SignType Team = new SignType((byte)3,null);
-	
+	public static SignType Weapon = new SignType((byte) 1, null);
+	public static SignType Brewing = new SignType((byte) 2, null);
+	public static SignType Team = new SignType((byte) 3, null);
+
 	public static SignType newTeamSign(AnniTeam team)
 	{
-		return new SignType((byte)3,team);
+		return new SignType((byte) 3, team);
 	}
-	
+
 	private byte ID;
 	private AnniTeam team;
+
 	private SignType(byte ID, AnniTeam team)
 	{
 		this.ID = ID;
 		this.team = team;
 	}
-	
+
 	public AnniTeam getTeam()
 	{
 		return this.team;
@@ -49,6 +50,5 @@ public final class SignType
 			return false;
 		return true;
 	}
-	
-	
+
 }

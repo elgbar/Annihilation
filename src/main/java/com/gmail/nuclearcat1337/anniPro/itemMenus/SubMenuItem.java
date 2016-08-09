@@ -8,10 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 
-/**
- * A {@link ninja.amp.ampmenus.items.MenuItem} that opens a sub
- * {@link ninja.amp.ampmenus.menus.ItemMenu}.
- */
+/** A {@link ninja.amp.ampmenus.items.MenuItem} that opens a sub {@link ninja.amp.ampmenus.menus.ItemMenu}. */
 public class SubMenuItem extends MenuItem
 {
 	private final ItemMenu menu;

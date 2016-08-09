@@ -13,8 +13,7 @@ public class ReflectionUtil
 		field.set(instance, value);
 	}
 
-	public static void setValue(Object instance, String fieldName, Object value)
-			throws Exception
+	public static void setValue(Object instance, String fieldName, Object value) throws Exception
 	{
 		Field field = instance.getClass().getDeclaredField(fieldName);
 		field.setAccessible(true);

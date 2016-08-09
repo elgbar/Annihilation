@@ -15,13 +15,14 @@ public class CivilianKit extends Kit
 		Bukkit.getPluginManager().registerEvents(this, AnnihilationMain.getInstance());
 		this.Initialize();
 	}
-	
+
 	private Loadout loadout;
-	
+
 	@Override
 	public boolean Initialize()
 	{
-		loadout = new Loadout().addWoodSword().addWoodPick().addWoodAxe().addSoulboundItem(new ItemStack(Material.WORKBENCH)).addNavCompass().finalizeLoadout();
+		loadout = new Loadout().addWoodSword().addWoodPick().addWoodAxe().addSoulboundItem(new ItemStack(Material.WORKBENCH)).addNavCompass()
+				.finalizeLoadout();
 		return true;
 	}
 
@@ -46,7 +47,7 @@ public class CivilianKit extends Kit
 	@Override
 	public void cleanup(Player player)
 	{
-		
+
 	}
 
 	@Override

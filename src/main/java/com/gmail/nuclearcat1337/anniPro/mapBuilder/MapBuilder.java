@@ -79,7 +79,7 @@ public class MapBuilder implements Listener
 		public final ItemMenu main;
 		public boolean useMap;
 
-		public Wrapper (ItemMenu menu)
+		public Wrapper(ItemMenu menu)
 		{
 			main = menu;
 			useMap = false;
@@ -90,7 +90,7 @@ public class MapBuilder implements Listener
 	private final ConversationFactory factory;
 	private final Map<Tool, MenuItem> items;
 
-	public static TimeUnit getUnit (String input)
+	public static TimeUnit getUnit(String input)
 	{
 		TimeUnit u;
 		switch (input.toLowerCase())
@@ -132,18 +132,18 @@ public class MapBuilder implements Listener
 		return u;
 	}
 
-	public static String getReadableLocation (Location loc, ChatColor numColor, ChatColor normalColor, boolean withWorld)
+	public static String getReadableLocation(Location loc, ChatColor numColor, ChatColor normalColor, boolean withWorld)
 	{
 		return (numColor + "" + loc.getBlockX() + normalColor + ", " + numColor + loc.getBlockY() + normalColor + ", " + numColor + loc.getBlockZ()
 				+ normalColor + (withWorld ? " in world " + numColor + loc.getWorld().getName() + normalColor : ""));
 	}
 
-	public static String getReadableLocation (Loc loc, ChatColor numColor, ChatColor normalColor, boolean withWorld)
+	public static String getReadableLocation(Loc loc, ChatColor numColor, ChatColor normalColor, boolean withWorld)
 	{
 		return getReadableLocation(loc.toLocation(), numColor, normalColor, withWorld);
 	}
 
-	public MapBuilder (Plugin plugin)
+	public MapBuilder(Plugin plugin)
 	{
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 		this.mapBuilders = new HashMap<UUID, Wrapper>();
@@ -152,7 +152,7 @@ public class MapBuilder implements Listener
 		this.items.put(Tool.AreaWand, new ActionMenuItem("Protected Area Helper", new ItemClickHandler()
 		{
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.AREAWAND.toItemStack(1));
 				event.setWillClose(true);
@@ -163,7 +163,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				for (AnniTeam team : AnniTeam.Teams)
 				{
@@ -175,7 +175,7 @@ public class MapBuilder implements Listener
 				Object obj = new TeamBlockHandler()
 				{
 					@Override
-					public void onBlockClick (Player player, AnniTeam team, Action action, Block block, BlockFace face)
+					public void onBlockClick(Player player, AnniTeam team, Action action, Block block, BlockFace face)
 					{
 						if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR)
 						{
@@ -195,7 +195,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				for (AnniTeam team : AnniTeam.Teams)
 				{
@@ -207,7 +207,7 @@ public class MapBuilder implements Listener
 				Object obj = new TeamBlockHandler()
 				{
 					@Override
-					public void onBlockClick (Player player, AnniTeam team, Action action, Block block, BlockFace face)
+					public void onBlockClick(Player player, AnniTeam team, Action action, Block block, BlockFace face)
 					{
 						if (action == Action.LEFT_CLICK_AIR)
 						{
@@ -228,7 +228,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				for (AnniTeam team : AnniTeam.Teams)
 				{
@@ -240,7 +240,7 @@ public class MapBuilder implements Listener
 				Object obj = new TeamBlockHandler()
 				{
 					@Override
-					public void onBlockClick (Player player, AnniTeam team, Action action, Block block, BlockFace face)
+					public void onBlockClick(Player player, AnniTeam team, Action action, Block block, BlockFace face)
 					{
 						if (action == Action.LEFT_CLICK_BLOCK)
 						{
@@ -260,7 +260,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				for (AnniTeam team : AnniTeam.Teams)
 				{
@@ -272,7 +272,7 @@ public class MapBuilder implements Listener
 				Object obj = new TeamBlockHandler()
 				{
 					@Override
-					public void onBlockClick (Player player, AnniTeam team, Action action, Block block, BlockFace face)
+					public void onBlockClick(Player player, AnniTeam team, Action action, Block block, BlockFace face)
 					{
 						if (action == Action.RIGHT_CLICK_BLOCK)
 						{
@@ -325,7 +325,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.BREWINGSHOP.toItemStack(1));
 				event.setWillClose(true);
@@ -336,7 +336,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.WEAPONSHOP.toItemStack(1));
 				event.setWillClose(true);
@@ -347,7 +347,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.DIAMONDHELPER.toItemStack(1));
 				event.setWillClose(true);
@@ -358,7 +358,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.ENDERFURNACE.toItemStack(1));
 				event.setWillClose(true);
@@ -369,7 +369,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (final ItemClickEvent event)
+			public void onItemClick(final ItemClickEvent event)
 			{
 				SingleQuestionPrompt.newPrompt(event.getPlayer(),
 						ChatColor.LIGHT_PURPLE + "Please enter how long you want each phase to be. \nEnter a value in the format: " + ChatColor.RED
@@ -379,7 +379,7 @@ public class MapBuilder implements Listener
 						{
 
 							@Override
-							public boolean onAnswer (String input)
+							public boolean onAnswer(String input)
 							{
 								String[] args = input.split(" ");
 								if (args.length == 2 && Game.getGameMap() != null)
@@ -411,7 +411,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.REGENBLOCKHELPER.toItemStack(1));
 				event.setWillClose(true);
@@ -421,7 +421,7 @@ public class MapBuilder implements Listener
 		this.items.put(Tool.UnplaceableBlockWand, new ActionMenuItem("Unplaceable Block Wand", new ItemClickHandler()
 		{
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().getInventory().addItem(CustomItem.UNPLACEABLEBLOCKSWAND.toItemStack(1));
 				event.setWillClose(true);
@@ -432,7 +432,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				for (Golem golem : Golem.Golems)
 				{
@@ -450,7 +450,7 @@ public class MapBuilder implements Listener
 				Object obj = new GolemBlockHandler()
 				{
 					@Override
-					public void onBlockClick (Player player, Golem golem, Action action, Block block)
+					public void onBlockClick(Player player, Golem golem, Action action, Block block)
 					{
 						if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR)
 						{
@@ -468,12 +468,12 @@ public class MapBuilder implements Listener
 
 	}
 
-	private void setPlayerMeta (Player player, String key, final Object meta)
+	private void setPlayerMeta(Player player, String key, final Object meta)
 	{
 		Callable<Object> b = new Callable<Object>()
 		{
 			@Override
-			public Object call () throws Exception
+			public Object call() throws Exception
 			{
 				return meta;
 			}
@@ -481,7 +481,7 @@ public class MapBuilder implements Listener
 		player.setMetadata(key, new LazyMetadataValue(AnnihilationMain.getInstance(), b));
 	}
 
-	private Wrapper getItemMenu (final Player player)
+	private Wrapper getItemMenu(final Player player)
 	{
 		Wrapper wrap = this.mapBuilders.get(player.getUniqueId());
 		if (wrap == null)
@@ -495,7 +495,7 @@ public class MapBuilder implements Listener
 		return wrap;
 	}
 
-	private void buildMapMenu (ItemMenu menu)
+	private void buildMapMenu(ItemMenu menu)
 	{
 		menu.setItem(3, this.items.get(Tool.Golemboss));
 		menu.setItem(4, this.items.get(Tool.UnplaceableBlockWand));
@@ -508,7 +508,7 @@ public class MapBuilder implements Listener
 		{
 
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				event.setWillClose(true);
 				final UUID ID = event.getPlayer().getUniqueId();
@@ -516,7 +516,7 @@ public class MapBuilder implements Listener
 				wrap.useMap = false;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(AnnihilationMain.getInstance(), new Runnable()
 				{
-					public void run ()
+					public void run()
 					{
 						Player p = Bukkit.getPlayer(ID);
 						if (p != null)
@@ -538,19 +538,19 @@ public class MapBuilder implements Listener
 		menu.setItem(23, this.items.get(Tool.WeaponShop));
 	}
 
-	public void openMapBuilder (Player player)
+	public void openMapBuilder(Player player)
 	{
 		Wrapper mainMenu = getItemMenu(player);
 		updatePlayerMapBuilder(player, mainMenu).open(player);
 	}
 
-	private ItemMenu updatePlayerMapBuilder (final Player player, final Wrapper wrap)
+	private ItemMenu updatePlayerMapBuilder(final Player player, final Wrapper wrap)
 	{
 		final ItemMenu mainMenu = wrap.main;
 		ActionMenuItem lobby = new ActionMenuItem("Set Lobby Location", new ItemClickHandler()
 		{
 			@Override
-			public void onItemClick (ItemClickEvent event)
+			public void onItemClick(ItemClickEvent event)
 			{
 				if (Game.LobbyMap == null)
 				{
@@ -577,7 +577,7 @@ public class MapBuilder implements Listener
 			ActionMenuItem tpItem = new ActionMenuItem("Teleport to Lobby", new ItemClickHandler()
 			{
 				@Override
-				public void onItemClick (ItemClickEvent event)
+				public void onItemClick(ItemClickEvent event)
 				{
 					if (Game.LobbyMap != null && Game.LobbyMap.getSpawn() != null)
 						event.getPlayer().teleport(Game.LobbyMap.getSpawn());
@@ -590,7 +590,7 @@ public class MapBuilder implements Listener
 			ActionMenuItem loadWorld = new ActionMenuItem("Load New Map", new ItemClickHandler()
 			{
 				@Override
-				public void onItemClick (ItemClickEvent event)
+				public void onItemClick(ItemClickEvent event)
 				{
 					if (areThereWorlds())
 					{
@@ -598,7 +598,7 @@ public class MapBuilder implements Listener
 						final UUID ID = event.getPlayer().getUniqueId();
 						Bukkit.getScheduler().scheduleSyncDelayedTask(AnnihilationMain.getInstance(), new Runnable()
 						{
-							public void run ()
+							public void run()
 							{
 								Player p = Bukkit.getPlayer(ID);
 								if (p != null)
@@ -606,7 +606,7 @@ public class MapBuilder implements Listener
 									getWorldMenu(mainMenu, new ItemClickHandler()
 									{
 										@Override
-										public void onItemClick (ItemClickEvent event)
+										public void onItemClick(ItemClickEvent event)
 										{
 											if (event.getClickedItem() != null)
 											{
@@ -645,7 +645,7 @@ public class MapBuilder implements Listener
 						new ItemClickHandler()
 						{
 							@Override
-							public void onItemClick (ItemClickEvent event)
+							public void onItemClick(ItemClickEvent event)
 							{
 								// They clicked and want to use that map. Now we
 								// should switch them to item map for building a
@@ -666,14 +666,14 @@ public class MapBuilder implements Listener
 		return wrap.useMap ? wrap.main.getParent() : wrap.main;
 	}
 
-	private boolean areThereWorlds ()
+	private boolean areThereWorlds()
 	{
 		File worldFolder = new File(AnnihilationMain.getInstance().getDataFolder().getAbsolutePath() + "/Worlds");
 		if (!worldFolder.exists())
 			worldFolder.mkdir();
 		File[] files = worldFolder.listFiles(new FilenameFilter()
 		{
-			public boolean accept (File file, String name)
+			public boolean accept(File file, String name)
 			{
 				return file.isDirectory();
 			}
@@ -681,14 +681,14 @@ public class MapBuilder implements Listener
 		return files.length > 0;
 	}
 
-	private ItemMenu getWorldMenu (ItemMenu parent, ItemClickHandler handler)
+	private ItemMenu getWorldMenu(ItemMenu parent, ItemClickHandler handler)
 	{
 		File worldFolder = new File(AnnihilationMain.getInstance().getDataFolder().getAbsolutePath() + "/Worlds");
 		if (!worldFolder.exists())
 			worldFolder.mkdir();
 		File[] files = worldFolder.listFiles(new FilenameFilter()
 		{
-			public boolean accept (File file, String name)
+			public boolean accept(File file, String name)
 			{
 				return file.isDirectory();
 			}
@@ -702,7 +702,7 @@ public class MapBuilder implements Listener
 		return menu;
 	}
 
-	public static BlockFace getCardinalDirection (Player player)
+	public static BlockFace getCardinalDirection(Player player)
 	{
 		BlockFace f = null;
 		double rotation = (player.getLocation().getYaw() - 90) % 360;
@@ -773,7 +773,7 @@ public class MapBuilder implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
-	public void openMapBuilderCheck (PlayerInteractEvent event)
+	public void openMapBuilderCheck(PlayerInteractEvent event)
 	{
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
 		{
@@ -787,7 +787,7 @@ public class MapBuilder implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void brewingAndWeaponCheck (PlayerInteractEvent event)
+	public void brewingAndWeaponCheck(PlayerInteractEvent event)
 	{
 		if (Game.getGameMap() != null)
 		{
@@ -869,7 +869,7 @@ public class MapBuilder implements Listener
 								{
 									@SuppressWarnings("deprecation")
 									@Override
-									public boolean onAnswer (String input)
+									public boolean onAnswer(String input)
 									{
 										byte dataval = -2;
 										boolean go = false;
@@ -905,7 +905,7 @@ public class MapBuilder implements Listener
 								{
 									@SuppressWarnings("deprecation")
 									@Override
-									public boolean onAnswer (String input)
+									public boolean onAnswer(String input)
 									{
 										byte dataval = -2;
 										boolean go = false;
@@ -953,7 +953,7 @@ public class MapBuilder implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
-	public void nexusHelperCheck (PlayerInteractEvent event)
+	public void nexusHelperCheck(PlayerInteractEvent event)
 	{
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR
 				|| event.getAction() == Action.RIGHT_CLICK_BLOCK)

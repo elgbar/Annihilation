@@ -7,9 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An Item inside an {@link com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem}.
- */
+/** An Item inside an {@link com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem}. */
 public class MenuItem
 {
 	private String displayName;
@@ -21,75 +19,64 @@ public class MenuItem
 		this.displayName = displayName;
 		this.icon = icon;
 		this.lore = new ArrayList<String>();
-		for(String str : lore)
+		for (String str : lore)
 			this.lore.add(str);
 	}
 
-	/**
-	 * Gets the display name of the MenuItem.
+	/** Gets the display name of the MenuItem.
 	 *
-	 * @return The display name.
-	 */
+	 * @return The display name. */
 	public String getDisplayName()
 	{
 		return displayName;
 	}
 
-	/**
-	 * Gets the icon of the MenuItem.
+	/** Gets the icon of the MenuItem.
 	 *
-	 * @return The icon.
-	 */
+	 * @return The icon. */
 	public ItemStack getIcon()
 	{
 		return icon;
 	}
-	
+
 	public void setIcon(ItemStack newIcon)
 	{
 		this.icon = newIcon;
 	}
-	
+
 	public void setDisplayName(String name)
 	{
 		this.displayName = name;
 	}
 
-	/**
-	 * Gets the lore of the MenuItem.
+	/** Gets the lore of the MenuItem.
 	 *
-	 * @return The lore.
-	 */
+	 * @return The lore. */
 	public List<String> getLore()
 	{
 		return lore;
 	}
 
-	/**
-	 * Gets the ItemStack to be shown to the player.
+	/** Gets the ItemStack to be shown to the player.
 	 *
 	 * @param player
 	 *            The player.
-	 * @return The final icon.
-	 */
+	 * @return The final icon. */
 	public ItemStack getFinalIcon(Player player)
 	{
 		return setNameAndLore(getIcon().clone(), getDisplayName(), getLore());
 	}
 
-	/**
-	 * Called when the MenuItem is clicked.
+	/** Called when the MenuItem is clicked.
 	 *
 	 * @param event
-	 *            The {@link com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent}.
-	 */
+	 *            The {@link com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent}. */
 	public void onItemClick(ItemClickEvent event)
 	{
 		// Do nothing by default
 	}
 
-	/**
-	 * Sets the display name and lore of an ItemStack.
+	/** Sets the display name and lore of an ItemStack.
 	 *
 	 * @param itemStack
 	 *            The ItemStack.
@@ -97,10 +84,8 @@ public class MenuItem
 	 *            The display name.
 	 * @param lore
 	 *            The lore.
-	 * @return The ItemStack.
-	 */
-	public static ItemStack setNameAndLore(ItemStack itemStack,
-			String displayName, List<String> lore)
+	 * @return The ItemStack. */
+	public static ItemStack setNameAndLore(ItemStack itemStack, String displayName, List<String> lore)
 	{
 		ItemMeta meta = itemStack.getItemMeta();
 		meta.setDisplayName(displayName);

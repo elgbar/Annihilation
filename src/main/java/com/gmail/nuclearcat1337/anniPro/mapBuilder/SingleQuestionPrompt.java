@@ -12,27 +12,28 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 public final class SingleQuestionPrompt extends ValidatingPrompt
 {
 	private static ConversationFactory factory;
-	
+
 	private final String question;
 	private final AcceptAnswer listener;
-	
+
 	public static void newPrompt(final Player player, final String question, final AcceptAnswer listener)
 	{
-		if(factory == null)
+		if (factory == null)
 			factory = new ConversationFactory(AnnihilationMain.getInstance());
-		if(!player.isConversing())
+		if (!player.isConversing())
 		{
-			Conversation conv = factory.withModality(false).withFirstPrompt(new SingleQuestionPrompt(question,listener)).withLocalEcho(true).buildConversation(player);
+			Conversation conv = factory.withModality(false).withFirstPrompt(new SingleQuestionPrompt(question, listener)).withLocalEcho(true)
+					.buildConversation(player);
 			conv.begin();
 		}
 	}
-	
+
 	private SingleQuestionPrompt(final String question, final AcceptAnswer listener)
 	{
 		this.question = question;
 		this.listener = listener;
 	}
-	
+
 	@Override
 	public String getPromptText(ConversationContext context)
 	{
@@ -42,18 +43,18 @@ public final class SingleQuestionPrompt extends ValidatingPrompt
 	@Override
 	protected Prompt acceptValidatedInput(ConversationContext context, String input)
 	{
-		if(input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("stop") || input.equalsIgnoreCase("end"))
+		if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("stop") || input.equalsIgnoreCase("end"))
 			return Prompt.END_OF_CONVERSATION;
-		
-		if(listener.onAnswer(input))
+
+		if (listener.onAnswer(input))
 			return Prompt.END_OF_CONVERSATION;
-		else 
+		else
 			return this;
 	}
 
 	@Override
 	protected boolean isInputValid(ConversationContext context, String input)
-	{	
+	{
 		return true;
 	}
 }

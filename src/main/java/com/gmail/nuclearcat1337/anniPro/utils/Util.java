@@ -7,21 +7,20 @@ public class Util
 {
 	public static String shortenString(String string, int characters)
 	{
-		if(string.length() <= characters)
+		if (string.length() <= characters)
 			return string;
 		return string.substring(0, characters);
 	}
-	
+
 	public static boolean tryCreateFile(File file)
 	{
-		if(!file.exists())
+		if (!file.exists())
 		{
 			try
 			{
 				file.createNewFile();
 				return true;
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
