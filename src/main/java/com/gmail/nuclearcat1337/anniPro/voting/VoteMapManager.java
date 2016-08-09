@@ -45,6 +45,7 @@ public class VoteMapManager
 {
 	private static Map<String, String> voteMap;
 	private static String[] maps = null;
+	private static ArrayList<String> mapsLinks = null;
 	private static Scoreboard board;
 	private static Objective obj;
 	private static ItemMenu menu;
@@ -139,21 +140,25 @@ public class VoteMapManager
 		}
 
 		maps = getWorlds();
-		if (maps != null)
-		{
-			for (String str : maps)
-			{
-				Score score = obj.getScore(str);
-				score.setScore(0);
-			}
-		}
+		// if (maps != null)
+		// {
+		// for (String str : maps)
+		// {
+		// Score score = obj.getScore(str);
+		// score.setScore(0);
+		// }
+		// }
 
 		if (maps != null)
 		{
+			// mapsLinks = getPreviewLinks(maps);
 			menu = new ItemMenu("Vote for a Map", Size.fit(maps.length));
 			int x = 0;
 			for (final String str : maps)
 			{
+				Score score = obj.getScore(str);
+				score.setScore(0);
+
 				ActionMenuItem item = new ActionMenuItem(ChatColor.GOLD + str, new ItemClickHandler()
 				{
 					@Override
@@ -165,8 +170,39 @@ public class VoteMapManager
 							Boolean wasOp = p.isOp();
 							if (!wasOp)
 								p.setOp(true);
-							event.getPlayer().performCommand("tellraw @p [\"\",{\"text\":\"Click me to preview " + str
-									+ "\",\"color\":\"dark_purple\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://imgur.com/\"}}]");
+
+							String link = "https://imgur.com/404";
+
+							// TODO Make this dynamic eg saved in AnniMapConfig.yml
+							switch (str.toLowerCase())
+							{
+								case "paradisus":
+									link = "https://i.imgur.com/umxyCpk.jpg";
+									break;
+								case "goldrush":
+									link = "https://i.imgur.com/Sergmcg.gifv";
+									break;
+								case "Amerish":
+									link = "https://i.imgur.com/ZzxS71b.gifv";
+									break;
+								case "arid":
+									link = "https://i.imgur.com/CEkIb41.gifv";
+									break;
+								case "hamlet":
+									link = "https://i.imgur.com/zTwPDph.gifv";
+									break;
+								case "kraken":
+									link = "https://i.imgur.com/WHxMolF.gifv";
+									break;
+								case "theanHou":
+									link = "https://i.imgur.com/vZwYl3K.gifv";
+									break;
+								default:
+									break;
+							}
+							event.getPlayer().performCommand("tellraw @p ['',{'text':'Click me to preview " + str
+									+ "','color':'dark_purple','underlined':true,'clickEvent':{'action':'open_url','value':'" + link + "'}}]");
+
 							if (!wasOp)
 								p.setOp(false);
 						} else
@@ -244,6 +280,15 @@ public class VoteMapManager
 		}
 		return null;
 	}
+	// TODO Make the links updatable from the AnniMapConfig.yml
+	// private static ArrayList<String> getPreviewLinks(String[] maps){
+	// for (String str : maps){
+	// File map = new File(AnnihilationMain.getInstance().getDataFolder().getAbsolutePath() + "/Worlds/" + str, "AnniMapConfig.yml");
+	// if (!map.exists())
+	// break;
+	// }
+	// return null;
+	// }
 
 	private static String getMatch(String str)
 	{
