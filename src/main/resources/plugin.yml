@@ -15,6 +15,8 @@ commands:
     description: Allows players to vote for a map in annihilation
   Kit:
     description: Opens the kit menu for the player
+  Party:
+    description: Command to managing player parties
 permissions:
   A.anni:
     description: gives permission to use the anni command
