@@ -48,7 +48,6 @@ import com.hcs.anniPro.Listners.FoodLvlChangeListner;
 import com.hcs.anniPro.Listners.LaunchPadListner;
 import com.hcs.anniPro.Listners.TrampleListner;
 import com.hcs.anniPro.boss.GolemListner;
-
 import net.techcable.npclib.api.NPCMain;
 
 public class AnnihilationMain extends JavaPlugin implements Listener
@@ -91,6 +90,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 			for(Player pl : Bukkit.getOnlinePlayers())
 			{
 				Game.LobbyMap.sendToSpawn(pl);
+				
 			}
 		}
 		

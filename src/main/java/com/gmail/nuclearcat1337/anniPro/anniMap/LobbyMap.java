@@ -45,6 +45,8 @@ public class LobbyMap extends AnniMap
 			player.getInventory().setArmorContents(null);
 			player.setHealth(player.getMaxHealth());
 			player.setFoodLevel(20);
+			player.setExp(0);
+			player.setLevel(0);
 			player.setGameMode(GameVars.getDefaultGamemode());
 			player.getInventory().addItem(CustomItem.KITMAP.toItemStack());
 			player.getInventory().addItem(CustomItem.TEAMMAP.toItemStack());

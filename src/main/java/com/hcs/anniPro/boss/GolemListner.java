@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
+import com.hcs.anniPro.boss.versions.v1_8_R3.EnderDragonXPSpawn;
 
 public class GolemListner implements Listener
 {
@@ -90,7 +91,7 @@ public class GolemListner implements Listener
 					golem.setAlive(false);
 
 					Location spawnLoc = golem.getSpawn().toLocation();
-
+					Location deathLoc = golEnt.getLocation();
 					Player killer = event.getEntity().getKiller();
 					String team = null;
 					if (killer != null)
@@ -98,7 +99,13 @@ public class GolemListner implements Listener
 						AnniPlayer ap = AnniPlayer.getPlayer(killer.getUniqueId());
 						if (ap != null)
 						{
-							team = ap.getTeam().getColoredName();
+							try
+							{
+								team = ap.getTeam().getColoredName();
+							} catch (NullPointerException e)
+							{
+
+							}
 						}
 					}
 
@@ -112,6 +119,8 @@ public class GolemListner implements Listener
 						p.sendMessage(golem.getColor() + golem.getDisplayName() + ChatColor.LIGHT_PURPLE + " was killed by " + team + " team!");
 					}
 
+					EnderDragonXPSpawn.mimicEnderdragonXPdrop(deathLoc);
+
 					event.setDroppedExp(0);
 					event.getDrops().clear();
 
@@ -120,7 +129,7 @@ public class GolemListner implements Listener
 					Chest chest = (Chest) spawnLoc.getBlock().getState();
 					Inventory inv = chest.getInventory();
 
-					if (chest != null)
+					if (chest != null && inv != null)
 					{
 						List<ItemStack> l = new ArrayList<ItemStack>();
 
@@ -146,8 +155,7 @@ public class GolemListner implements Listener
 						while (z == z2)
 							z2 = rand.nextInt(common.size());
 						l.add(GolemReward.toItemStack(common.get(z2)));
-						
-						
+
 						z = rand.nextInt(uncommon.size());
 						z2 = rand.nextInt(uncommon.size());
 						l.add(GolemReward.toItemStack(uncommon.get(z)));
@@ -167,7 +175,13 @@ public class GolemListner implements Listener
 					{
 						public void run()
 						{
-							inv.setContents(null);
+							if (spawnLoc.getBlock().getType().equals(Material.CHEST))
+							{
+								Chest chest = (Chest) spawnLoc.getBlock().getState();
+								Inventory inv = chest.getInventory();
+								inv.setContents(null);
+							}
+							
 							spawnLoc.getBlock().setType(Material.AIR);
 							if (Game.isGameRunning())
 								Golem.spawnGolem(golem);
@@ -194,4 +208,5 @@ public class GolemListner implements Listener
 			}
 		}
 	}
+	
 }

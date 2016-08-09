@@ -23,15 +23,15 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 
 public class AnniCommand
 {
-	private static boolean reigstered = false;
+	private static boolean registered = false;
 	private static Map<String,AnniArgument> arguments;
 	private static ItemMenu menu;
 	
 	public static void register(JavaPlugin plugin)
 	{
-		if(reigstered == false)
+		if(registered == false)
 		{
-			reigstered = true;
+			registered = true;
 			arguments = new TreeMap<String,AnniArgument>();
 			recalcItemMenu();
 			plugin.getCommand("Anni").setExecutor(new Executor());

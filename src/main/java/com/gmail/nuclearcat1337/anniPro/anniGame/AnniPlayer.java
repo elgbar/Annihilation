@@ -66,13 +66,13 @@ public final class AnniPlayer
 		}
 		
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void enderFuraceManagement(PlayerQuitEvent event)
+		public void playerQuit(PlayerQuitEvent event)
 		{
 			checkLeave(event.getPlayer());
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void enderFuraceManagement(PlayerKickEvent event)
+		public void playerKicked(PlayerKickEvent event)
 		{
 			checkLeave(event.getPlayer());
 		}
