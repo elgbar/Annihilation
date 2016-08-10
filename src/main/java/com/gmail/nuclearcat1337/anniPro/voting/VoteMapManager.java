@@ -176,25 +176,25 @@ public class VoteMapManager
 							switch (str.toLowerCase())
 							{
 								case "paradisus":
-									link = "https://i.imgur.com/umxyCpk.jpg";
+									link = "https://i.imgur.com/tpNeTXn.jpg";
 									break;
 								case "goldrush":
-									link = "https://i.imgur.com/Sergmcg.gifv";
+									link = "https://i.imgur.com/n4FTarg.jpg";
 									break;
-								case "Amerish":
-									link = "https://i.imgur.com/ZzxS71b.gifv";
+								case "amerish":
+									link = "https://i.imgur.com/W80muAf.jpg";
 									break;
 								case "arid":
-									link = "https://i.imgur.com/CEkIb41.gifv";
+									link = "https://i.imgur.com/AP3C94A.jpg";
 									break;
 								case "hamlet":
-									link = "https://i.imgur.com/zTwPDph.gifv";
+									link = "https://i.imgur.com/8KQUJx6.jpg";
 									break;
 								case "kraken":
-									link = "https://i.imgur.com/WHxMolF.gifv";
+									link = "https://i.imgur.com/Y9DWvBK.jpg";
 									break;
-								case "theanHou":
-									link = "https://i.imgur.com/vZwYl3K.gifv";
+								case "theanhou":
+									link = "https://i.imgur.com/KZRDEeU.jpg";
 									break;
 								default:
 									break;
