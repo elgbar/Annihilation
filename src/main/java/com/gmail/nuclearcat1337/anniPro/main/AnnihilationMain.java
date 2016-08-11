@@ -48,6 +48,8 @@ import com.hcs.anniPro.Listners.FoodLvlChangeListner;
 import com.hcs.anniPro.Listners.LaunchPadListner;
 import com.hcs.anniPro.Listners.TrampleListner;
 import com.hcs.anniPro.boss.GolemListner;
+import com.hcs.anniPro.playerParty.PartyCommands;
+
 import net.techcable.npclib.api.NPCMain;
 
 public class AnnihilationMain extends JavaPlugin implements Listener
@@ -100,10 +102,14 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		new GameListeners(this);
 		new AreaCommand(this);
 		new BlockBreakListner(this);
+		
 		new FoodLvlChangeListner(this);
 		new TrampleListner(this);
 		new GolemListner(this);
 		new LaunchPadListner(this);
+		
+		new PartyCommands(this);
+		
 		new KitLoading(this); // No real reason to come last, but I kind of feel since its the heaviest processing power user, it should be last
 
 	}

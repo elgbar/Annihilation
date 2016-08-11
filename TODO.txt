@@ -4,9 +4,10 @@
 +Party Invite
 ++Make commands:
 +++/party create (create a party (bound to a player? Ask ben))
-+++/party invite <player>
++++/party invite <player> (only creator)
 +++/party kick <player> (only creator)
 +++/party list (list all players in your party)
++++/party accept <player> (player here is the team you want to join)
 
 ++Should the parties be preserved after a reload? (if so, can be added later)
 

@@ -2,6 +2,7 @@ package com.hcs.anniPro.playerParty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -21,20 +22,16 @@ public final class PlayerParty
 
 	public PlayerParty(Player leader, @Nullable AnniTeam team)
 	{
+		if (PlayerParties.getParty(leader.getUniqueId()) != null){
+			throw new IllegalArgumentException("This player is already a leader in another party.");
+		}
 		this.players = new ArrayList<Player>();
+		
 		this.teamLeader = leader;
 		if (team != null)
 			this.setAnniTeam(team);
 		PlayerParties.addParty(this);
-	}
-
-	public static boolean isInATeam(Player player)
-	{
-		if (player.hasMetadata(META_KEY))
-		{
-			return player.getMetadata(META_KEY).get(0).asBoolean();
-		}
-		return false;
+		this.addPlayer(leader);
 	}
 
 	/** @return the players */
@@ -47,8 +44,9 @@ public final class PlayerParty
 	 *            the players to add */
 	public void addPlayer(Player player)
 	{
-		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), true));
+		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getTeamLeader().getUniqueId()));
 		players.add(player);
+		PlayerParties.updateParty(this);
 	}
 
 	public boolean removePlayer(Player player)
@@ -61,7 +59,8 @@ public final class PlayerParty
 			return false;
 		}
 		players.remove(player);
-		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), false));
+		player.removeMetadata(META_KEY, AnnihilationMain.getInstance());
+		
 		return PlayerParties.updateParty(this);
 	}
 
@@ -87,23 +86,37 @@ public final class PlayerParty
 
 	public boolean isInThisParty(Player player)
 	{
-		for (Player p : this.getPlayers())
+		for (Player p : getPlayers())
 		{
 			if (p.equals(player))
 				return true;
 		}
 		return false;
 	}
-
-	public static void playerQuit(Player player)
+	
+	/*
+	 * Can be accessed outside the player party
+	 */
+	
+	public static boolean isInATeam(Player player)
 	{
-		// TODO Auto-generated method stub
-
+		
+		if (player.hasMetadata(PlayerParty.META_KEY) && getParty(player) != null){
+			return true;
+		}
+		return false;
 	}
-
-	public static void leaderQuit(Player p)
-	{
-		// TODO Auto-generated method stub
-
+	
+	public static PlayerParty getParty(Player player){
+		String uuidString;
+		try
+		{
+			uuidString = player.getMetadata(PlayerParty.META_KEY).get(0).asString();
+		} catch (Exception e)
+		{
+			return null;
+		}
+		UUID uuid = UUID.fromString(uuidString);
+		return PlayerParties.getParty(uuid);
 	}
 }

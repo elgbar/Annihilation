@@ -17,6 +17,7 @@ commands:
     description: Opens the kit menu for the player
   Party:
     description: Command to managing player parties
+    usage: /party <create/leave/invite/kick> [<player>]
 permissions:
   A.anni:
     description: gives permission to use the anni command

@@ -3,6 +3,7 @@ package com.hcs.anniPro.playerParty;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public final class PlayerParties
@@ -13,6 +14,11 @@ public final class PlayerParties
 	public static TreeMap<UUID, PlayerParty> getParties()
 	{
 		return parties;
+	}
+	
+	public static PlayerParty getParty(UUID id)
+	{
+		return parties.get(id);
 	}
 
 	public static void addParty(PlayerParty pp)
@@ -37,6 +43,17 @@ public final class PlayerParties
 	{
 		if (parties.containsKey(u))
 		{
+			PlayerParty pp = getParty(u);
+			Player leader = pp.getTeamLeader();
+			for (Player p : pp.getPlayers()){
+				if (p.isOnline()) {
+					if (!leader.equals(p)) {
+						p.sendMessage(ChatColor.DARK_PURPLE + "You party was removed due to the host (" + ChatColor.GOLD + leader + ChatColor.LIGHT_PURPLE + ") leaving.");
+					} else {
+						p.sendMessage(ChatColor.DARK_PURPLE + "Your party was removed.");
+					}
+				}
+			}
 			parties.remove(u);
 			return true;
 		}
@@ -48,26 +65,14 @@ public final class PlayerParties
 		return removeParty(p.getUniqueId());
 	}
 
-	public static boolean removeParty(PlayerParty pp)
-	{
-		return removeParty(pp.getTeamLeader().getUniqueId());
-	}
-
 	public static void clearParties()
 	{
-		// TODO test if this works
-		parties = new TreeMap<UUID, PlayerParty>();
+		parties.clear();
 	}
 
 	public static boolean isPlayerLeader(Player player)
 	{
 		UUID u = player.getUniqueId();
 		return parties.containsKey(u);
-	}
-
-	public static void leaderQuit(Player p)
-	{
-		// TODO Auto-generated method stub
-
 	}
 }

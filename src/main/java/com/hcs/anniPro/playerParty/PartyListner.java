@@ -11,9 +11,9 @@ import org.bukkit.plugin.Plugin;
 
 public class PartyListner implements Listener
 {
-	public PartyListner(Plugin p)
+	public PartyListner(Plugin plugin)
 	{
-		Bukkit.getPluginManager().registerEvents(this, p);
+		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -27,12 +27,19 @@ public class PartyListner implements Listener
 	{
 		playerLeave(event.getPlayer());
 	}
-
-	public void playerLeave(Player p)
+	
+	public static void playerLeave(Player p)
 	{
-		if (!PlayerParties.isPlayerLeader(p))
-			PlayerParty.playerQuit(p);
-		else
-			PlayerParties.removeParty(p);
+		if (PlayerParty.isInATeam(p)) {
+			if (!PlayerParties.isPlayerLeader(p))
+			{
+				PlayerParty pp = PlayerParty.getParty(p);
+				pp.removePlayer(p);
+			} else
+			{
+	
+				PlayerParties.removeParty(p);
+			}
+		}
 	}
 }
