@@ -49,6 +49,7 @@ import com.hcs.anniPro.Listners.LaunchPadListner;
 import com.hcs.anniPro.Listners.TrampleListner;
 import com.hcs.anniPro.boss.GolemListner;
 import com.hcs.anniPro.playerParty.PartyCommands;
+import com.hcs.anniPro.playerParty.PlayerParties;
 
 import net.techcable.npclib.api.NPCMain;
 
@@ -414,6 +415,8 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		if (Game.getGameMap() != null)
 			Game.getGameMap().unLoadMap();
 		Bukkit.getPluginManager().callEvent(new PluginDisableEvent());
+		
+		PlayerParties.clearParties();
 	}
 
 	public void saveMainValues()

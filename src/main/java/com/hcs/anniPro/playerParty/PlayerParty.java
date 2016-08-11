@@ -17,15 +17,18 @@ public final class PlayerParty
 	private static final String META_KEY = "isInParty";
 
 	private List<Player> players;
+	private List<Player> invited;
 	private AnniTeam team = null;
 	private final Player teamLeader;
 
 	public PlayerParty(Player leader, @Nullable AnniTeam team)
 	{
-		if (PlayerParties.getParty(leader.getUniqueId()) != null){
+		if (PlayerParties.getParty(leader.getUniqueId()) != null)
+		{
 			throw new IllegalArgumentException("This player is already a leader in another party.");
 		}
 		this.players = new ArrayList<Player>();
+		this.invited = new ArrayList<Player>();
 		
 		this.teamLeader = leader;
 		if (team != null)
@@ -46,6 +49,7 @@ public final class PlayerParty
 	{
 		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getTeamLeader().getUniqueId()));
 		players.add(player);
+		removeInvited(player);
 		PlayerParties.updateParty(this);
 	}
 
@@ -60,7 +64,7 @@ public final class PlayerParty
 		}
 		players.remove(player);
 		player.removeMetadata(META_KEY, AnnihilationMain.getInstance());
-		
+
 		return PlayerParties.updateParty(this);
 	}
 
@@ -94,20 +98,56 @@ public final class PlayerParty
 		return false;
 	}
 	
+	/** @return If a player is invited to join this team */
+	public boolean getIfInvited(Player player)
+	{
+		if (!invited.isEmpty()){
+			return invited.contains(player);
+		}
+		return false;
+	}
+
+	/** @param invited
+	 *            the player to invite */
+	public void addInvite(Player invited)
+	{
+		if (!getIfInvited(invited))
+		{
+			this.invited.add(invited);
+		}
+	}
+
+	/** @param invited
+	 *            the player to remove from invted invite */
+	public void removeInvited(Player invited)
+	{
+		if (getIfInvited(invited))
+		{
+			this.invited.remove(invited);
+		}
+	}
+	
+	public List<Player> getInvited()
+	{
+		return invited;
+	}
+
 	/*
 	 * Can be accessed outside the player party
 	 */
-	
+
 	public static boolean isInATeam(Player player)
 	{
-		
-		if (player.hasMetadata(PlayerParty.META_KEY) && getParty(player) != null){
+
+		if (player.hasMetadata(PlayerParty.META_KEY) && getParty(player) != null)
+		{
 			return true;
 		}
 		return false;
 	}
-	
-	public static PlayerParty getParty(Player player){
+
+	public static PlayerParty getParty(Player player)
+	{
 		String uuidString;
 		try
 		{
@@ -118,5 +158,9 @@ public final class PlayerParty
 		}
 		UUID uuid = UUID.fromString(uuidString);
 		return PlayerParties.getParty(uuid);
+	}
+	
+	public static void removeMetadata(Player player){
+		player.removeMetadata(META_KEY, AnnihilationMain.getInstance());
 	}
 }

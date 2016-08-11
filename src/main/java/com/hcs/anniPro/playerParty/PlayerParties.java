@@ -1,5 +1,6 @@
 package com.hcs.anniPro.playerParty;
 
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -46,9 +47,10 @@ public final class PlayerParties
 			PlayerParty pp = getParty(u);
 			Player leader = pp.getTeamLeader();
 			for (Player p : pp.getPlayers()){
+				PlayerParty.removeMetadata(p);
 				if (p.isOnline()) {
 					if (!leader.equals(p)) {
-						p.sendMessage(ChatColor.DARK_PURPLE + "You party was removed due to the host (" + ChatColor.GOLD + leader + ChatColor.LIGHT_PURPLE + ") leaving.");
+						p.sendMessage(ChatColor.DARK_PURPLE + "You party was removed due to the host (" + ChatColor.GOLD + leader.getName() + ChatColor.DARK_PURPLE + ") leaving.");
 					} else {
 						p.sendMessage(ChatColor.DARK_PURPLE + "Your party was removed.");
 					}
@@ -64,9 +66,19 @@ public final class PlayerParties
 	{
 		return removeParty(p.getUniqueId());
 	}
+	
+	public static boolean removeParty(PlayerParty pp)
+	{
+		return removeParty(pp.getTeamLeader().getUniqueId());
+	}
 
 	public static void clearParties()
 	{
+		for (Entry<UUID, PlayerParty> entry : parties.entrySet()){
+			PlayerParty pp = entry.getValue();
+			removeParty(pp);
+		}
+			
 		parties.clear();
 	}
 

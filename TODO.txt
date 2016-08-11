@@ -1,14 +1,10 @@
 +Golems
 ++Golems reward chest's item are randomly placed in the chest
 
-+Party Invite
-++Make commands:
-+++/party create (create a party (bound to a player? Ask ben))
-+++/party invite <player> (only creator)
-+++/party kick <player> (only creator)
-+++/party list (list all players in your party)
-+++/party accept <player> (player here is the team you want to join)
-
++Party
+++Make players in parties not being able to choose their team (and if they have choosen remove it or convert it to the party team)
++++Only the host can choose (gets a waring every 1 minute?)
+++Max Players in a party
 ++Should the parties be preserved after a reload? (if so, can be added later)
 
 ++On server make GUI work with the new commands (only the inviting part? or creation of team to?)
