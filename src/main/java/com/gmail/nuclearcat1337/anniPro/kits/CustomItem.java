@@ -16,6 +16,7 @@ public enum CustomItem
 	VOTEMAP(ChatColor.AQUA + "Right click to vote for a map", Material.EMPTY_MAP, true, null),
 	TEAMMAP(ChatColor.AQUA + "Right click to join a team", Material.WOOL, true, null),
 	MAPBUILDER(ChatColor.AQUA + "Right click to open the map builder", Material.DIAMOND_PICKAXE, true, null),
+	PARTYMAP(ChatColor.AQUA + "Right click to manage your party", Material.EMERALD, true, null),
 	BREWINGSHOP(
 			ChatColor.AQUA + "Brewing Shop Helper",
 			Material.BREWING_STAND_ITEM,

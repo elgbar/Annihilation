@@ -17,6 +17,14 @@ import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 public class ItemMenu
 {
 	private String name;
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	private Size size;
 	private MenuItem[] items;
 	private ItemMenu parent;
@@ -157,6 +165,7 @@ public class ItemMenu
 		{
 			ItemMenuListener.getInstance().register(AnnihilationMain.getInstance());
 		}
+		
 		Inventory inventory = Bukkit.createInventory(new ItemMenuHolder(this, Bukkit.createInventory(player, size.getSize())), size.getSize(), name);
 		apply(inventory, player);
 		player.openInventory(inventory);

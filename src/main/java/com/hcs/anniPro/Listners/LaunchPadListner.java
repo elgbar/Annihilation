@@ -65,6 +65,8 @@ public class LaunchPadListner implements Listener
 					float VERT_VEL = 1.5F; // Found while testing
 					newVec = new Vector(oldVec.getX(), VERT_VEL, oldVec.getZ());
 
+				} else {
+					newVec = null;
 				}
 
 				if (newVec != null)

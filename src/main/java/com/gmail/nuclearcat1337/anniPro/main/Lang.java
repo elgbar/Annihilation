@@ -67,6 +67,7 @@ public enum Lang
 	WRONGPHASE("team-join-wrong-phase", ChatColor.RED + "You cannot join during this phase."),
 	DESTROYEDTEAM("team-join-destroyed", ChatColor.RED + "You cannot join a team whose nexus is destroyed!"),
 	JOINANOTHERTEAM("team-join-another", ChatColor.RED + "Please join another team until the player counts even out!"),
+	ISINPARTY("has-party", ChatColor.RED + "You cannot join a team solo when you're in a party!"),
 	ALREADYHAVETEAM("team-already-have", ChatColor.RED + "You already have a Team!"),
 
 	// Team

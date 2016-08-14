@@ -153,16 +153,19 @@ public final class GameMap extends AnniMap implements Listener
 				for (Golem golem : Golem.Golems)
 				{
 					ConfigurationSection golemBossUnderSec = golemBossSec.getConfigurationSection(golem.getInternalName());
-
-					golem.setDisplayName(golemBossUnderSec.getString("Name"));
-					ConfigurationSection spawns = golemBossUnderSec.getConfigurationSection("Spawns");
-					if (spawns != null)
-					{
-						Loc loc = new Loc(spawns);
-						if (loc != null)
+					try {
+						golem.setDisplayName(golemBossUnderSec.getString("Name"));
+						ConfigurationSection spawns = golemBossUnderSec.getConfigurationSection("Spawns");
+						if (spawns != null)
 						{
-							golem.setSpawn(loc);
+							Loc loc = new Loc(spawns);
+							if (loc != null)
+							{
+								golem.setSpawn(loc);
+							}
 						}
+					} catch (NullPointerException e){
+						
 					}
 				}
 			}
@@ -259,10 +262,9 @@ public final class GameMap extends AnniMap implements Listener
 			for (Golem golem : Golem.Golems)
 			{
 				ConfigurationSection golemBossUnderSec = golemBossSec.createSection(golem.getInternalName());
-				if (golem.getDisplayName() != null)
-					golemBossUnderSec.set("Name", golem.getDisplayName());
-				if (golem.getSpawn() != null)
-					golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
+				golemBossUnderSec.set("Name", golem.getDisplayName() != null ? golem.getDisplayName() : "");
+//				if (golem.getSpawn() != null)
+				golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
 			}
 		}
 

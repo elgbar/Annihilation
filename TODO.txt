@@ -2,14 +2,7 @@
 ++Golems reward chest's item are randomly placed in the chest
 
 +Party
-++Make players in parties not being able to choose their team (and if they have choosen remove it or convert it to the party team)
-+++Only the host can choose (gets a waring every 1 minute?)
-++Max Players in a party
-++Should the parties be preserved after a reload? (if so, can be added later)
-
-++On server make GUI work with the new commands (only the inviting part? or creation of team to?)
-+++(this has nothing to do with the plugin, codewise)
-
+++Max Players in a party (10-15)
 
 From Ben:
 
@@ -25,3 +18,5 @@ Edit Scoreboard to Include More Information (next 3)
 Add Particles to Nexus and Enderfurnace (Next)
 Add Noise and Particle Effects for Special Attacks and Other Things... (Next 2)
 Create Tutorial System For Both Annihilation and HCS (how tho)
+
+create a void map for arid

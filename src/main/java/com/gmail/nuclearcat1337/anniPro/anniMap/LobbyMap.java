@@ -50,6 +50,7 @@ public class LobbyMap extends AnniMap
 			player.setGameMode(GameVars.getDefaultGamemode());
 			player.getInventory().addItem(CustomItem.KITMAP.toItemStack());
 			player.getInventory().addItem(CustomItem.TEAMMAP.toItemStack());
+			player.getInventory().addItem(CustomItem.PARTYMAP.toItemStack());
 			if (GameVars.getVoting())
 				player.getInventory().addItem(CustomItem.VOTEMAP.toItemStack());
 			player.teleport(getSpawn());

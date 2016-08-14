@@ -35,11 +35,13 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.kits.CustomItem;
 import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
+import com.hcs.anniPro.playerParty.PlayerParties;
+import com.hcs.anniPro.playerParty.PlayerParty;
 
 public class TeamCommand implements CommandExecutor, Listener
 {
 	private ItemMenu menu;
-	private Map<ChatColor, ImageMessage> messages;
+	private static Map<ChatColor, ImageMessage> messages;
 
 	public TeamCommand(JavaPlugin plugin)
 	{
@@ -87,17 +89,19 @@ public class TeamCommand implements CommandExecutor, Listener
 		}
 		menu.setItem(4, new ActionMenuItem(ChatColor.AQUA + "Leave a Team", new ItemClickHandler()
 		{
+
 			@Override
 			public void onItemClick(ItemClickEvent event)
 			{
 				event.getPlayer().performCommand("Team Leave");
 				event.setWillClose(true);
 			}
+
 		}, new ItemStack(Material.WOOL), new String[] {}));
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
-	public void voteGUIcheck(PlayerInteractEvent event)
+	public void openMenuCheck(PlayerInteractEvent event)
 	{
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
 		{
@@ -137,8 +141,17 @@ public class TeamCommand implements CommandExecutor, Listener
 					{
 						if (p.getTeam() != null)
 						{
-							sender.sendMessage(Lang.LEAVETEAM.toStringReplacement(p.getTeam().getExternalColoredName()));
-							p.getTeam().leaveTeam(p);
+							if (!PlayerParty.isInAParty(p.getPlayer()))
+							{
+								sender.sendMessage(Lang.LEAVETEAM.toStringReplacement(p.getTeam().getExternalColoredName()));
+								p.getTeam().leaveTeam(p);
+							} else if (PlayerParties.isPlayerLeader(p.getPlayer()))
+							{
+								PlayerParty.getParty(p.getPlayer()).setAnniTeam(null);
+							} else
+							{
+								sender.sendMessage("TODO");
+							}
 						} else
 							sender.sendMessage(Lang.NOTEAM.toString());
 					} else
@@ -228,14 +241,27 @@ public class TeamCommand implements CommandExecutor, Listener
 
 					}
 
-					joinTeam(p, team);
+					if (PlayerParty.isInAParty(player) && !PlayerParties.isPlayerLeader(player))
+					{
+						player.sendMessage(Lang.ISINPARTY.toString());
+						return;
+					}
+
+					if (PlayerParties.isPlayerLeader(player))
+					{
+						PlayerParty pp = PlayerParty.getParty(player);
+						pp.setAnniTeam(team);
+					} else
+					{
+						joinTeam(p, team);
+					}
 				} else
 					player.sendMessage(Lang.ALREADYHAVETEAM.toString());
 			}
 		}
 	}
 
-	private void joinTeam(AnniPlayer player, AnniTeam team)
+	public static void joinTeam(AnniPlayer player, AnniTeam team)
 	{
 		team.joinTeam(player);
 		Player p = player.getPlayer();
