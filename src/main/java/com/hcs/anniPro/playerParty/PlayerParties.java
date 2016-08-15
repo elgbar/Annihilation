@@ -3,8 +3,9 @@ package com.hcs.anniPro.playerParty;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import com.gmail.nuclearcat1337.anniPro.main.Lang;
 
 public final class PlayerParties
 {
@@ -48,9 +49,9 @@ public final class PlayerParties
 			for (Player p : pp.getPlayers()){
 				if (p.isOnline()) {
 					if (leader.equals(p)) {
-						p.sendMessage(ChatColor.DARK_PURPLE + "Your party was removed.");
+						p.sendMessage(Lang.PARTYREMOVED.toString());
 					} else {
-						p.sendMessage(ChatColor.DARK_PURPLE + "You party was disbanded due to the host," + ChatColor.GOLD + leader.getName() + ChatColor.DARK_PURPLE + ", leaving.");
+						p.sendMessage(Lang.PARTYREMOVEDPLAYER.toStringReplacement(leader.getName()));
 					}
 				}
 				PlayerParty.removeMetadata(p);

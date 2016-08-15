@@ -67,6 +67,7 @@ public enum Lang
 	DESTROYEDTEAM("team-join-destroyed", ChatColor.RED + "You cannot join a team whose nexus is destroyed!"),
 	JOINANOTHERTEAM("team-join-another", ChatColor.RED + "Please join another team until the player counts even out!"),
 	ISINPARTY("has-party", ChatColor.RED + "You cannot join a team solo when you're in a party!"),
+	LEAVEPARTY("leave-team-in-party", ChatColor.RED + "You cannot leave your team while you're in a party."),
 
 	// Team
 	YELLOWTEAM("yellow-team", "Yellow"),
@@ -102,74 +103,109 @@ public enum Lang
 					+ "when breaking it" + "%n" + ChatColor.RED + "x2 " + ChatColor.GOLD + "extra damage"),
 
 	//Party
-	
+	NOCREATE("no-create-while-running", ChatColor.RED + "You cannot create a party while a game is running"),
+	NOEDIT("no-edit-while-running", ChatColor.RED + "You cannot edit parties while the game is running."),
+
 	//You
 	ALREADYHAVEPARTY("party-already-have", ChatColor.RED + "You already have a party!"),
 	NOPARTY("no-party", ChatColor.RED + "You are not in a party."),
 	NOTHOST("not-host", ChatColor.RED + "Only the host can do that."),
 	NOTINVITEDPLAYER("not-invited", ChatColor.RED + "You are not invited to join this party"),
-	NOTYOURSELF("arg-is-player",ChatColor.RED + "Player argument cannot be yourself."),
-	
+	NOTYOURSELF("arg-is-player", ChatColor.RED + "Player argument cannot be yourself."),
+	NOPLAYERSINPARTY("no-players-in-party", ChatColor.RED + "There are no players in your party"),
+	PARTYREMOVED("party-removed", ChatColor.DARK_PURPLE + "Your party was removed."),
+	PARTYREMOVEDPLAYER(
+			"party-removed-player",
+			ChatColor.DARK_PURPLE + "You party was disbanded due to the host," + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE
+					+ ", leaving."),
+
 	//Target
-	TARGETHAVEPARTY("target-have-party",ChatColor.RED + "That player is in a party."),
-	TARGETDONOTHAVEPARTY("target-have-party",ChatColor.RED + "That player is not in a party."),
-	TARGETHAVENOPARTY("target-have-no-party",ChatColor.RED + "That player does not have a party"),
+	TARGETHAVEPARTY("target-have-party", ChatColor.RED + "That player is in a party."),
+	TARGETDONOTHAVEPARTY("target-have-party", ChatColor.RED + "That player is not in a party."),
+	TARGETHAVENOPARTY("target-have-no-party", ChatColor.RED + "That player does not have a party"),
 	NOSUCHPLAYER("no-such-player", ChatColor.RED + "That player does not exist."),
 	NOTINVITEDTARGET("not-invited", ChatColor.RED + "That player is not invited to join your party."),
-	
+
 	//Cancel invites
 	NOLONGERINVITEDHOST("no-longer-invited-host", ChatColor.DARK_PURPLE + "Canceled invitation for " + ChatColor.GOLD + "%w"),
-	NOLONGERINVITEDTARGET("no-longer-invited-target", ChatColor.DARK_PURPLE + "You are no longer invited to " + ChatColor.GOLD + "%w"+ ChatColor.DARK_PURPLE + "'s party."),
-	NOPENDINGINVITES("no-pending-invites",ChatColor.RED + "You have no pending invites to your party."),
-	CANCELINVITE("cancel-invite","Cancel Invite"),
-	
+	NOLONGERINVITEDTARGET(
+			"no-longer-invited-target",
+			ChatColor.DARK_PURPLE + "You are no longer invited to " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + "'s party."),
+	NOPENDINGINVITES("no-pending-invites", ChatColor.RED + "You have no pending invites to your party."),
+	CANCELINVITE("cancel-invite", "Cancel Invite"),
+
 	//accept
-	ACCEPTHOST("player-accept-host",ChatColor.DARK_PURPLE + "The player " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE
-			+ " joined your party."),
-	ACCEPTPLAYER("player-accept-player",ChatColor.DARK_PURPLE + "You joined " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE
-			+ "'s party"),
-	NOTINVITED("not-invited-to-parties",ChatColor.RED + "You are not invited to any parties :("),
-	NOJOINWHENINPARTY("no-join-when-in-party",ChatColor.RED + "You cannot join a party when you are in a party"),
+	ACCEPTINVITE("accept-invite", "Accept Invite"),
+	ACCEPTHOST("player-accept-host", ChatColor.DARK_PURPLE + "The player " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + " joined your party."),
+	ACCEPTPLAYER("player-accept-player", ChatColor.DARK_PURPLE + "You joined " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + "'s party"),
+	NOTINVITED("not-invited-to-parties", ChatColor.RED + "You are not invited to any parties :("),
+	NOJOINWHENINPARTY("no-join-when-in-party", ChatColor.RED + "You cannot join a party when you are in a party"),
+
+	//kicked
+	KICKPLAYERS("kick-players", "Kick Players"),
+	KICKEDAPLAYER("player-kicked", ChatColor.DARK_PURPLE + "You kicked " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + " from your party."),
+	PLAYERKICKED(
+			"player-kicked",
+			ChatColor.DARK_PURPLE + "You were kicked from your party by " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + "."),
+
+	//invite
+	NOONETOINVITE("no-one-to-invite", ChatColor.RED + "There is no one to invite."),
+	INVITEPLAYERS("invite-players", "Invite Players"),
+	INVITEHOST("invite-host", ChatColor.DARK_PURPLE + "You invited " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + " to join your party."),
+	INVITETARGET("invite-target", ChatColor.DARK_PURPLE + "You are invited to join " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE + "'s party."),
+
+	//CREATE
+	CREATESUCCESS("create-success", ChatColor.DARK_PURPLE + "Succsessfully created a party!"),
+	CREATEFAILED("create-failed", ChatColor.RED + "You cannot create a party when you are a part of one."),
+
+	//leave
+
+	LEFTPARTY("player-leave-party", ChatColor.DARK_PURPLE + "You left the party."),
+
 	//Party GUI
-	NEXTPAGE("next-page",ChatColor.YELLOW + "Next Page"),
-	PREVPAGE("previous-page",ChatColor.YELLOW + "previous Page"),
+	NEXTPAGE("next-page", ChatColor.YELLOW + "Next Page"),
+	PREVPAGE("previous-page", ChatColor.YELLOW + "previous Page"),
 	EXITGUI("exit-gui", ChatColor.RED + "Exit"),
-	
+
 	//HEAD LORE
-	HEADLOREACCEPT("head-lore-accept", ChatColor.GRAY + "Click on a player's head%n"+
-			ChatColor.GRAY + "to accept the host's inviation"),
-	HEADLORECANCELINV("head-lore-cancel-inv", ChatColor.GRAY + "Click on a player's head%n" +ChatColor.GRAY + "to cancel the invitation from your party"),
-	
-	
-	
+	HEADLOREINVITE("head-lore-kick", ChatColor.GRAY + "Click on a player's head%n" + ChatColor.GRAY + "to invite the player to your party"),
+	HEADLOREKICK("head-lore-kick", ChatColor.GRAY + "Click on a player's head%n" + ChatColor.GRAY + "to kick them from your party"),
+	HEADLOREACCEPT("head-lore-accept", ChatColor.GRAY + "Click on a player's head%n" + ChatColor.GRAY + "to accept the host's inviation"),
+	HEADLORECANCELINV(
+			"head-lore-cancel-inv",
+			ChatColor.GRAY + "Click on a player's head%n" + ChatColor.GRAY + "to cancel the invitation from your party"),
+
 	//One-two words
 	PAGE("page", "Page"),
 	HOST("host", "Host"),
 	PLAYERS("players", "Players"),
 	INVITED("invited", "Invited"),
-	
-	;
-	
+	PLAYERPARTY("player-party", "Player Parties"),;
+
 	private String path;
 	private String def;
 	private static YamlConfiguration LANG;
 
-	/** Lang enum constructor.
+	/**
+	 * Lang enum constructor.
 	 * 
 	 * @param path
 	 *            The string path.
 	 * @param start
-	 *            The default string. */
+	 *            The default string.
+	 */
 	Lang(String path, String start)
 	{
 		this.path = path;
 		this.def = start;
 	}
 
-	/** Set the {@code YamlConfiguration} to use.
+	/**
+	 * Set the {@code YamlConfiguration} to use.
 	 * 
 	 * @param config
-	 *            The config to set. */
+	 *            The config to set.
+	 */
 	public static void setFile(YamlConfiguration config)
 	{
 		LANG = config;
@@ -242,17 +278,21 @@ public enum Lang
 			return new String[] { s };
 	}
 
-	/** Get the default value of the path.
+	/**
+	 * Get the default value of the path.
 	 * 
-	 * @return The default value of the path. */
+	 * @return The default value of the path.
+	 */
 	public String getDefault()
 	{
 		return this.def;
 	}
 
-	/** Get the path to the string.
+	/**
+	 * Get the path to the string.
 	 * 
-	 * @return The path to the string. */
+	 * @return The path to the string.
+	 */
 	public String getPath()
 	{
 		return this.path;

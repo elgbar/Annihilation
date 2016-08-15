@@ -20,3 +20,5 @@ Add Noise and Particle Effects for Special Attacks and Other Things... (Next 2)
 Create Tutorial System For Both Annihilation and HCS (how tho)
 
 create a void map for arid
+
+rename items via packets

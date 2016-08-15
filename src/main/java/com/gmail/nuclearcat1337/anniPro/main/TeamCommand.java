@@ -150,7 +150,7 @@ public class TeamCommand implements CommandExecutor, Listener
 								PlayerParty.getParty(p.getPlayer()).setAnniTeam(null);
 							} else
 							{
-								sender.sendMessage("TODO");
+								sender.sendMessage(Lang.LEAVEPARTY.toString());
 							}
 						} else
 							sender.sendMessage(Lang.NOTEAM.toString());
@@ -256,7 +256,7 @@ public class TeamCommand implements CommandExecutor, Listener
 						joinTeam(p, team);
 					}
 				} else
-					player.sendMessage(Lang.ALREADYHAVETEAM.toString());
+					player.sendMessage(Lang.ALREADYHAVEPARTY.toString());
 			}
 		}
 	}

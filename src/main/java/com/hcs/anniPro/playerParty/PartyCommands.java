@@ -90,14 +90,14 @@ public class PartyCommands implements CommandExecutor, Listener
 			Player player = (Player) sender;
 			if (args.length == 0)
 			{
-				ItemMenu menu = new ItemMenu("Player Parties", Size.ONE_LINE);
+				ItemMenu menu = new ItemMenu(Lang.PLAYERPARTY.toString(), Size.ONE_LINE);
 				if (!Game.isGameRunning())
 				{
 
 					if (!PlayerParty.isInAParty(player))
 					{
-						menu.setItem(0, MenuItems.getCreateItem());
-						menu.setItem(8, MenuItems.getAcceptItem());
+						menu.setItem(0, MenuItems.getAcceptItem());
+						menu.setItem(8, MenuItems.getCreateItem());
 					} else
 					{
 						menu.setItem(0, MenuItems.getViewItem());
@@ -106,7 +106,7 @@ public class PartyCommands implements CommandExecutor, Listener
 
 					if (PlayerParties.isPlayerLeader(player))
 					{
-						menu.setName("Player Parties - Host");
+						menu.setName(Lang.PLAYERPARTY.toString() + " - " + Lang.HOST.toString());
 						menu.setItem(3, MenuItems.getInviteItem());
 						menu.setItem(4, MenuItems.getKickItem());
 						menu.setItem(5, MenuItems.getCancelInviteItem());
@@ -116,7 +116,7 @@ public class PartyCommands implements CommandExecutor, Listener
 					menu.setItem(4, MenuItems.getViewItem());
 				} else
 				{
-					player.sendMessage(ChatColor.RED + "You cannot create create a party while a game is running");
+					player.sendMessage(Lang.NOCREATE.toString());
 					return true;
 				}
 				menu.open(player);
@@ -125,7 +125,7 @@ public class PartyCommands implements CommandExecutor, Listener
 
 			if (Game.isGameRunning() && !args[0].equalsIgnoreCase("show"))
 			{
-				player.sendMessage(ChatColor.RED + "You cannot edit parties while the game is running.");
+				player.sendMessage(Lang.NOEDIT.toString());
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Create"))
@@ -142,13 +142,13 @@ public class PartyCommands implements CommandExecutor, Listener
 					}
 
 					new PlayerParty(player, at);
-					sender.sendMessage(ChatColor.DARK_PURPLE + "Succsessfully created a party!");
+					sender.sendMessage(Lang.CREATESUCCESS.toString());
 
 					delayedOpenGUI(player, null);
 
 				} else
 				{
-					sender.sendMessage(ChatColor.RED + "You cannot create a party when you are a part of one.");
+					sender.sendMessage(Lang.CREATEFAILED.toString());
 				}
 			} else if (args[0].equalsIgnoreCase("leave"))
 			{
@@ -156,12 +156,12 @@ public class PartyCommands implements CommandExecutor, Listener
 				{
 					if (!PlayerParties.isPlayerLeader(player))
 					{
-						sender.sendMessage(ChatColor.DARK_PURPLE + "You left the party.");
+						sender.sendMessage(Lang.LEFTPARTY.toString());
 					}
 					PlayerParties.playerLeave(player);
 				} else
 				{
-					sender.sendMessage(ChatColor.RED + "You are not in a party");
+					sender.sendMessage(Lang.NOPARTY.toString());
 				}
 			} else if (args[0].equalsIgnoreCase("invite"))
 			{
@@ -185,11 +185,10 @@ public class PartyCommands implements CommandExecutor, Listener
 					}
 					if (playerList.isEmpty())
 					{
-						sender.sendMessage(ChatColor.RED + "There is no one to invite.");
+						sender.sendMessage(Lang.NOONETOINVITE.toString());
 					} else
 					{
-						ItemMenus("Invite Players", args[0], playerList, player, ChatColor.GRAY + "Click on a player's head ",
-								ChatColor.GRAY + "to invite the player to your party");
+						ItemMenus(Lang.INVITEPLAYERS.toString(), args[0], playerList, player, Lang.HEADLOREINVITE.toStringArray());
 					}
 					return true;
 				}
@@ -198,10 +197,8 @@ public class PartyCommands implements CommandExecutor, Listener
 				if (errMsg == null)
 				{
 					PlayerParty.getParty(player).addInvite(target);
-					sender.sendMessage(ChatColor.DARK_PURPLE + "You invited " + ChatColor.GOLD + target.getName() + ChatColor.DARK_PURPLE
-							+ " to join your party.");
-					target.sendMessage(ChatColor.DARK_PURPLE + "You are invited to join " + ChatColor.GOLD + player.getName() + ChatColor.DARK_PURPLE
-							+ "'s party.");
+					sender.sendMessage(Lang.INVITEHOST.toStringReplacement(target.getName()));
+					target.sendMessage(Lang.INVITETARGET.toStringReplacement(player.getName()));
 					if (args.length == 3 && args[2].equals(MAGIC_REOPEN_KEY))
 					{
 						delayedOpenGUI(player, args[0]);
@@ -226,11 +223,10 @@ public class PartyCommands implements CommandExecutor, Listener
 					list.remove(player); // We can do this safely because the leader will always be in the list
 					if (list.isEmpty())
 					{
-						sender.sendMessage(ChatColor.RED + "There are no players in your party");
+						sender.sendMessage(Lang.NOPLAYERSINPARTY.toString());
 					} else
 					{
-						ItemMenus("Kick Players", args[0], list, player, ChatColor.GRAY + "Click on a player's head ",
-								ChatColor.GRAY + "to kick them from your party");
+						ItemMenus(Lang.KICKPLAYERS.toString(), args[0], list, player, Lang.HEADLOREKICK.toStringArray());
 					}
 					return true;
 				}
@@ -239,10 +235,8 @@ public class PartyCommands implements CommandExecutor, Listener
 				if (errMsg == null)
 				{
 					PlayerParty.getParty(player).removePlayer(target);
-					sender.sendMessage(
-							ChatColor.DARK_PURPLE + "You kicked " + ChatColor.GOLD + target.getName() + ChatColor.DARK_PURPLE + " from your party.");
-					target.sendMessage(ChatColor.DARK_PURPLE + "You were kicked from your party by " + ChatColor.GOLD + player.getName()
-							+ ChatColor.DARK_PURPLE + ".");
+					sender.sendMessage(Lang.KICKEDAPLAYER.toStringReplacement(target.getName()));
+					target.sendMessage(Lang.PLAYERKICKED.toStringReplacement(player.getName()));
 					if (args.length == 3 && args[2].equals(MAGIC_REOPEN_KEY))
 					{
 						delayedOpenGUI(player, args[0]);
@@ -274,7 +268,7 @@ public class PartyCommands implements CommandExecutor, Listener
 						sender.sendMessage(Lang.NOTINVITED.toString());
 					} else
 					{
-						ItemMenus("Accept Invite", args[0], playerList, player, Lang.HEADLOREACCEPT.toStringArray());
+						ItemMenus(Lang.ACCEPTINVITE.toString(), args[0], playerList, player, Lang.HEADLOREACCEPT.toStringArray());
 					}
 					return true;
 				}
@@ -603,7 +597,7 @@ public class PartyCommands implements CommandExecutor, Listener
 			{
 				currMenu.open(player);
 			}
-		}, 1L); // 1 ticks
+		}, 2L); // 2 ticks
 
 		return;
 	}
