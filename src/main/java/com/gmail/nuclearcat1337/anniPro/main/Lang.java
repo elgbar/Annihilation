@@ -44,7 +44,6 @@ public enum Lang
 	INVISREVEAL("invis-reveal", ChatColor.GOLD + "You have been revealed!"),
 
 	// Signs
-	// ChatColor.DARK_PURPLE+"Right Click",ChatColor.DARK_PURPLE+"To Join:",team.getColoredName()+" Team"
 	SHOP("the-word-shop", ChatColor.DARK_PURPLE + "Shop"),
 	TEAMSIGN("team-join-sign", ChatColor.DARK_PURPLE + "Right Click%n" + ChatColor.DARK_PURPLE + "To Join:%n" + "%w Team"),
 	BREWINGSIGN("brewing-shop-sign", ChatColor.BLACK + "Brewing"),
@@ -68,7 +67,6 @@ public enum Lang
 	DESTROYEDTEAM("team-join-destroyed", ChatColor.RED + "You cannot join a team whose nexus is destroyed!"),
 	JOINANOTHERTEAM("team-join-another", ChatColor.RED + "Please join another team until the player counts even out!"),
 	ISINPARTY("has-party", ChatColor.RED + "You cannot join a team solo when you're in a party!"),
-	ALREADYHAVETEAM("team-already-have", ChatColor.RED + "You already have a Team!"),
 
 	// Team
 	YELLOWTEAM("yellow-team", "Yellow"),
@@ -101,8 +99,57 @@ public enum Lang
 	PHASE5MESSAGE(
 			"phase-5-message",
 			ChatColor.GOLD + "Extra damage " + ChatColor.GRAY + "is inflicted on the " + ChatColor.GOLD + "nexus" + "%n" + ChatColor.GRAY
-					+ "when breaking it" + "%n" + ChatColor.RED + "x2 " + ChatColor.GOLD + "extra damage");
+					+ "when breaking it" + "%n" + ChatColor.RED + "x2 " + ChatColor.GOLD + "extra damage"),
 
+	//Party
+	
+	//You
+	ALREADYHAVEPARTY("party-already-have", ChatColor.RED + "You already have a party!"),
+	NOPARTY("no-party", ChatColor.RED + "You are not in a party."),
+	NOTHOST("not-host", ChatColor.RED + "Only the host can do that."),
+	NOTINVITEDPLAYER("not-invited", ChatColor.RED + "You are not invited to join this party"),
+	NOTYOURSELF("arg-is-player",ChatColor.RED + "Player argument cannot be yourself."),
+	
+	//Target
+	TARGETHAVEPARTY("target-have-party",ChatColor.RED + "That player is in a party."),
+	TARGETDONOTHAVEPARTY("target-have-party",ChatColor.RED + "That player is not in a party."),
+	TARGETHAVENOPARTY("target-have-no-party",ChatColor.RED + "That player does not have a party"),
+	NOSUCHPLAYER("no-such-player", ChatColor.RED + "That player does not exist."),
+	NOTINVITEDTARGET("not-invited", ChatColor.RED + "That player is not invited to join your party."),
+	
+	//Cancel invites
+	NOLONGERINVITEDHOST("no-longer-invited-host", ChatColor.DARK_PURPLE + "Canceled invitation for " + ChatColor.GOLD + "%w"),
+	NOLONGERINVITEDTARGET("no-longer-invited-target", ChatColor.DARK_PURPLE + "You are no longer invited to " + ChatColor.GOLD + "%w"+ ChatColor.DARK_PURPLE + "'s party."),
+	NOPENDINGINVITES("no-pending-invites",ChatColor.RED + "You have no pending invites to your party."),
+	CANCELINVITE("cancel-invite","Cancel Invite"),
+	
+	//accept
+	ACCEPTHOST("player-accept-host",ChatColor.DARK_PURPLE + "The player " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE
+			+ " joined your party."),
+	ACCEPTPLAYER("player-accept-player",ChatColor.DARK_PURPLE + "You joined " + ChatColor.GOLD + "%w" + ChatColor.DARK_PURPLE
+			+ "'s party"),
+	NOTINVITED("not-invited-to-parties",ChatColor.RED + "You are not invited to any parties :("),
+	NOJOINWHENINPARTY("no-join-when-in-party",ChatColor.RED + "You cannot join a party when you are in a party"),
+	//Party GUI
+	NEXTPAGE("next-page",ChatColor.YELLOW + "Next Page"),
+	PREVPAGE("previous-page",ChatColor.YELLOW + "previous Page"),
+	EXITGUI("exit-gui", ChatColor.RED + "Exit"),
+	
+	//HEAD LORE
+	HEADLOREACCEPT("head-lore-accept", ChatColor.GRAY + "Click on a player's head%n"+
+			ChatColor.GRAY + "to accept the host's inviation"),
+	HEADLORECANCELINV("head-lore-cancel-inv", ChatColor.GRAY + "Click on a player's head%n" +ChatColor.GRAY + "to cancel the invitation from your party"),
+	
+	
+	
+	//One-two words
+	PAGE("page", "Page"),
+	HOST("host", "Host"),
+	PLAYERS("players", "Players"),
+	INVITED("invited", "Invited"),
+	
+	;
+	
 	private String path;
 	private String def;
 	private static YamlConfiguration LANG;

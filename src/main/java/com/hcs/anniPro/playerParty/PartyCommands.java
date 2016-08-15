@@ -41,6 +41,7 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.CustomItem;
 import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
+import com.gmail.nuclearcat1337.anniPro.main.Lang;
 
 public class PartyCommands implements CommandExecutor, Listener
 {
@@ -122,7 +123,7 @@ public class PartyCommands implements CommandExecutor, Listener
 				return true;
 			}
 
-			if (Game.isGameRunning() && !args[0].equalsIgnoreCase("show") )
+			if (Game.isGameRunning() && !args[0].equalsIgnoreCase("show"))
 			{
 				player.sendMessage(ChatColor.RED + "You cannot edit parties while the game is running.");
 				return true;
@@ -167,7 +168,7 @@ public class PartyCommands implements CommandExecutor, Listener
 				String modifyErr = checkCanModify(player);
 				if (modifyErr != null)
 				{
-					sender.sendMessage(modifyErr.replace("%w", "invite"));
+					sender.sendMessage(modifyErr);
 					return true;
 				}
 				if (args.length < 2)
@@ -215,7 +216,7 @@ public class PartyCommands implements CommandExecutor, Listener
 				String modifyErr = checkCanModify(player);
 				if (modifyErr != null)
 				{
-					sender.sendMessage(modifyErr.replace("%w", "kick"));
+					sender.sendMessage(modifyErr);
 					return true;
 				}
 				if (args.length < 2)
@@ -254,7 +255,7 @@ public class PartyCommands implements CommandExecutor, Listener
 			{
 				if (PlayerParties.isPlayerLeader(player) || PlayerParty.isInAParty(player))
 				{
-					sender.sendMessage(ChatColor.RED + "You cannot join a party when you are in a party");
+					sender.sendMessage(Lang.NOJOINWHENINPARTY.toString());
 					return true;
 				}
 				if (args.length < 2)
@@ -270,11 +271,10 @@ public class PartyCommands implements CommandExecutor, Listener
 					}
 					if (playerList.isEmpty())
 					{
-						sender.sendMessage(ChatColor.RED + "You are not invited to any parties :(");
+						sender.sendMessage(Lang.NOTINVITED.toString());
 					} else
 					{
-						ItemMenus("Accept Invite", args[0], playerList, player, ChatColor.GRAY + "Click on a player's head ",
-								ChatColor.GRAY + "to accept the host's inviation");
+						ItemMenus("Accept Invite", args[0], playerList, player, Lang.HEADLOREACCEPT.toStringArray());
 					}
 					return true;
 				}
@@ -288,29 +288,27 @@ public class PartyCommands implements CommandExecutor, Listener
 						if (pp.getIfInvited(player))
 						{
 							pp.addPlayer(player);
-							teamLeader.sendMessage(ChatColor.DARK_PURPLE + "The player " + ChatColor.GOLD + player.getName() + ChatColor.DARK_PURPLE
-									+ " joined your party.");
-							sender.sendMessage(ChatColor.DARK_PURPLE + "You joined " + ChatColor.GOLD + teamLeader.getName() + ChatColor.DARK_PURPLE
-									+ "'s party");
+							teamLeader.sendMessage(Lang.ACCEPTHOST.toStringReplacement(player.getName()));
+							sender.sendMessage(Lang.ACCEPTPLAYER.toStringReplacement(teamLeader.getName()));
 						} else
 						{
-							sender.sendMessage(ChatColor.RED + "You are not invited to join this party");
+							sender.sendMessage(Lang.NOTINVITEDPLAYER.toString());
 						}
 					} else
 					{
-						sender.sendMessage(ChatColor.RED + "This player does not have a party");
+						sender.sendMessage(Lang.TARGETHAVENOPARTY.toString());
 					}
 
 				} else
 				{
-					sender.sendMessage(ChatColor.RED + "That player does not exist.");
+					sender.sendMessage(Lang.NOSUCHPLAYER.toString());
 				}
 			} else if (args[0].equalsIgnoreCase("cancelInvite"))
 			{
 				String modifyErr = checkCanModify(player);
 				if (modifyErr != null)
 				{
-					sender.sendMessage(modifyErr.replace("%w", "cancel invitation of"));
+					sender.sendMessage(modifyErr);
 					return true;
 				}
 				if (args.length < 2)
@@ -318,7 +316,7 @@ public class PartyCommands implements CommandExecutor, Listener
 					PlayerParty pp = PlayerParty.getParty(player);
 					if (pp.getInvited().isEmpty())
 					{
-						sender.sendMessage(ChatColor.RED + "You have no pending invites to your party.");
+						sender.sendMessage(Lang.NOPENDINGINVITES.toString());
 					} else
 					{
 						List<Player> list = new ArrayList<Player>();
@@ -329,8 +327,7 @@ public class PartyCommands implements CommandExecutor, Listener
 								list.add(op.getPlayer());
 							}
 						}
-						ItemMenus("Cancel Invite", args[0], list, player, ChatColor.GRAY + "Click on a player's head ",
-								ChatColor.GRAY + "to cancel the invitation from your party");
+						ItemMenus(Lang.CANCELINVITE.toString(), args[0], list, player, Lang.HEADLORECANCELINV.toStringArray());
 					}
 					return true;
 				}
@@ -344,16 +341,15 @@ public class PartyCommands implements CommandExecutor, Listener
 						if (pp.getIfInvited(target))
 						{
 							pp.removeInvited(target);
-							player.sendMessage(ChatColor.DARK_PURPLE + "Canceled invitation for " + ChatColor.GOLD + target.getName());
-							target.sendMessage(ChatColor.DARK_PURPLE + "You are no longer invited to " + ChatColor.GOLD + player.getName()
-									+ ChatColor.DARK_PURPLE + "'s party");
+							player.sendMessage(Lang.NOLONGERINVITEDHOST.toStringReplacement(target.getName()));
+							target.sendMessage(Lang.NOLONGERINVITEDTARGET.toStringReplacement(player.getName()));
 							if (args.length == 3 && args[2].equals(MAGIC_REOPEN_KEY))
 							{
 								delayedOpenGUI(player, args[0]);
 							}
 						} else
 						{
-							sender.sendMessage(ChatColor.RED + "That player is not invited to join your party");
+							sender.sendMessage(Lang.NOTINVITEDTARGET.toString());
 						}
 					} else
 					{
@@ -361,7 +357,7 @@ public class PartyCommands implements CommandExecutor, Listener
 					}
 				} else
 				{
-					sender.sendMessage(ChatColor.RED + "That player does not exist.");
+					sender.sendMessage(Lang.NOSUCHPLAYER.toString());
 				}
 
 			} else if (args[0].equalsIgnoreCase("show"))
@@ -371,7 +367,7 @@ public class PartyCommands implements CommandExecutor, Listener
 					PlayerParty pp = PlayerParty.getParty(player);
 					Player leader = pp.getPartyLeader();
 
-					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Host: " + ChatColor.GOLD + leader.getName());
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + Lang.HOST.toString() + ": " + ChatColor.GOLD + leader.getName());
 
 					List<String> players = new ArrayList<String>();
 					for (Player p : pp.getPlayers())
@@ -381,7 +377,7 @@ public class PartyCommands implements CommandExecutor, Listener
 							players.add(p.getName());
 						}
 					}
-					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Players: " + ChatColor.YELLOW + players);
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + Lang.PLAYERS.toString() + ": " + ChatColor.YELLOW + players);
 					if (player.equals(leader))
 					{
 						List<String> invited = new ArrayList<String>();
@@ -389,35 +385,35 @@ public class PartyCommands implements CommandExecutor, Listener
 						{
 							invited.add(p.getName());
 						}
-						sender.sendMessage(ChatColor.LIGHT_PURPLE + "Invited: " + ChatColor.YELLOW + invited);
+						sender.sendMessage(ChatColor.LIGHT_PURPLE + Lang.INVITED.toString() + ": " + ChatColor.YELLOW + invited);
 					}
 				} else
 				{
-					sender.sendMessage(ChatColor.RED + "You are not in a party");
+					sender.sendMessage(Lang.NOPARTY.toString());
 				}
 				/*
 				 * Used for testing the system
 				 */
-//			} else if (args[0].equalsIgnoreCase("test"))
-//			{
-//				if (args.length < 2)
-//				{
-//					List<Player> playerList = new ArrayList<Player>();
-//					for (int i = 0; i < 100; i++)
-//					{
-//						playerList.add(player);
-//					}
-//					if (playerList.isEmpty())
-//					{
-//						sender.sendMessage(ChatColor.RED + "You are not invited to any parties :(");
-//					} else
-//					{
-//						ItemMenus("Test", "test", playerList, player, ChatColor.GRAY + "Click on a player's head ",
-//								ChatColor.GRAY + "to accept the host's inviation");
-//					}
-//					return true;
-//				}
-//				sender.sendMessage(args[1]);
+				//			} else if (args[0].equalsIgnoreCase("test"))
+				//			{
+				//				if (args.length < 2)
+				//				{
+				//					List<Player> playerList = new ArrayList<Player>();
+				//					for (int i = 0; i < 100; i++)
+				//					{
+				//						playerList.add(player);
+				//					}
+				//					if (playerList.isEmpty())
+				//					{
+				//						sender.sendMessage(ChatColor.RED + "You are not invited to any parties :(");
+				//					} else
+				//					{
+				//						ItemMenus("Test", "test", playerList, player, ChatColor.GRAY + "Click on a player's head ",
+				//								ChatColor.GRAY + "to accept the host's inviation");
+				//					}
+				//					return true;
+				//				}
+				//				sender.sendMessage(args[1]);
 			} else
 			{
 				return false;
@@ -450,7 +446,7 @@ public class PartyCommands implements CommandExecutor, Listener
 		List<ItemMenu> menus = new ArrayList<ItemMenu>();
 		List<MenuItem> heads = new ArrayList<MenuItem>();
 
-		MenuItem nextButton = (new ActionMenuItem(ChatColor.YELLOW + "Next Page", new ItemClickHandler()
+		MenuItem nextButton = (new ActionMenuItem(Lang.NEXTPAGE.toString(), new ItemClickHandler()
 		{
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -473,7 +469,7 @@ public class PartyCommands implements CommandExecutor, Listener
 			}
 		}, new ItemStack(Material.SLIME_BALL), new String[] {}));
 
-		MenuItem prevButton = (new ActionMenuItem(ChatColor.YELLOW + "Previous Page", new ItemClickHandler()
+		MenuItem prevButton = (new ActionMenuItem(Lang.PREVPAGE.toString(), new ItemClickHandler()
 		{
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -495,7 +491,7 @@ public class PartyCommands implements CommandExecutor, Listener
 			}
 		}, new ItemStack(Material.MAGMA_CREAM), new String[] {}));
 
-		MenuItem exitButton = (new ActionMenuItem(ChatColor.RED + "Exit", new ItemClickHandler()
+		MenuItem exitButton = (new ActionMenuItem(Lang.EXITGUI.toString(), new ItemClickHandler()
 		{
 			@Override
 			public void onItemClick(ItemClickEvent event)
@@ -533,7 +529,7 @@ public class PartyCommands implements CommandExecutor, Listener
 
 		for (int i = 0; i < pages; i++)
 		{
-			ItemMenu menu = new ItemMenu(title + " - Page " + (i + 1) + "/" + pages, Size.SIX_LINE); // five for players, one for changing pagees
+			ItemMenu menu = new ItemMenu(title + " - " + Lang.PAGE.toString() + " " + (i + 1) + "/" + pages, Size.SIX_LINE); // five for players, one for changing pagees
 			int pos;
 			for (int l = 0; l < 45; l++)
 			{
@@ -644,24 +640,24 @@ public class PartyCommands implements CommandExecutor, Listener
 	{
 		if (target == null)
 		{
-			return ChatColor.RED + "That player does not exist.";
+			return Lang.NOSUCHPLAYER.toString();
 		}
 		if (partyLeader.equals(target))
 		{
-			return ChatColor.RED + "Player argument cannot be yourself.";
+			return Lang.NOTYOURSELF.toString();
 		}
 
 		if (PlayerParty.isInAParty(target))
 		{
 			if (!inPartyIsGood)
 			{
-				return ChatColor.RED + "That player is in a party.";
+				return Lang.TARGETHAVEPARTY.toString();
 			}
 		} else
 		{
 			if (inPartyIsGood)
 			{
-				return ChatColor.RED + "That player is not in a party.";
+				return Lang.TARGETDONOTHAVEPARTY.toString();
 			}
 		}
 		return null;
@@ -670,18 +666,17 @@ public class PartyCommands implements CommandExecutor, Listener
 	/**
 	 * @param partyLeader
 	 *            The player to check if have a party
-	 * @return <tt>null</tt> if the argument player have a party, String error message if not (with the placeholder <tt>%w</tt> for the activity they
-	 *         tried to do)
+	 * @return <tt>null</tt> if the argument player have a party, String error message if not
 	 */
 	private String checkCanModify(Player partyLeader)
 	{
 		if (!PlayerParty.isInAParty(partyLeader))
 		{
-			return ChatColor.RED + "You cannot %w players while you are not in a party.";
+			return Lang.NOPARTY.toString();
 		}
 		if (!PlayerParties.isPlayerLeader(partyLeader))
 		{
-			return ChatColor.RED + "You cannot %w players when you are not the host.";
+			return Lang.NOTHOST.toString();
 		}
 		return null;
 	}
