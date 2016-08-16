@@ -1,0 +1,7 @@
+name: AnnihilationWorldRestorer
+main: com.gmail.nuclearcat1337.annipro.worldrestorer.WorldRestorer
+version: 1.0.0
+authors: [Mr_Little_Kitty]
+description: A plugin for restoring Annihilation Worlds
+load: STARTUP
+loadbefore: [Annihilation]
