@@ -35,8 +35,9 @@ public class VaultHook extends JavaPlugin
 	{
 		if (!verifyEcon())
 		{
-			Bukkit.getLogger().info("[AnnihilationVault] Error! Could not hook into vault");
+			Bukkit.getLogger().info("[AnnihilationVault] Error! Could not hook into vault or you do not have an economy plugin");
 			Bukkit.getPluginManager().disablePlugin(this);
+			return;
 		}
 
 		Bukkit.getLogger().info("[AnnihilationVault] Successfully hooked into Vault");
@@ -74,13 +75,13 @@ public class VaultHook extends JavaPlugin
 	{
 		if (Bukkit.getPluginManager().getPlugin("Vault") == null)
 			return false;
-		//Bukkit.getLogger().info("Here 1");
+//		Bukkit.getLogger().info("Here 1");
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
 		if (rsp == null)
 			return false;
-		//Bukkit.getLogger().info("Here 2");
+//		Bukkit.getLogger().info("Here 2");
 		econ = rsp.getProvider();
-		//Bukkit.getLogger().info("Here 3");
+//		Bukkit.getLogger().info("Here 3");
 		return econ != null;
 	}
 

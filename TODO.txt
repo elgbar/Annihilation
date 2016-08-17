@@ -1,24 +1,12 @@
-+Golems
-++Golems reward chest's item are randomly placed in the chest
+-Important-
+Fix no health regen
+verify enderfurnace works
 
-+Party
-++Max Players in a party (10-15)
-
-From Ben:
-
-Important-
-Create Party System (ongoing)
-Create Map Image Link (done)
-Create XP/Reward System for Rewards (build the xp plugin)
-Create A Universal Ore System So We Don't need to Set it Up Every Game (done)
-Double Check Launchers (done)
-
-Not So Important-
-Edit Scoreboard to Include More Information (next 3)
-Add Particles to Nexus and Enderfurnace (Next)
-Add Noise and Particle Effects for Special Attacks and Other Things... (Next 2)
+-Not So Important-
+verify all classes
+Max Players in a party (10)
+Edit Scoreboard to Include More Information 
+Add Particles to Nexus and Enderfurnace 
+Add Noise and Particle Effects for Special Attacks and Other Things... 
+Golems reward chest's item are randomly placed in the chest
 Create Tutorial System For Both Annihilation and HCS (how tho)
-
-create a void map for arid
-
-rename items via packets
