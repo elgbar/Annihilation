@@ -48,11 +48,13 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.main.Lang;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
+import com.hcs.anniPro.playerParty.MenuItems;
+import com.hcs.anniPro.util.Math2;
 
 public class KitLoading implements Listener, CommandExecutor
 {
 	private final KitMenuItem[] items;
-	private final Map<UUID, ItemMenu> menus;
+	private static Map<UUID, ItemMenu> menus;
 
 	public KitLoading(final JavaPlugin p)
 	{
@@ -203,9 +205,59 @@ public class KitLoading implements Listener, CommandExecutor
 		ItemMenu menu = menus.get(player.getUniqueId());
 		if (menu == null)
 		{
-			menu = new ItemMenu(player.getName() + "'s Kits", Size.fit(items.length));
+			List<Integer> unlockedItems = new ArrayList<Integer>();
+			List<Integer> lockedItems = new ArrayList<Integer>();
 			for (int x = 0; x < items.length; x++)
-				menu.setItem(x, items[x]);
+			{
+				if (items[x].getKit().hasPermission(player))
+				{
+					unlockedItems.add(x);
+				} else
+				{
+					lockedItems.add(x);
+				}
+			}
+
+			int unlockedSize = Math2.dividedRoundedUp(unlockedItems.size(), 9) * 9;
+			int lockedSize = 0;
+			if (lockedItems.size() != 0)
+			{
+				lockedSize = Math2.dividedRoundedUp(lockedItems.size(), 9) * 9;
+				lockedSize += 9; //extra slots for the dividor items
+			}
+
+			menu = new ItemMenu(player.getName() + "'s Kits", Size.fit(unlockedSize + lockedSize));
+
+			if (unlockedItems.size() != 0)
+			{
+				for (int y = 0; y < unlockedItems.size(); y++)
+				{
+					menu.setItem(y, items[unlockedItems.get(y)]);
+				}
+
+			}
+			if (lockedItems.size() != 0)
+			{
+				int row = Math2.dividedRoundedUp(unlockedItems.size(), 9) * 9;
+				int slot;
+				for (int z = 0; z < 9; z++)
+				{ //nine slots in a row
+					slot = z + row;//get the
+					menu.setItem(slot, MenuItems.getGrayPanel());
+				}
+				for (int w = 0; w < lockedItems.size(); w++)
+				{
+					slot = w + row + 9;
+					try
+					{
+						menu.setItem(slot, items[lockedItems.get(w)]);
+					} catch (ArrayIndexOutOfBoundsException e)
+					{
+						e.printStackTrace();
+						break;
+					}
+				}
+			}
 			menus.put(player.getUniqueId(), menu);
 		}
 		return menu;
@@ -357,5 +409,14 @@ public class KitLoading implements Listener, CommandExecutor
 			}
 		}
 		return false;
+	}
+	
+	public static boolean clearMenu(Player player){
+		if(menus.containsKey(player.getUniqueId())){
+			menus.remove(player.getUniqueId());
+			return true;
+		} else{
+			return false;
+		}
 	}
 }

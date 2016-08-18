@@ -80,6 +80,15 @@ public class MenuItems
 			event.setWillClose(true);
 		}
 	}, new ItemStack(Material.BARRIER), new String[] {}));
+	
+	private final static MenuItem grayPanel = (new ActionMenuItem(" ", new ItemClickHandler()
+	{
+		@Override
+		public void onItemClick(ItemClickEvent event)
+		{
+			event.setWillUpdate(true);
+		}
+	}, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7), new String[] {}));
 
 	/**
 	 * @return the cancelInvite
@@ -135,6 +144,14 @@ public class MenuItems
 	public static MenuItem getCreateItem()
 	{
 		return create;
+	}
+
+	/**
+	 * @return the graypanel
+	 */
+	public static MenuItem getGrayPanel()
+	{
+		return grayPanel;
 	}
 
 }

@@ -13,6 +13,7 @@ import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.Kit;
+import com.gmail.nuclearcat1337.anniPro.kits.KitLoading;
 import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
 import com.gmail.nuclearcat1337.xpSystem.main.XPSystem;
 import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
@@ -93,6 +94,7 @@ public class KitShopMenuItem extends MenuItem
 								{
 									system.addKit(player.getUniqueId(), wrapper.kit);
 									system.removeXP(player.getUniqueId(), wrapper.price);
+									KitLoading.clearMenu(player);
 									player.sendMessage(Shop.kitPurchased.replace("%w", wrapper.kit.getName()));
 								}
 								else player.sendMessage(Shop.notEnoughXP);

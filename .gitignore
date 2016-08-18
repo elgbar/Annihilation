@@ -2,6 +2,7 @@
 target
 *.bat
 .metadata
+.recommenders
 
 *.class
 

@@ -42,6 +42,7 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.CustomItem;
 import com.gmail.nuclearcat1337.anniPro.kits.KitUtils;
 import com.gmail.nuclearcat1337.anniPro.main.Lang;
+import com.hcs.anniPro.util.Math2;
 
 public class PartyCommands implements CommandExecutor, Listener
 {
@@ -436,7 +437,7 @@ public class PartyCommands implements CommandExecutor, Listener
 		{
 			return;
 		}
-		int pages = dividedRoundedUp(list.size(), 45); // 45 = five lines of chest space
+		int pages = Math2.dividedRoundedUp(list.size(), 45); // 45 = five lines of chest space
 		List<ItemMenu> menus = new ArrayList<ItemMenu>();
 		List<MenuItem> heads = new ArrayList<MenuItem>();
 
@@ -497,15 +498,6 @@ public class PartyCommands implements CommandExecutor, Listener
 			}
 		}, new ItemStack(Material.BARRIER), new String[] {}));
 
-		MenuItem grayPanel = (new ActionMenuItem(" ", new ItemClickHandler()
-		{
-			@Override
-			public void onItemClick(ItemClickEvent event)
-			{
-				event.setWillUpdate(true);
-			}
-		}, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7), new String[] {}));
-
 		String openGUI = (list.size() == 1) ? "" : MAGIC_REOPEN_KEY;
 
 		for (Player p : list)
@@ -538,7 +530,7 @@ public class PartyCommands implements CommandExecutor, Listener
 			{
 				if (m != 4)
 				{ // 45 + 4 = 49, where the exitbutton is
-					menu.setItem(m + 45, grayPanel);
+					menu.setItem(m + 45, MenuItems.getGrayPanel());
 				}
 			}
 			menu.setItem(45, prevButton);
@@ -673,34 +665,6 @@ public class PartyCommands implements CommandExecutor, Listener
 			return Lang.NOTHOST.toString();
 		}
 		return null;
-	}
-
-	/**
-	 * @param i
-	 *            first number
-	 * @param j
-	 *            second number
-	 * @return if any param is less than 1 returns 1. If not it returns the rounded number up how many times j fit in i
-	 */
-	private int dividedRoundedUp(int i, int j)
-	{
-		checkNotNull(i, "i");
-		checkNotNull(j, "j");
-		if (i <= 0 || j <= 0)
-		{
-			return 1;
-		}
-
-		int modular = i % j;
-		int fit;
-		if (modular == 0)
-		{
-			fit = i / j;
-		} else
-		{
-			fit = 1 + ((i - modular) / j);
-		}
-		return fit;
 	}
 
 	private void delayedOpenGUI(Player player, @Nullable String subCommand)
