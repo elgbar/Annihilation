@@ -20,14 +20,14 @@ import com.gmail.nuclearcat1337.xpSystem.main.XPSystem;
 
 public class Shop implements CommandExecutor
 {
-	//private XPSystem system;
-	static String purchasedMessage;
-	static String forsaleMessage;
-	static String confirmMessage;
-	static String confirmExpired;
-	static String notEnoughXP;
-	static String kitPurchased;
-	String noKitsToPurchase;
+	XPSystem system;
+	protected static String purchasedMessage;
+	protected static String forsaleMessage;
+	protected static String confirmMessage;
+	protected static String confirmExpired;
+	protected static String notEnoughXP;
+	protected static String kitPurchased;
+	protected static String noKitsToPurchase;
 	private KitShopMenuItem[] items;
 	private final Map<UUID,ItemMenu> menus;
 	
@@ -84,7 +84,7 @@ public class Shop implements CommandExecutor
 				}
 			}
 			if(counter == 0)
-				sender.sendMessage(this.noKitsToPurchase);
+				sender.sendMessage(noKitsToPurchase);
 			else
 				menu.open(player);
 		}

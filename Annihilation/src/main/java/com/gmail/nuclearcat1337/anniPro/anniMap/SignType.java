@@ -46,9 +46,7 @@ public final class SignType
 		if (getClass() != obj.getClass())
 			return false;
 		SignType other = (SignType) obj;
-		if (ID != other.ID)
-			return false;
-		return true;
+		return ID == other.ID;
 	}
 
 }

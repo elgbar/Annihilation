@@ -159,6 +159,7 @@ public class VaultHook extends JavaPlugin
 
 	public double checkMultipliers(Player player, double initialXP)
 	{
+		double returnXP = initialXP;
 		if (perms.size() > 0)
 		{
 			//Bukkit.getLogger().info("Greater than zero");
@@ -168,11 +169,11 @@ public class VaultHook extends JavaPlugin
 				if (player.hasPermission(p.perm))
 				{
 					//Bukkit.getLogger().info("Player has perm: "+p.perm);
-					initialXP = initialXP * p.multiplier;
+					returnXP *= p.multiplier;
 					break;
 				}
 			}
 		}
-		return initialXP;
+		return returnXP;
 	}
 }

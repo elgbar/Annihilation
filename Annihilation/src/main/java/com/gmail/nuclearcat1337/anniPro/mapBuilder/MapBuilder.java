@@ -308,10 +308,10 @@ public class MapBuilder implements Listener
 											+ Game.getGameMap().getNiceWorldName());
 							} else if (Game.LobbyMap != null && player.getWorld().getName().equals(Game.LobbyMap.getWorldName()))
 							{
-								if (Game.LobbyMap.getSigns().removeSign(block.getLocation()))
-									;
-								player.sendMessage(ChatColor.LIGHT_PURPLE + "Removed a join sign in world: " + ChatColor.GOLD
-										+ Game.LobbyMap.getNiceWorldName());
+								if (Game.LobbyMap.getSigns().removeSign(block.getLocation())) {
+									player.sendMessage(ChatColor.LIGHT_PURPLE + "Removed a join sign in world: " + ChatColor.GOLD
+											+ Game.LobbyMap.getNiceWorldName());
+								}
 							}
 						}
 					}

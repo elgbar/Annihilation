@@ -192,7 +192,7 @@ public final class AnniPlayer
 		data.put(key, value);
 	}
 
-	void setTeam(AnniTeam t)
+	protected void setTeam(AnniTeam t)
 	{
 		this.team = t;
 		String playerName = this.name;

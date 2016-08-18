@@ -87,7 +87,7 @@ public class KitConfig
  
     private boolean hasIntersection(Vector3D start, Vector3D end, Vector3D min, Vector3D max) 
     {
-        final double epsilon = 0.0001f;
+        final double epsilon = 0.0001F;
  
         Vector3D d = end.subtract(start).multiply(0.5);
         Vector3D e = max.subtract(min).multiply(0.5);
@@ -98,23 +98,23 @@ public class KitConfig
             return false;
         }
  
-        if(Math.abs(c.getY()) > e.getY() + ad.getY()){
+        else if(Math.abs(c.getY()) > e.getY() + ad.getY()){
             return false;
         }
  
-        if(Math.abs(c.getZ()) > e.getX() + ad.getZ()){
+        else if(Math.abs(c.getZ()) > e.getX() + ad.getZ()){
             return false;
         }
  
-        if(Math.abs(d.getY() * c.getZ() - d.getZ() * c.getY()) > e.getY() * ad.getZ() + e.getZ() * ad.getY() + epsilon){
+        else if(Math.abs(d.getY() * c.getZ() - d.getZ() * c.getY()) > e.getY() * ad.getZ() + e.getZ() * ad.getY() + epsilon){
             return false;
         }
  
-        if(Math.abs(d.getZ() * c.getX() - d.getX() * c.getZ()) > e.getZ() * ad.getX() + e.getX() * ad.getZ() + epsilon){
+        else if(Math.abs(d.getZ() * c.getX() - d.getX() * c.getZ()) > e.getZ() * ad.getX() + e.getX() * ad.getZ() + epsilon){
             return false;
         }
  
-        if(Math.abs(d.getX() * c.getY() - d.getY() * c.getX()) > e.getX() * ad.getY() + e.getY() * ad.getX() + epsilon){
+        else if(Math.abs(d.getX() * c.getY() - d.getY() * c.getX()) > e.getX() * ad.getY() + e.getY() * ad.getX() + epsilon){
             return false;
         }
  

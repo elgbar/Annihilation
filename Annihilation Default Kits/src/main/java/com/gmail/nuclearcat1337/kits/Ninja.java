@@ -160,7 +160,7 @@ public class Ninja extends AnniKit
 					return false;
 				}
 				Player pl = (Player) e;
-				if(player != pl)
+				if(player.equals(pl))
 				{
 					this.inmunePlayers.add(pl);
 					pl.sendMessage(ChatColor.GREEN + "You have been given inmunity to your next fall damage by the ninja " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + "!");

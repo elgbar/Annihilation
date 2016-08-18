@@ -76,7 +76,7 @@ public class WorldRestorer extends JavaPlugin
         return null;
     }
 
-    void copy(File source, File destination) throws IOException
+    private void copy(File source, File destination) throws IOException
     {
         if (source.isDirectory())
         {

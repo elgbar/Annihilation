@@ -98,6 +98,8 @@ public class StandardPhaseHandler implements Runnable
 					map.setDamageMultiplier(2);
 					ann.setPermanent(true).setMessage(Lang.PHASEBAR.toStringReplacement(newPhase));
 					break;
+				default:
+					break;
 			}
 			AnnounceBar.getInstance().countDown(ann);
 			map.setPhase(map.getCurrentPhase() + 1);

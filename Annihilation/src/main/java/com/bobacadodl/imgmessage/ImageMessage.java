@@ -49,9 +49,9 @@ public class ImageMessage
 		return this;
 	}
 
-	public ImageMessage appendTextToLine(int line, String text)
+	public ImageMessage appendTextToLine(int initialLine, String text)
 	{
-		line = line - 1;
+		int line = initialLine - 1;
 		if (line > -1 && line < lines.length)
 		{
 			lines[line] += " " + text;
@@ -59,9 +59,9 @@ public class ImageMessage
 		return this;
 	}
 
-	public ImageMessage appendTextToLines(int startingline, String... text)
+	public ImageMessage appendTextToLines(int initalStartingline, String... text)
 	{
-		startingline = startingline - 1;
+		int startingline = initalStartingline - 1;
 		if (startingline > -1 && startingline < lines.length)
 		{
 			for (int x = 0; x < text.length && x < lines.length; x++)

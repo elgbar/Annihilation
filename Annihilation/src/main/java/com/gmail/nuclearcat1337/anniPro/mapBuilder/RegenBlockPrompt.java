@@ -177,14 +177,13 @@ public class RegenBlockPrompt extends ValidatingPrompt
 	{
 		if (input.startsWith("/"))
 			input = input.substring(1);
+		String lowerCaseInput = input.toLowerCase().trim();
 
-		input = input.toLowerCase().trim();
-
-		if (input.equals("quit") || input.equals("exit") || input.equals("stop"))
+		if ("quit".equals(lowerCaseInput) || "exit".equals(lowerCaseInput) || "stop".equals(lowerCaseInput))
 		{
 			context.getForWhom().sendRawMessage(ChatColor.GOLD + "Regenerating Block Helper" + ChatColor.LIGHT_PURPLE + " has been closed.");
 			return Prompt.END_OF_CONVERSATION;
-		} else if (input.equals("back") || input.equals("previous"))
+		} else if ("back".equals(lowerCaseInput) || "previous".equals(lowerCaseInput))
 		{
 			if (this.questionlvl == 4)
 				this.questionlvl = 0;
@@ -199,7 +198,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 		{
 			case 0:
 			{
-				if (input.equals("ok"))
+				if ("ok".equals(lowerCaseInput))
 				{
 					questionlvl = 1;
 				}
@@ -209,20 +208,20 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			{
 				if (this.b.MaterialData == (int) block.getData())
 				{
-					if (input.equals("remove"))
+					if ("remove".equals(lowerCaseInput))
 					{
 						if (Game.getGameMap().getRegeneratingBlocks().removeRegeneratingBlock(b.Type, b.MaterialData))
 							context.getForWhom().sendRawMessage(purple + "The regenerating block has been removed.");
 						else
 							context.getForWhom().sendRawMessage(purple + "There was an error while removing the regenerating block.");
 						return this.endBlockHelper(context);
-					} else if (input.equals("override"))
+					} else if ("override".equals(lowerCaseInput))
 					{
 						this.questionlvl = 4;
 					}
 				} else if (b.MaterialData == -1)
 				{
-					if (input.equals("remove"))
+					if ("remove".equals(lowerCaseInput))
 					{
 						if (Game.getGameMap().getRegeneratingBlocks().removeRegeneratingBlock(b.Type, b.MaterialData))
 							context.getForWhom().sendRawMessage(purple + "The regenerating block has been removed.");
@@ -243,11 +242,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 4:
 			{
-				if (input.equals("this"))
+				if ("this".equals(lowerCaseInput))
 				{
 					this.dataVal = (int) block.getData();
 					questionlvl = 5;
-				} else if (input.equals("all"))
+				} else if ("all".equals(lowerCaseInput))
 				{
 					this.dataVal = -1;
 					questionlvl = 5;
@@ -256,11 +255,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 5:
 			{
-				if (input.equals("unbreakable"))
+				if ("unbreakable".equals(lowerCaseInput))
 				{
 					this.regenerate = false;
 					return saveBlockAndQuit(context);
-				} else if (input.equals("regenerate"))
+				} else if ("regenerate".equals(lowerCaseInput))
 				{
 					this.regenerate = true;
 					this.questionlvl = 6;
@@ -269,11 +268,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 6:
 			{
-				if (input.equals("natural"))
+				if ("natural".equals(lowerCaseInput))
 				{
 					this.naturalBreak = true;
 					this.questionlvl = 7;
-				} else if (input.equals("unnatural"))
+				} else if ("unnatural".equals(lowerCaseInput))
 				{
 					this.naturalBreak = false;
 					this.questionlvl = 7;
@@ -282,7 +281,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 7:
 			{
-				String[] args = input.split(" ");
+				String[] args = lowerCaseInput.split(" ");
 				if (args.length == 2)
 				{
 					try
@@ -308,11 +307,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 8:
 			{
-				if (input.equals("cobblestone"))
+				if ("cobblestone".equals(lowerCaseInput))
 				{
 					this.cobbleReplace = true;
 					this.questionlvl = 9;
-				} else if (input.equals("air"))
+				} else if ("air".equals(lowerCaseInput))
 				{
 					this.cobbleReplace = false;
 					this.questionlvl = 9;
@@ -323,7 +322,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			{
 				try
 				{
-					int num = Integer.parseInt(input);
+					int num = Integer.parseInt(lowerCaseInput);
 					this.xp = num;
 					this.questionlvl = 10;
 				} catch (Exception e)
@@ -334,11 +333,11 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 10:
 			{
-				if (input.equals("none"))
+				if ("none".equals(lowerCaseInput))
 				{
 					this.effect = null;
 					this.questionlvl = 11;
-				} else if (input.equals("gravel"))
+				} else if ("gravel".equals(lowerCaseInput))
 				{
 					this.effect = "Gravel";
 					return this.saveBlockAndQuit(context);
@@ -347,7 +346,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			}
 			case 11:
 			{
-				String[] args = input.split(" ");
+				String[] args = lowerCaseInput.split(" ");
 				try
 				{
 					if (args.length == 1)
@@ -371,18 +370,18 @@ public class RegenBlockPrompt extends ValidatingPrompt
 			{
 				try
 				{
-					if (input.contains("random"))
+					if (lowerCaseInput.contains("random"))
 					{
 						String x, y;
-						x = input.split(",")[0];
-						y = input.split(",")[1];
+						x = lowerCaseInput.split(",")[0];
+						y = lowerCaseInput.split(",")[1];
 						x = x.substring(7);
 						y = y.substring(0, y.length() - 1);
 						try
 						{
 							Integer.parseInt(x);
 							Integer.parseInt(y);
-							this.amount = input.toUpperCase();
+							this.amount = lowerCaseInput.toUpperCase();
 							return this.saveBlockAndQuit(context);
 						} catch (NumberFormatException e)
 						{
@@ -390,7 +389,7 @@ public class RegenBlockPrompt extends ValidatingPrompt
 						}
 					} else
 					{
-						Integer r = Integer.parseInt(input);
+						Integer r = Integer.parseInt(lowerCaseInput);
 						this.amount = r.toString();
 						return this.saveBlockAndQuit(context);
 					}
@@ -400,6 +399,8 @@ public class RegenBlockPrompt extends ValidatingPrompt
 				}
 				break;
 			}
+			default:
+				break;
 		}
 
 		return this;

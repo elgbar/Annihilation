@@ -20,7 +20,7 @@ public abstract class Kit implements Listener, Comparable<Kit>
 		registerKit(CivilianInstance);
 	}
 
-	static void registerKit(Kit kit)
+	protected static void registerKit(Kit kit)
 	{
 		kits.put(kit.getName().toLowerCase(), kit);
 	}

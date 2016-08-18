@@ -258,6 +258,8 @@ public final class RegeneratingBlocks implements Listener
 									if (z != 0)
 										l.add(new ItemStack(Material.FLINT, z));
 									break;
+								default:
+									break;
 							}
 						}
 						ResourceBreakEvent e = new ResourceBreakEvent(player, b, b.XP, l.toArray(new ItemStack[l.size()]));

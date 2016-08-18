@@ -41,7 +41,7 @@ import com.hcs.anniPro.playerParty.PlayerParty;
 public class TeamCommand implements CommandExecutor, Listener
 {
 	private ItemMenu menu;
-	private static Map<ChatColor, ImageMessage> messages;
+	private static Map<ChatColor, ImageMessage> messages = null;
 
 	public TeamCommand(JavaPlugin plugin)
 	{
@@ -263,12 +263,14 @@ public class TeamCommand implements CommandExecutor, Listener
 
 	public static void joinTeam(AnniPlayer player, AnniTeam team)
 	{
-		team.joinTeam(player);
-		Player p = player.getPlayer();
-		ImageMessage m = messages.get(team.getColor());
-		m.sendToPlayer(p);
-		if (Game.isGameRunning())
-			p.setHealth(0);
+		if (messages != null){
+			team.joinTeam(player);
+			Player p = player.getPlayer();
+			ImageMessage m = messages.get(team.getColor());
+			m.sendToPlayer(p);
+			if (Game.isGameRunning())
+				p.setHealth(0);
+		}
 
 	}
 

@@ -61,7 +61,7 @@ public final class AnniTeam
 
 	private final String externalName;
 	private final String name;
-	private int Health = 75;
+	private int health = 75;
 	private LinkedList<Loc> spawns;
 	private Random rand;
 	private Loc spectatorLocation;
@@ -173,18 +173,18 @@ public final class AnniTeam
 
 	public int getHealth()
 	{
-		return Health;
+		return health;
 	}
 
-	public void setHealth(int Health)
+	public void setHealth(int health)
 	{
-		if (Health < 0)
-			Health = 0;
+		if (health < 0)
+			health = 0;
 
-		if (this.Health > 0)
+		if (this.health > 0)
 		{
-			this.Health = Health;
-			ScoreboardAPI.setScore(this, this.Health);
+			this.health = health;
+			ScoreboardAPI.setScore(this, this.health);
 		}
 	}
 
@@ -195,7 +195,7 @@ public final class AnniTeam
 
 	public boolean isTeamDead()
 	{
-		return Health <= 0;
+		return health <= 0;
 	}
 
 	public Location getRandomSpawn()

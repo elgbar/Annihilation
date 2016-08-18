@@ -33,7 +33,7 @@ public class GameListeners implements Listener
 		RespawnHandler.register(p);
 
 		String version = VersionUtils.getVersion();
-		if (version.equals("v1_8_R3"))
+		if ("v1_8_R3".equals(version))
 		{
 			new ArmorStandListener(p);
 		}

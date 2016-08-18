@@ -57,6 +57,7 @@ public final class PlayerParty
 		}
 		if (getAnniTeam() != null){
 			TeamCommand.joinTeam(ap, team);
+			
 		}
 		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getPartyLeader().getUniqueId()));
 		players.add(player);
@@ -171,11 +172,7 @@ public final class PlayerParty
 	public static boolean isInAParty(Player player)
 	{
 
-		if (player.hasMetadata(PlayerParty.META_KEY) && getParty(player) != null)
-		{
-			return true;
-		}
-		return false;
+		return (player.hasMetadata(PlayerParty.META_KEY) && getParty(player) != null);
 	}
 
 	public static PlayerParty getParty(Player player)

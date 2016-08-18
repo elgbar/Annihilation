@@ -26,12 +26,8 @@ public final class Areas implements Iterable<Area>, Listener
 {
 	private final Map<String, Area> areas;
 
-	@SuppressWarnings("unused")
-	private final String world;
-
 	public Areas(String world)
 	{
-		this.world = world;
 		areas = new HashMap<String, Area>();
 	}
 

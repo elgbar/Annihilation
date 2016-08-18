@@ -29,7 +29,7 @@ public class AnniCommand
 
 	public static void register(JavaPlugin plugin)
 	{
-		if (registered == false)
+		if (!registered)
 		{
 			registered = true;
 			arguments = new TreeMap<String, AnniArgument>();

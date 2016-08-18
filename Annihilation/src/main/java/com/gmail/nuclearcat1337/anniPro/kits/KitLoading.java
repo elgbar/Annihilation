@@ -412,11 +412,12 @@ public class KitLoading implements Listener, CommandExecutor
 	}
 	
 	public static boolean clearMenu(Player player){
-		if(menus.containsKey(player.getUniqueId())){
-			menus.remove(player.getUniqueId());
-			return true;
-		} else{
-			return false;
+		if (menus != null) {
+			if(menus.containsKey(player.getUniqueId())){
+				menus.remove(player.getUniqueId());
+				return true;
+			}
 		}
+		return false;
 	}
 }
