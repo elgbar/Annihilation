@@ -176,8 +176,9 @@ public final class AnniTeam
 		return health;
 	}
 
-	public void setHealth(int health)
+	public void setHealth(int rawHealth)
 	{
+		int health = rawHealth;
 		if (health < 0)
 			health = 0;
 

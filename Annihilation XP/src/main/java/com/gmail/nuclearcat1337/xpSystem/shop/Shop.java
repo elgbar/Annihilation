@@ -20,27 +20,22 @@ import com.gmail.nuclearcat1337.xpSystem.main.XPSystem;
 
 public class Shop implements CommandExecutor
 {
-	XPSystem system;
-	protected static String purchasedMessage;
-	protected static String forsaleMessage;
-	protected static String confirmMessage;
-	protected static String confirmExpired;
-	protected static String notEnoughXP;
-	protected static String kitPurchased;
-	protected static String noKitsToPurchase;
+	static String purchasedMessage;
+	static String forsaleMessage;
+	static String confirmMessage;
+	static String confirmExpired;
+	static String notEnoughXP;
+	static String kitPurchased;
+	static String noKitsToPurchase;
 	private KitShopMenuItem[] items;
 	private final Map<UUID,ItemMenu> menus;
+	private final ConfigurationSection configSec;
 	
 	public Shop(XPSystem system, ConfigurationSection shopSection)
 	{
+		configSec = shopSection;
 		menus = new HashMap<UUID,ItemMenu>();
-		purchasedMessage = getString(shopSection,"Already-Purchased-Kit");
-		forsaleMessage = getString(shopSection,"Not-Yet-Purchased-Kit");
-		confirmMessage = getString(shopSection,"Confirm-Purchase-Kit");
-		confirmExpired = getString(shopSection,"Confirmation-Expired");
-		notEnoughXP = getString(shopSection,"Not-Enough-XP");
-		kitPurchased = getString(shopSection,"Kit-Purchased");
-		noKitsToPurchase = getString(shopSection,"No-Kits-To-Purchase");
+		setMessages();
 		if(!shopSection.isConfigurationSection("Kits"))
 			shopSection.createSection("Kits");
 		ConfigurationSection kitSec = shopSection.getConfigurationSection("Kits");
@@ -55,6 +50,17 @@ public class Shop implements CommandExecutor
 			c++;
 		}
 	}
+	
+	private void setMessages(){
+		purchasedMessage = getString(configSec,"Already-Purchased-Kit");
+		forsaleMessage = getString(configSec,"Not-Yet-Purchased-Kit");
+		confirmMessage = getString(configSec,"Confirm-Purchase-Kit");
+		confirmExpired = getString(configSec,"Confirmation-Expired");
+		notEnoughXP = getString(configSec,"Not-Enough-XP");
+		kitPurchased = getString(configSec,"Kit-Purchased");
+		noKitsToPurchase = getString(configSec,"No-Kits-To-Purchase");
+	}
+	
 	
 	private String getString(ConfigurationSection section, String path)
 	{

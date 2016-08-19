@@ -27,12 +27,13 @@ public class AutoRestarter implements Listener
 
 	private TempData data;
 
-	public AutoRestarter(Plugin p, int orgPlayersToRestart, int countdown)
+	public AutoRestarter(Plugin p, int orgPlayersToRestart, int rawCountdown)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
 		int playersToRestart = orgPlayersToRestart;
 		if (playersToRestart < 0)
 			playersToRestart = 0;
+		int countdown = rawCountdown;
 		if (countdown < 1)
 			countdown = 1;
 		this.players = playersToRestart;

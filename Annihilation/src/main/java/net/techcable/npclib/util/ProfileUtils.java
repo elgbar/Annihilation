@@ -213,7 +213,6 @@ public class ProfileUtils
 			} catch (IOException ex)
 			{
 				ex.printStackTrace();
-				return null;
 			}
 		}
 	}

@@ -175,9 +175,10 @@ public class RegenBlockPrompt extends ValidatingPrompt
 	@Override
 	protected Prompt acceptValidatedInput(ConversationContext context, String input)
 	{
-		if (input.startsWith("/"))
-			input = input.substring(1);
 		String lowerCaseInput = input.toLowerCase().trim();
+		if (lowerCaseInput.startsWith("/"))
+			lowerCaseInput = lowerCaseInput.substring(1);
+		
 
 		if ("quit".equals(lowerCaseInput) || "exit".equals(lowerCaseInput) || "stop".equals(lowerCaseInput))
 		{

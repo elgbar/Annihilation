@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -140,38 +139,6 @@ public final class XPMain extends JavaPlugin implements Listener
 			xpSystem.loadKits(p, null);
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void test(PlayerCommandPreprocessEvent e)
-	{
-		Player player = e.getPlayer();
-		String[] args = e.getMessage().split(" ");
-		if(args[0].equals("/test") && player.getName().equalsIgnoreCase("Mr_Little_Kitty"))
-		{
-			AnniPlayer p = AnniPlayer.getPlayer(player.getUniqueId());
-			if(p != null)
-			{
-				Object obj = p.getData("Kits");
-				if(obj != null)
-				{
-					if(obj instanceof List)
-					{
-						@SuppressWarnings("unchecked")
-						List<String> list = (List<String>)obj;
-						if(!list.isEmpty())
-						{
-							for(String str : list)
-								player.sendMessage("Has: "+str);
-						}
-						else player.sendMessage("Nope 4");
-					}
-					else player.sendMessage("Nope 3");
-				}
-				else player.sendMessage("Nope 2");
-			}
-			else player.sendMessage("Nope 1");
-		}
-	}
-	
 	private void checkFile(File file)
 	{
 		if(!file.exists())
@@ -269,17 +236,18 @@ public final class XPMain extends JavaPlugin implements Listener
 	
 	public static int checkMultipliers(Player player, int initialXP)
 	{
+		int returnXP = initialXP;
 		if(perms.size() > 0)
 		{
 			for(Perm p : perms)
 			{
 				if(player.hasPermission(p.perm))
 				{
-					initialXP = (int)Math.ceil(((double)initialXP)*p.multiplier);
+					returnXP = (int)Math.ceil(((double)returnXP)*p.multiplier);
 					break;
 				}
 			}
 		}
-		return initialXP;
+		return returnXP;
 	}
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class DamageControl implements Listener
 {
 	private static DamageControl instance;
-	static boolean registered = false;
+	private static boolean registered = false;
 
 	public static void register(Plugin plugin)
 	{

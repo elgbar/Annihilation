@@ -16,8 +16,9 @@ public class Bar implements com.gmail.nuclearcat1337.anniPro.announcementBar.Bar
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(actionPacket);
 	}
 
-	private static String cleanMessage(String message)
+	private static String cleanMessage(String rawMessage)
 	{
+		String message = rawMessage;
 		if (message.length() > 64)
 			message = message.substring(0, 63);
 
