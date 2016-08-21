@@ -18,7 +18,7 @@ public class TrampleListner implements Listener
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSoilTrample(PlayerInteractEvent event)
 	{
 		if (!event.isCancelled())

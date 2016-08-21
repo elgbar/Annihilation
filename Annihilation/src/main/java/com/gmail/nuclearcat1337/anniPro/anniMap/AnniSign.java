@@ -22,7 +22,7 @@ public final class AnniSign
 	public AnniSign(ConfigurationSection configSection)
 	{
 		if (configSection == null)
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 
 		boolean signpost = configSection.getBoolean("isSignPost");
 		Loc loc = new Loc(configSection.getConfigurationSection("Location"));

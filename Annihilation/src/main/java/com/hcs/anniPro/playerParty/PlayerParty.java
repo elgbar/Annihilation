@@ -23,6 +23,7 @@ public final class PlayerParty
 	private List<OfflinePlayer> invited;
 	private AnniTeam team = null;
 	private final Player partyLeader;
+	private final int MAX_PLAYERS_IN_A_PARTY = 10;
 
 	public PlayerParty(Player leader, @Nullable AnniTeam team)
 	{
@@ -46,23 +47,33 @@ public final class PlayerParty
 		return players;
 	}
 
-	/** @param player
-	 *            the players to add */
-	public void addPlayer(Player player)
+	/**
+	 * @param player
+	 *            the players to add
+	 */
+	public boolean addPlayer(Player player)
 	{
-		AnniPlayer ap = AnniPlayer.getPlayer(player.getUniqueId());
-		
-		if (ap.getTeam() != null) {
-			ap.getTeam().leaveTeam(ap);
+
+		if (!isInAParty(player))
+		{
+			if (getPlayers().size() < MAX_PLAYERS_IN_A_PARTY)
+			{
+				AnniPlayer ap = AnniPlayer.getPlayer(player.getUniqueId());
+				if (ap.getTeam() != null)
+				{
+					ap.getTeam().leaveTeam(ap);
+				}
+				if (getAnniTeam() != null)
+				{
+					TeamCommand.joinTeam(ap, team);
+				}
+				player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getPartyLeader().getUniqueId()));
+				players.add(player);
+				removeInvited(player);
+				return PlayerParties.updateParty(this);
+			}
 		}
-		if (getAnniTeam() != null){
-			TeamCommand.joinTeam(ap, team);
-			
-		}
-		player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getPartyLeader().getUniqueId()));
-		players.add(player);
-		removeInvited(player);
-		PlayerParties.updateParty(this);
+		return false;
 	}
 
 	public boolean removePlayer(Player player)
@@ -86,8 +97,10 @@ public final class PlayerParty
 		return this.team;
 	}
 
-	/** @param team
-	 *            the team to set */
+	/**
+	 * @param team
+	 *            the team to set
+	 */
 	public boolean setAnniTeam(AnniTeam team)
 	{
 		this.team = team;
@@ -129,8 +142,10 @@ public final class PlayerParty
 	{
 		if (!invited.isEmpty())
 		{
-			for (OfflinePlayer op : invited){
-				if (op.getUniqueId().equals(player.getUniqueId())){
+			for (OfflinePlayer op : invited)
+			{
+				if (op.getUniqueId().equals(player.getUniqueId()))
+				{
 					return true;
 				}
 			}
@@ -138,8 +153,10 @@ public final class PlayerParty
 		return false;
 	}
 
-	/** @param invited
-	 *            the player to invite */
+	/**
+	 * @param invited
+	 *            the player to invite
+	 */
 	public void addInvite(Player invited)
 	{
 		if (!getIfInvited(invited))
@@ -148,12 +165,16 @@ public final class PlayerParty
 		}
 	}
 
-	/** @param invited
-	 *            the player to remove from invted invite */
+	/**
+	 * @param invited
+	 *            the player to remove from invted invite
+	 */
 	public void removeInvited(Player player)
 	{
-		for (OfflinePlayer op : this.invited){
-			if (op.getUniqueId().equals(player.getUniqueId())){
+		for (OfflinePlayer op : this.invited)
+		{
+			if (op.getUniqueId().equals(player.getUniqueId()))
+			{
 				this.invited.remove(op);
 				return;
 			}
@@ -193,6 +214,5 @@ public final class PlayerParty
 	{
 		player.removeMetadata(META_KEY, AnnihilationMain.getInstance());
 	}
-	
-	
+
 }

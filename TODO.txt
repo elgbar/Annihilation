@@ -1,12 +1,14 @@
 -Important-
-Fix no health regen
-verify enderfurnace works
+Fix no health regen (seems to be on only some maps.. (so it works on the progamming end))
 
 -Not So Important-
 verify all classes
-Max Players in a party (10)
 Edit Scoreboard to Include More Information 
 Add Particles to Nexus and Enderfurnace 
 Add Noise and Particle Effects for Special Attacks and Other Things... 
 Golems reward chest's item are randomly placed in the chest
-Create Tutorial System For Both Annihilation and HCS (how tho)
+Create Tutorial System For Both Annihilation and HCS
+Make the xp rain for bosses be non nms
+
+-Test-
+Max Players in a party (10)

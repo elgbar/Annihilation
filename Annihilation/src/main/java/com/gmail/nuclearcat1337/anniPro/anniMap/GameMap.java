@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Furnace;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniTeam;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
 import com.gmail.nuclearcat1337.anniPro.anniGame.GameVars;
@@ -72,104 +73,139 @@ public final class GameMap extends AnniMap implements Listener
 		this.PhaseTime = (int) TimeUnit.SECONDS.convert(10, TimeUnit.MINUTES);
 		if (section != null)
 		{
-			if (section.isInt("PhaseTime"))
-				this.PhaseTime = section.getInt("PhaseTime");
-			ConfigurationSection furnaces = section.getConfigurationSection("EnderFurnaces");
-			if (furnaces != null)
+			loadPhaseTime(section);
+			loadEnderFurnace(section);
+			loadDiamonds(section);
+			loadTeams(section);
+			loadUnplaceable(section);
+			loadGolemBoss(section);
+		}
+	}
+
+	private void loadDiamonds(ConfigurationSection section)
+	{
+		ConfigurationSection diamonds = section.getConfigurationSection("DiamondLocations");
+		if (diamonds != null)
+		{
+			for (String key : diamonds.getKeys(false))
 			{
-				for (String key : furnaces.getKeys(false))
-				{
-					FacingObject obj = FacingObject.loadFromConfig(furnaces.getConfigurationSection(key));
-					this.addEnderFurnace(obj);
-				}
+				Loc loc = new Loc(diamonds.getConfigurationSection(key));
+				diamondLocs.add(loc);
 			}
-			ConfigurationSection diamonds = section.getConfigurationSection("DiamondLocations");
-			if (diamonds != null)
+		}
+
+	}
+
+	private void loadTeams(ConfigurationSection section)
+	{
+		ConfigurationSection teams = section.getConfigurationSection("Teams");
+		if (teams != null)
+		{
+			for (AnniTeam team : AnniTeam.Teams)
 			{
-				for (String key : diamonds.getKeys(false))
+				ConfigurationSection teamSection = teams.getConfigurationSection(team.getName() + " Team");
+				if (teamSection != null)
 				{
-					Loc loc = new Loc(diamonds.getConfigurationSection(key));
-					diamondLocs.add(loc);
-				}
-			}
-			ConfigurationSection teams = section.getConfigurationSection("Teams");
-			if (teams != null)
-			{
-				for (AnniTeam team : AnniTeam.Teams)
-				{
-					ConfigurationSection teamSection = teams.getConfigurationSection(team.getName() + " Team");
-					if (teamSection != null)
+					ConfigurationSection nexSec = teamSection.getConfigurationSection("Nexus.Location");
+					if (nexSec == null)
+						team.getNexus().setLocation(null);
+					else
 					{
-						ConfigurationSection nexSec = teamSection.getConfigurationSection("Nexus.Location");
-						if (nexSec == null)
-							team.getNexus().setLocation(null);
-						else
-						{
-							Loc nexusloc = new Loc(teamSection.getConfigurationSection("Nexus.Location"));
-							team.getNexus().setLocation(nexusloc);
-						}
-
-						ConfigurationSection specSec = teamSection.getConfigurationSection("SpectatorLocation");
-						if (specSec == null)
-							team.setSpectatorLocation((Loc) null);
-						else
-						{
-							Loc spectatorspawn = new Loc(teamSection.getConfigurationSection("SpectatorLocation"));
-							team.setSpectatorLocation(spectatorspawn);
-						}
-
-						team.clearSpawns();
-						ConfigurationSection spawns = teamSection.getConfigurationSection("Spawns");
-						if (spawns != null)
-						{
-							for (String key : spawns.getKeys(false))
-							{
-								Loc loc = new Loc(spawns.getConfigurationSection(key));
-								if (loc != null)
-								{
-									team.addSpawn(loc.toLocation());
-								}
-							}
-						}
+						Loc nexusloc = new Loc(teamSection.getConfigurationSection("Nexus.Location"));
+						team.getNexus().setLocation(nexusloc);
 					}
-				}
-			}
-			ConfigurationSection unplaceableSec = section.getConfigurationSection("UnplaceableBlocks");
-			if (unplaceableSec != null)
-			{
-				for (String key : unplaceableSec.getKeys(false))
-				{
-					ConfigurationSection matSec = unplaceableSec.getConfigurationSection(key);
-					Material mat = Material.valueOf(matSec.getString("Material"));
-					List<Byte> b = matSec.getByteList("Values");
-					if (b != null)
-						for (Byte bt : b)
-							addUnplaceableBlock(mat, bt);
-				}
-			}
-			ConfigurationSection golemBossSec = section.getConfigurationSection("GolemBosses");
-			if (golemBossSec != null)
-			{
-				for (Golem golem : Golem.Golems)
-				{
-					ConfigurationSection golemBossUnderSec = golemBossSec.getConfigurationSection(golem.getInternalName());
-					try {
-						golem.setDisplayName(golemBossUnderSec.getString("Name"));
-						ConfigurationSection spawns = golemBossUnderSec.getConfigurationSection("Spawns");
-						if (spawns != null)
+
+					ConfigurationSection specSec = teamSection.getConfigurationSection("SpectatorLocation");
+					if (specSec == null)
+						team.setSpectatorLocation((Loc) null);
+					else
+					{
+						Loc spectatorspawn = new Loc(teamSection.getConfigurationSection("SpectatorLocation"));
+						team.setSpectatorLocation(spectatorspawn);
+					}
+
+					team.clearSpawns();
+					ConfigurationSection spawns = teamSection.getConfigurationSection("Spawns");
+					if (spawns != null)
+					{
+						for (String key : spawns.getKeys(false))
 						{
-							Loc loc = new Loc(spawns);
+							Loc loc = new Loc(spawns.getConfigurationSection(key));
 							if (loc != null)
 							{
-								golem.setSpawn(loc);
+								team.addSpawn(loc.toLocation());
 							}
 						}
-					} catch (NullPointerException e){
-						
 					}
 				}
 			}
 		}
+
+	}
+
+	private void loadPhaseTime(ConfigurationSection section)
+	{
+		if (section.isInt("PhaseTime"))
+			this.PhaseTime = section.getInt("PhaseTime");
+	}
+
+	private void loadEnderFurnace(ConfigurationSection section)
+	{
+		ConfigurationSection furnaces = section.getConfigurationSection("EnderFurnaces");
+		if (furnaces != null)
+		{
+			for (String key : furnaces.getKeys(false))
+			{
+				FacingObject obj = FacingObject.loadFromConfig(furnaces.getConfigurationSection(key));
+				this.addEnderFurnace(obj);
+			}
+		}
+	}
+
+	private void loadUnplaceable(ConfigurationSection section)
+	{
+		ConfigurationSection golemBossSec = section.getConfigurationSection("GolemBosses");
+		if (golemBossSec != null)
+		{
+			for (Golem golem : Golem.Golems)
+			{
+				ConfigurationSection golemBossUnderSec = golemBossSec.getConfigurationSection(golem.getInternalName());
+				try
+				{
+					golem.setDisplayName(golemBossUnderSec.getString("Name"));
+					ConfigurationSection spawns = golemBossUnderSec.getConfigurationSection("Spawns");
+					if (spawns != null)
+					{
+						Loc loc = new Loc(spawns);
+						if (loc != null)
+						{
+							golem.setSpawn(loc);
+						}
+					}
+				} catch (NullPointerException e)
+				{
+
+				}
+			}
+		}
+	}
+
+	private void loadGolemBoss(ConfigurationSection section)
+	{
+		ConfigurationSection unplaceableSec = section.getConfigurationSection("UnplaceableBlocks");
+		if (unplaceableSec != null)
+		{
+			for (String key : unplaceableSec.getKeys(false))
+			{
+				ConfigurationSection matSec = unplaceableSec.getConfigurationSection(key);
+				Material mat = Material.valueOf(matSec.getString("Material"));
+				List<Byte> b = matSec.getByteList("Values");
+				if (b != null)
+					for (Byte bt : b)
+						addUnplaceableBlock(mat, bt);
+			}
+		}
+
 	}
 
 	public void unLoadMap()
@@ -211,63 +247,88 @@ public final class GameMap extends AnniMap implements Listener
 		{
 			blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
 			section.set("PhaseTime", this.PhaseTime);
-			int counter = 1;
-			ConfigurationSection enderFurnaces = section.createSection("EnderFurnaces");
-			for (FacingObject obj : this.enderFurnaces.values())
-			{
-				obj.saveToConfig(enderFurnaces.createSection("" + counter));
-				counter++;
-			}
-			counter = 1;
-			ConfigurationSection diamonds = section.createSection("DiamondLocations");
-			for (Loc loc : this.diamondLocs)
-			{
-				loc.saveToConfig(diamonds.createSection("" + counter));
-				counter++;
-			}
-			counter = 1;
-			blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
-			ConfigurationSection teams = section.createSection("Teams");
-			for (AnniTeam team : AnniTeam.Teams)
-			{
-				ConfigurationSection teamSection = teams.createSection(team.getName() + " Team");
+			saveEnderFurnaces(section);
+			saveDiamonds(section);
+			saveTeams(section);
+			saveUnplaceable(section);
+			saveGolems(section);
+		}
+	}
 
-				Loc nexusLoc = team.getNexus().getLocation();
-				if (nexusLoc != null)
-					nexusLoc.saveToConfig(teamSection.createSection("Nexus.Location"));
+	private void saveEnderFurnaces(ConfigurationSection section)
+	{
+		int counter = 1;
+		ConfigurationSection enderFurnaces = section.createSection("EnderFurnaces");
+		for (FacingObject obj : this.enderFurnaces.values())
+		{
+			obj.saveToConfig(enderFurnaces.createSection("" + counter));
+			counter++;
+		}
+	}
 
-				Loc spectatorspawn = team.getSpectatorLocation();
-				if (spectatorspawn != null)
-					spectatorspawn.saveToConfig(teamSection.createSection("SpectatorLocation"));
+	private void saveDiamonds(ConfigurationSection section)
+	{
+		int counter = 1;
+		ConfigurationSection diamonds = section.createSection("DiamondLocations");
+		for (Loc loc : this.diamondLocs)
+		{
+			loc.saveToConfig(diamonds.createSection("" + counter));
+			counter++;
+		}
+		blocks.saveToConfig(section.createSection("RegeneratingBlocks"));
 
-				ConfigurationSection spawnSection = teamSection.createSection("Spawns");
-				List<Loc> spawns = team.getSpawnList();
-				if (spawns != null && !spawns.isEmpty())
-				{
-					for (int x = 0; x < spawns.size(); x++)
-					{
-						spawns.get(x).saveToConfig(spawnSection.createSection(x + ""));
-					}
-				}
-			}
-			ConfigurationSection unplaceableSec = section.createSection("UnplaceableBlocks");
-			for (Entry<Material, UnplaceableBlock> entry : this.unplaceableBlocks.entrySet())
-			{
-				ConfigurationSection matSec = unplaceableSec.createSection(entry.getKey().toString());
-				matSec.set("Material", entry.getKey().toString());
-				matSec.set("Values", entry.getValue().getValues());
-			}
+	}
 
-			ConfigurationSection golemBossSec = section.createSection("GolemBosses");
-			for (Golem golem : Golem.Golems)
-			{
-				ConfigurationSection golemBossUnderSec = golemBossSec.createSection(golem.getInternalName());
-				golemBossUnderSec.set("Name", golem.getDisplayName() != null ? golem.getDisplayName() : "");
-//				if (golem.getSpawn() != null)
-				golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
-			}
+	private void saveGolems(ConfigurationSection section)
+	{
+		ConfigurationSection golemBossSec = section.createSection("GolemBosses");
+		for (Golem golem : Golem.Golems)
+		{
+			ConfigurationSection golemBossUnderSec = golemBossSec.createSection(golem.getInternalName());
+			golemBossUnderSec.set("Name", golem.getDisplayName() != null ? golem.getDisplayName() : "");
+			//			if (golem.getSpawn() != null)
+			golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
 		}
 
+	}
+
+	private void saveUnplaceable(ConfigurationSection section)
+	{
+		ConfigurationSection unplaceableSec = section.createSection("UnplaceableBlocks");
+		for (Entry<Material, UnplaceableBlock> entry : this.unplaceableBlocks.entrySet())
+		{
+			ConfigurationSection matSec = unplaceableSec.createSection(entry.getKey().toString());
+			matSec.set("Material", entry.getKey().toString());
+			matSec.set("Values", entry.getValue().getValues());
+		}
+
+	}
+
+	private void saveTeams(ConfigurationSection section)
+	{
+		ConfigurationSection teams = section.createSection("Teams");
+		for (AnniTeam team : AnniTeam.Teams)
+		{
+			ConfigurationSection teamSection = teams.createSection(team.getName() + " Team");
+
+			Loc nexusLoc = team.getNexus().getLocation();
+			if (nexusLoc != null)
+				nexusLoc.saveToConfig(teamSection.createSection("Nexus.Location"));
+
+			Loc spectatorspawn = team.getSpectatorLocation();
+			if (spectatorspawn != null)
+				spectatorspawn.saveToConfig(teamSection.createSection("SpectatorLocation"));
+
+			ConfigurationSection spawnSection = teamSection.createSection("Spawns");
+			List<Loc> spawns = team.getSpawnList();
+			if (spawns != null && !spawns.isEmpty())
+			{
+				for (int x = 0; x < spawns.size(); x++)
+				{
+					spawns.get(x).saveToConfig(spawnSection.createSection(x + ""));
+				}
+			}
+		}
 	}
 
 	public boolean addUnplaceableBlock(Material mat, byte b)
@@ -338,6 +399,10 @@ public final class GameMap extends AnniMap implements Listener
 					if (this.enderFurnaces.containsKey(key))
 					{
 						event.setCancelled(true);
+						AnniPlayer p = AnniPlayer.getPlayer(event.getPlayer().getUniqueId());
+						if(p != null){
+							p.openFurnace();
+						}
 					}
 				}
 			}

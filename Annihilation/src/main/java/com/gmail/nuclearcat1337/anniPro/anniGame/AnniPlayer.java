@@ -204,6 +204,12 @@ public final class AnniPlayer
 				p.setPlayerListName(ChatColor.WHITE + name);
 			return;
 		}
+		setPlayerListName(t);
+	}
+	
+	private void setPlayerListName(AnniTeam t){
+		String playerName = this.name;
+		String name = playerName.length() > 14 ? playerName.substring(0, 14) : playerName;
 		try
 		{
 			Player p = this.getPlayer();

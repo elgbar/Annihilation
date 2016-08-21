@@ -65,7 +65,8 @@ public class LaunchPadListner implements Listener
 					float VERT_VEL = 1.5F; // Found while testing
 					newVec = new Vector(oldVec.getX(), VERT_VEL, oldVec.getZ());
 
-				} else {
+				} else
+				{
 					newVec = null;
 				}
 
@@ -107,18 +108,14 @@ public class LaunchPadListner implements Listener
 			return;
 		}
 
-		// System.out.println("is player");
 		if (event.getCause() == DamageCause.FALL)
 		{
-			// System.out.println("dmg by block");
 			Player p = (Player) event.getEntity();
 			if (p.hasMetadata(LAUNCHPAD_KEY))
 			{
-				// System.out.println("has meta2");
 				Boolean bool = p.getMetadata(LAUNCHPAD_KEY).get(0).asBoolean();
 				if (bool.equals(true))
 				{
-					// System.out.println("is true2");
 					event.setCancelled(true);
 					p.setMetadata(LAUNCHPAD_KEY, new FixedMetadataValue(plugin, false));
 				}

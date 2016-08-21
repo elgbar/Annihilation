@@ -163,37 +163,7 @@ public final class RegeneratingBlocks implements Listener
 						return;
 					if (b.Effect == null)
 					{
-						int amount = 0;
-						try
-						{
-							amount = Integer.parseInt(b.Amount);
-						} catch (NumberFormatException e)
-						{
-							try
-							{
-								if (b.Amount.contains("RANDOM"))
-								{
-									String x, y;
-									x = b.Amount.split(",")[0];
-									y = b.Amount.split(",")[1];
-									x = x.substring(7);
-									y = y.substring(0, y.length() - 1);
-									try
-									{
-										int min = Integer.parseInt(x);
-										int max = Integer.parseInt(y);
-										amount = min + (int) (Math.random() * ((max - min) + 1));
-									} catch (NumberFormatException exx)
-									{
-										return;
-									}
-								}
-							} catch (ArrayIndexOutOfBoundsException ex)
-							{
-								return;
-							}
-						}
-
+						int amount = getAmount(b);
 						ItemStack stack;
 						int xp = b.XP;
 						if (b.ProductData != -1)
@@ -222,46 +192,8 @@ public final class RegeneratingBlocks implements Listener
 						}
 					} else if (b.Effect.equalsIgnoreCase("Gravel"))
 					{
-						List<ItemStack> l = new ArrayList<ItemStack>();
-						for (int x = 0; x < 5; x++)
-						{
-							int z;
-							switch (x)
-							{
-								// bone
-								case 0:
-									z = rand.nextInt(2);
-									if (z != 0)
-										l.add(new ItemStack(Material.BONE, z));
-									break;
-								// feather
-								case 1:
-									z = rand.nextInt(3);
-									if (z != 0)
-										l.add(new ItemStack(Material.FEATHER, z));
-									break;
-								/// arrow
-								case 2:
-									z = rand.nextInt(4);
-									if (z != 0)
-										l.add(new ItemStack(Material.ARROW, z));
-									break;
-								// string
-								case 3:
-									z = rand.nextInt(2);
-									if (z != 0)
-										l.add(new ItemStack(Material.STRING, z));
-									break;
-								// flint
-								case 4:
-									z = rand.nextInt(3);
-									if (z != 0)
-										l.add(new ItemStack(Material.FLINT, z));
-									break;
-								default:
-									break;
-							}
-						}
+						
+						List<ItemStack> l = gravelEffect();
 						ResourceBreakEvent e = new ResourceBreakEvent(player, b, b.XP, l.toArray(new ItemStack[l.size()]));
 						AnniEvent.callEvent(e);
 						if (!e.isCancelled())
@@ -281,6 +213,86 @@ public final class RegeneratingBlocks implements Listener
 				}
 			}
 		}
+	}
+
+	private List<ItemStack> gravelEffect()
+	{
+		List<ItemStack> l =	new ArrayList<ItemStack>();
+		for (int x = 0; x < 5; x++)
+		{
+			int z;
+			switch (x)
+			{
+				// bone
+				case 0:
+					z = rand.nextInt(2);
+					if (z != 0)
+						l.add(new ItemStack(Material.BONE, z));
+					break;
+				// feather
+				case 1:
+					z = rand.nextInt(3);
+					if (z != 0)
+						l.add(new ItemStack(Material.FEATHER, z));
+					break;
+				/// arrow
+				case 2:
+					z = rand.nextInt(4);
+					if (z != 0)
+						l.add(new ItemStack(Material.ARROW, z));
+					break;
+				// string
+				case 3:
+					z = rand.nextInt(2);
+					if (z != 0)
+						l.add(new ItemStack(Material.STRING, z));
+					break;
+				// flint
+				case 4:
+					z = rand.nextInt(3);
+					if (z != 0)
+						l.add(new ItemStack(Material.FLINT, z));
+					break;
+				default:
+					break;
+			}
+		}
+		return l;
+	}
+
+	private int getAmount(RegeneratingBlock b)
+	{
+		int amount = 0;
+		try
+		{
+			amount = Integer.parseInt(b.Amount);
+		} catch (NumberFormatException e)
+		{
+			try
+			{
+				if (b.Amount.contains("RANDOM"))
+				{
+					String x, y;
+					x = b.Amount.split(",")[0];
+					y = b.Amount.split(",")[1];
+					x = x.substring(7);
+					y = y.substring(0, y.length() - 1);
+					try
+					{
+						int min = Integer.parseInt(x);
+						int max = Integer.parseInt(y);
+						amount = min + (int) (Math.random() * ((max - min) + 1));
+					} catch (NumberFormatException exx)
+					{
+						return 0;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException ex)
+			{
+				return 0;
+			}
+		}
+		return amount;
 	}
 
 	public boolean removeRegeneratingBlock(Material type, Integer data)

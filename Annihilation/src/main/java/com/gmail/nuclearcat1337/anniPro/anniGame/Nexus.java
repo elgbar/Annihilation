@@ -68,7 +68,7 @@ public class Nexus implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	private void NexusCheck(BlockBreakEvent event)
+	public void NexusCheck(BlockBreakEvent event)
 	{
 		if (event.getPlayer().getGameMode() != GameMode.CREATIVE && Game.isGameRunning() && Game.getGameMap() != null)
 		{

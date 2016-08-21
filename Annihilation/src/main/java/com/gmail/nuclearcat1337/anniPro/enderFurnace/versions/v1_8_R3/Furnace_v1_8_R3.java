@@ -5,7 +5,6 @@ import com.gmail.nuclearcat1337.anniPro.enderFurnace.api.ReflectionUtil;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.TileEntityFurnace;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.block.CraftFurnace;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -54,7 +53,7 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
 	@Override
 	public void open()
 	{
-		Bukkit.getLogger().info("Attempted to open for player " + owningPlayer.getName());
+//		Bukkit.getLogger().info("Attempted to open for player " + owningPlayer.getName());
 		owningPlayer.openContainer(this);
 	}
 
@@ -91,7 +90,7 @@ class Furnace_v1_8_R3 extends TileEntityFurnace implements IFurnace
 	{
 		ItemStack[] items = data.getItems();
 		for (int x = 0; x < 3; x++)
-			this.setItem(x, org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asNMSCopy(items[x]));
+			this.setItem(x, CraftItemStack.asNMSCopy(items[x]));
 		this.b(0, data.getBurnTime());
 		this.b(1, data.getTicksForCurrentFuel());
 		this.b(2, data.getCookTime());

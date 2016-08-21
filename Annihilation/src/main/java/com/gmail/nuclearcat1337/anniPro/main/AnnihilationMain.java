@@ -3,6 +3,7 @@ package com.gmail.nuclearcat1337.anniPro.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -451,7 +452,7 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 				Game.LobbyMap.registerListeners(this);
 			} catch (NullPointerException e)
 			{
-				System.out.println("Invalid lobbymap! Please change it in AnniLobbyConfig.yml");
+				this.getLogger().log(Level.SEVERE, "Invalid lobbymap! Please change it in AnniLobbyConfig.yml");
 				e.printStackTrace();
 				this.setEnabled(false);
 			}

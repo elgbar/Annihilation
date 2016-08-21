@@ -19,7 +19,7 @@ public class BlockBreakListner implements Listener
 		Bukkit.getPluginManager().registerEvents(this, p);
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		if (!event.isCancelled())
