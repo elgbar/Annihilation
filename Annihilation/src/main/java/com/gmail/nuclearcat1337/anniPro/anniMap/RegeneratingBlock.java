@@ -7,6 +7,19 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class RegeneratingBlock
 {
+	public final Material Type;
+	public final int MaterialData;
+	public final boolean Regenerate;
+	public final boolean CobbleReplace;
+	public final boolean NaturalBreak;
+	public final int Time;
+	public final TimeUnit Unit;
+	public final int XP;
+	public final Material Product;
+	public final String Amount;
+	public final int ProductData;
+	public final String Effect;
+	
 	public RegeneratingBlock(Material Type, int MaterialData, boolean Regenerate, boolean CobbleReplace, boolean NaturalBreak, int Time,
 			TimeUnit Unit, int XP, Material Product, String Amount, int ProductData, String Effect)
 	{
@@ -23,19 +36,6 @@ public class RegeneratingBlock
 		this.Effect = Effect;
 		this.ProductData = ProductData;
 	}
-
-	public final Material Type;
-	public final int MaterialData;
-	public final boolean Regenerate;
-	public final boolean CobbleReplace;
-	public final boolean NaturalBreak;
-	public final int Time;
-	public final TimeUnit Unit;
-	public final int XP;
-	public final Material Product;
-	public final String Amount;
-	public final int ProductData;
-	public final String Effect;
 
 	public void saveToConfig(ConfigurationSection configSection)
 	{

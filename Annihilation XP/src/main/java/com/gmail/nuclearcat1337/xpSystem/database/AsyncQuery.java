@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 
 public interface AsyncQuery extends Runnable
 {
-	public boolean isCallback();
-	public String getQuerey();
-	public void setResult(ResultSet set);
+	boolean isCallback();
+	String getQuerey();
+	void setResult(ResultSet set);
 	
 }

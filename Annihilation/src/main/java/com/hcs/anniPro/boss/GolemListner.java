@@ -32,7 +32,7 @@ public class GolemListner implements Listener
 
 	private final Plugin plugin;
 	private final Random rand;
-
+	private final long RESPAWN_TIME = 12000L; //in ticks,  10 min
 	public GolemListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
@@ -186,13 +186,13 @@ public class GolemListner implements Listener
 							if (Game.isGameRunning())
 								Golem.spawnGolem(golem);
 						}
-					}, 20L * 60L * 10L); // 10 min
+					}, RESPAWN_TIME);
 				}
 			}
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onGolemDespawn(ItemDespawnEvent event)
 	{
 		Entity ent = event.getEntity();

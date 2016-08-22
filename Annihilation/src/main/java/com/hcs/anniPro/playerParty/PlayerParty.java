@@ -54,24 +54,21 @@ public final class PlayerParty
 	public boolean addPlayer(Player player)
 	{
 
-		if (!isInAParty(player))
+		if (!isInAParty(player) && getPlayers().size() < MAX_PLAYERS_IN_A_PARTY)
 		{
-			if (getPlayers().size() < MAX_PLAYERS_IN_A_PARTY)
+			AnniPlayer ap = AnniPlayer.getPlayer(player.getUniqueId());
+			if (ap.getTeam() != null)
 			{
-				AnniPlayer ap = AnniPlayer.getPlayer(player.getUniqueId());
-				if (ap.getTeam() != null)
-				{
-					ap.getTeam().leaveTeam(ap);
-				}
-				if (getAnniTeam() != null)
-				{
-					TeamCommand.joinTeam(ap, team);
-				}
-				player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getPartyLeader().getUniqueId()));
-				players.add(player);
-				removeInvited(player);
-				return PlayerParties.updateParty(this);
+				ap.getTeam().leaveTeam(ap);
 			}
+			if (getAnniTeam() != null)
+			{
+				TeamCommand.joinTeam(ap, team);
+			}
+			player.setMetadata(META_KEY, new FixedMetadataValue(AnnihilationMain.getInstance(), getPartyLeader().getUniqueId()));
+			players.add(player);
+			removeInvited(player);
+			return PlayerParties.updateParty(this);
 		}
 		return false;
 	}

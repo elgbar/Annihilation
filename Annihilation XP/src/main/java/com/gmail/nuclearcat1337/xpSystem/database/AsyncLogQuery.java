@@ -5,5 +5,5 @@ package com.gmail.nuclearcat1337.xpSystem.database;
 public interface AsyncLogQuery
 {
 	//public void setResult(ResultSet result);
-	public String getQuery();
+	 String getQuery();
 }
