@@ -21,9 +21,6 @@ import com.gmail.nuclearcat1337.base.KitBase;
 
 public class Warrior extends KitBase
 {
-	// private final ItemStack Sword =
-	// KitUtils.addEnchant(KitUtils.getWoodSword(), Enchantment.KNOCKBACK, 1);
-
 	@Override
 	protected void setUp()
 	{
@@ -59,51 +56,10 @@ public class Warrior extends KitBase
 		return l;
 	}
 
-	// @Override
-	// public String getName()
-	// {
-	// return "Warrior";
-	// }
-	//
-	// @Override
-	// public IconPackage getIconPackage()
-	// {
-	// return new IconPackage(new ItemStack(Material.STONE_SWORD),
-	// new String[]{
-	// aqua+"You are the sword.",
-	// "",
-	// aqua+"You deal +1 damage with",
-	// aqua+"any melee weapon.",
-	// "",
-	// aqua+"Spawn with a sword and",
-	// aqua+"a health potion which",
-	// aqua+"enable you to immediately",
-	// aqua+"move on the enemy and",
-	// aqua+"attack!",
-	// "",
-	// aqua+"If you do not have a good",
-	// aqua+"support back at base gathering",
-	// aqua+"better gear for you, you",
-	// aqua+"will be useless in the",
-	// aqua+"late game."
-	// });
-	// }
-
-	// @Override
-	// public void onPlayerSpawn(Player player)
-	// {
-	// KitUtils.giveTeamArmor(player);
-	// player.getInventory().addItem(Sword);
-	// player.getInventory().addItem(KitUtils.getWoodPick());
-	// player.getInventory().addItem(KitUtils.getWoodAxe());
-	// player.getInventory().addItem(KitUtils.getHealthPotion1());
-	// player.getInventory().addItem(KitUtils.getNavCompass());
-	// }
-
 	@Override
 	protected Loadout getFinalLoadout()
 	{
-		return new Loadout().addSoulboundEnchantedItem(new ItemStack(Material.WOOD_SWORD), Enchantment.KNOCKBACK, 1).addWoodPick().addWoodAxe()
+		return new Loadout().addSoulboundEnchantedItem(new ItemStack(Material.STONE_SWORD), Enchantment.KNOCKBACK, 1).addWoodPick().addWoodAxe()
 				.addHealthPotion1();
 	}
 
