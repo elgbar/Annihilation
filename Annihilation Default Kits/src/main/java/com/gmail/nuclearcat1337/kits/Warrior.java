@@ -122,9 +122,22 @@ public class Warrior extends KitBase
 		if (one.getType() == EntityType.PLAYER)
 		{
 			Player damager = (Player) one;
-			AnniPlayer d = AnniPlayer.getPlayer(damager.getUniqueId());
-			if (d != null && d.getKit().equals(this))
+			AnniPlayer ap = AnniPlayer.getPlayer(damager.getUniqueId());
+			if (ap != null && ap.getKit().equals(this))
+			{
 				event.setDamage(event.getDamage() + 1);
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void damageListener2(final EntityDamageByEntityEvent event)
+	{
+		if (event.getEntity() instanceof Player){
+			Player victim = (Player) event.getEntity();
+			if (event.getDamage() > victim.getHealth()) {
+				
+			}
 		}
 	}
 }

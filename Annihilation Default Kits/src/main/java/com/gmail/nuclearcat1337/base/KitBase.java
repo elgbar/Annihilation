@@ -22,6 +22,7 @@ public abstract class KitBase extends Kit
 	protected KitConfig instance;
 	private Loadout loadout;
 	private boolean isFree;
+	private boolean achievementkit;
 	
 	@Override
 	public boolean Initialize()
@@ -40,15 +41,19 @@ public abstract class KitBase extends Kit
 		x += ConfigManager.setDefaultIfNotSet(sec, "Kit Description", getDefaultDescription());
 		x += ConfigManager.setDefaultIfNotSet(sec, "Disable", false);
 		x += ConfigManager.setDefaultIfNotSet(sec, "Free", false);
+		x += ConfigManager.setDefaultIfNotSet(sec, "Achievement kit", false);
 		x += setDefaults(sec);
 		
 		if(x > 0)
 			instance.saveConfig();
 		
-		this.isFree = sec.getBoolean("Free");
-		
 		if(sec.getBoolean("Disable"))
 			return false;
+		
+		this.isFree = sec.getBoolean("Free");
+		
+		this.setAchievementkit(sec.getBoolean("Achievement kit"));
+		
 		
 		loadKitStuff(sec);
 		if(instance.useDefaultPermissions())
@@ -137,5 +142,21 @@ public abstract class KitBase extends Kit
 	public void onPlayerSpawn(Player player)
 	{
 		loadout.giveLoadout(player);
+	}
+
+	/**
+	 * @return the achievementkit
+	 */
+	public boolean isAchievementkit()
+	{
+		return achievementkit;
+	}
+
+	/**
+	 * @param achievementkit the achievementkit to set
+	 */
+	public void setAchievementkit(boolean achievementkit)
+	{
+		this.achievementkit = achievementkit;
 	}
 }
