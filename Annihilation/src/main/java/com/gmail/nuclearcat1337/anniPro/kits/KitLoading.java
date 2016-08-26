@@ -209,7 +209,9 @@ public class KitLoading implements Listener, CommandExecutor
 			List<Integer> lockedItems = new ArrayList<Integer>();
 			for (int x = 0; x < items.length; x++)
 			{
-				if (items[x].getKit().hasPermission(player))
+				List<String> lore = items[x].getFinalIcon(player).getItemMeta().getLore();
+				//TODO fix the underlying problem with it sometimes being unlocked while it's not & the other way around
+				if (items[x].getKit().hasPermission(player) && lore.get(lore.size() - 1).contains("UNLOCKED"))
 				{
 					unlockedItems.add(x);
 				} else
@@ -410,10 +412,13 @@ public class KitLoading implements Listener, CommandExecutor
 		}
 		return false;
 	}
-	
-	public static boolean clearMenu(Player player){
-		if (menus != null) {
-			if(menus.containsKey(player.getUniqueId())){
+
+	public static boolean clearMenu(Player player)
+	{
+		if (menus != null)
+		{
+			if (menus.containsKey(player.getUniqueId()))
+			{
 				menus.remove(player.getUniqueId());
 				return true;
 			}

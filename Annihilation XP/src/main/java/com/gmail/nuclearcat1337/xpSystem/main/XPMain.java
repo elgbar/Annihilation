@@ -119,7 +119,7 @@ public final class XPMain extends JavaPlugin implements Listener
 		if(useShop)
 		{
 			Bukkit.getLogger().info("[AnnihilationXPSystem] The shop is ENABLED");
-			this.getCommand("Shop").setExecutor(new Shop(this.xpSystem,config.getConfigurationSection("Kit-Shop")));
+			this.getCommand("Shop").setExecutor(new Shop(this.xpSystem,config.getConfigurationSection("Kit-Shop"), this));
 			saveConfig();
 		}
 		else Bukkit.getLogger().info("[AnnihilationXPSystem] The shop is DISABLED");

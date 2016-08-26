@@ -16,6 +16,7 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.kits.Kit;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
+import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
 import com.gmail.nuclearcat1337.xpSystem.main.XPSystem;
 
 public class Shop implements CommandExecutor
@@ -31,24 +32,39 @@ public class Shop implements CommandExecutor
 	private final Map<UUID,ItemMenu> menus;
 	private final ConfigurationSection configSec;
 	
-	public Shop(XPSystem system, ConfigurationSection shopSection)
+	private final String BUYABLE = "Buyable";
+	private final String PRICE = "Price";
+	private final String KITS = "Kits";
+	
+	public Shop(XPSystem system, ConfigurationSection shopSection, XPMain instance)
 	{
 		configSec = shopSection;
 		menus = new HashMap<UUID,ItemMenu>();
 		setMessages();
-		if(!shopSection.isConfigurationSection("Kits"))
-			shopSection.createSection("Kits");
-		ConfigurationSection kitSec = shopSection.getConfigurationSection("Kits");
+		if(!shopSection.isConfigurationSection(KITS))
+			shopSection.createSection(KITS);
+		ConfigurationSection kitSec = shopSection.getConfigurationSection(KITS);
 		Collection<Kit> kits = Kit.getKits();
 		items = new KitShopMenuItem[kits.size()];
 		int c =0;
+		int x = 0;
 		for(Kit k : kits)
 		{
-			ConfigManager.setDefaultIfNotSet(kitSec, k.getName(), 10000);
-			KitShopMenuItem item = new KitShopMenuItem(new KitWrapper(k,kitSec.getInt(k.getName())),system);
+			ConfigurationSection sec = getKitSection(kitSec, k.getName());
+			if(sec == null)
+			{
+				sec = kitSec.createSection(k.getName());
+				x++;
+			}
+			x += ConfigManager.setDefaultIfNotSet(sec, PRICE, 10000);
+			x += ConfigManager.setDefaultIfNotSet(sec, BUYABLE, true);
+			KitShopMenuItem item = new KitShopMenuItem(new KitWrapper(k,sec.getInt(PRICE), sec.getBoolean(BUYABLE)),system);
 			items[c] = item;
 			c++;
 		}
+		
+		if(x > 0)
+			instance.saveConfig();
 	}
 	
 	private void setMessages(){
@@ -61,6 +77,17 @@ public class Shop implements CommandExecutor
 		noKitsToPurchase = getString(configSec,"No-Kits-To-Purchase");
 	}
 	
+	public ConfigurationSection getKitSection(ConfigurationSection kitSec, String kit)
+	{
+		try
+		{
+			return kitSec.getConfigurationSection(kit);
+		}
+		catch(NullPointerException e)
+		{
+			return null;
+		}
+	}
 	
 	private String getString(ConfigurationSection section, String path)
 	{
@@ -81,9 +108,20 @@ public class Shop implements CommandExecutor
 			}
 			menu.clearAllItems();
 			int counter = 0;
+			
 			for(KitShopMenuItem m : items)
 			{
-				if(!m.getKit().hasPermission(player))
+				
+				ConfigurationSection kitSec = null;
+				try
+				{
+					kitSec = configSec.getConfigurationSection(KITS).getConfigurationSection(m.getKit().getName());
+				} catch (NullPointerException e)
+				{
+					System.out.println("Failed to get the kit's config section");
+				}
+				
+				if(!m.getKit().hasPermission(player) && kitSec.getBoolean(BUYABLE))
 				{
 					menu.setItem(counter, m);
 					counter++;

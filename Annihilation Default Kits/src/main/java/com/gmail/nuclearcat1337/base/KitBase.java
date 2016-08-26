@@ -22,7 +22,7 @@ public abstract class KitBase extends Kit
 	protected KitConfig instance;
 	private Loadout loadout;
 	private boolean isFree;
-	private boolean achievementkit;
+	private boolean isBuyable;
 	
 	@Override
 	public boolean Initialize()
@@ -41,7 +41,7 @@ public abstract class KitBase extends Kit
 		x += ConfigManager.setDefaultIfNotSet(sec, "Kit Description", getDefaultDescription());
 		x += ConfigManager.setDefaultIfNotSet(sec, "Disable", false);
 		x += ConfigManager.setDefaultIfNotSet(sec, "Free", false);
-		x += ConfigManager.setDefaultIfNotSet(sec, "Achievement kit", false);
+		x += ConfigManager.setDefaultIfNotSet(sec, "Buyable", true);
 		x += setDefaults(sec);
 		
 		if(x > 0)
@@ -51,10 +51,7 @@ public abstract class KitBase extends Kit
 			return false;
 		
 		this.isFree = sec.getBoolean("Free");
-		
-		this.setAchievementkit(sec.getBoolean("Achievement kit"));
-		
-		
+
 		loadKitStuff(sec);
 		if(instance.useDefaultPermissions())
 		{
@@ -145,18 +142,18 @@ public abstract class KitBase extends Kit
 	}
 
 	/**
-	 * @return the achievementkit
+	 * @return the isBuyable
 	 */
-	public boolean isAchievementkit()
+	public boolean isBuyable()
 	{
-		return achievementkit;
+		return isBuyable;
 	}
 
 	/**
-	 * @param achievementkit the achievementkit to set
+	 * @param isBuyable the isBuyable to set
 	 */
-	public void setAchievementkit(boolean achievementkit)
+	public void setBuyable(boolean isBuyable)
 	{
-		this.achievementkit = achievementkit;
+		this.isBuyable = isBuyable;
 	}
 }

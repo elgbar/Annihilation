@@ -43,7 +43,7 @@ public class ConfigManager
 			} else
 				gameVars = mainConfig.getConfigurationSection("GameVars");
 
-			save += setDefaultIfNotSet(gameVars, "DefaultGameMode", "adventure");
+			save += setDefaultIfNotSet(gameVars, "DefaultGameMode", "survival");
 
 			save += setDefaultIfNotSet(gameVars, "AutoStart.On", false);
 			save += setDefaultIfNotSet(gameVars, "AutoStart.PlayersToStart", 4);
