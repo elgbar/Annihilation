@@ -286,8 +286,9 @@ public final class GameMap extends AnniMap implements Listener
 		{
 			ConfigurationSection golemBossUnderSec = golemBossSec.createSection(golem.getInternalName());
 			golemBossUnderSec.set("Name", golem.getDisplayName() != null ? golem.getDisplayName() : "");
-			//			if (golem.getSpawn() != null)
-			golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
+			if (golem.getSpawn() != null) {
+				golem.getSpawn().saveToConfig(golemBossUnderSec.createSection("Spawns"));
+			}
 		}
 
 	}
