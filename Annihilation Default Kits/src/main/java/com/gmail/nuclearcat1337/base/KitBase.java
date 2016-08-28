@@ -22,7 +22,6 @@ public abstract class KitBase extends Kit
 	protected KitConfig instance;
 	private Loadout loadout;
 	private boolean isFree;
-	private boolean isBuyable;
 	
 	@Override
 	public boolean Initialize()
@@ -41,7 +40,6 @@ public abstract class KitBase extends Kit
 		x += ConfigManager.setDefaultIfNotSet(sec, "Kit Description", getDefaultDescription());
 		x += ConfigManager.setDefaultIfNotSet(sec, "Disable", false);
 		x += ConfigManager.setDefaultIfNotSet(sec, "Free", false);
-		x += ConfigManager.setDefaultIfNotSet(sec, "Buyable", true);
 		x += setDefaults(sec);
 		
 		if(x > 0)
@@ -139,21 +137,5 @@ public abstract class KitBase extends Kit
 	public void onPlayerSpawn(Player player)
 	{
 		loadout.giveLoadout(player);
-	}
-
-	/**
-	 * @return the isBuyable
-	 */
-	public boolean isBuyable()
-	{
-		return isBuyable;
-	}
-
-	/**
-	 * @param isBuyable the isBuyable to set
-	 */
-	public void setBuyable(boolean isBuyable)
-	{
-		this.isBuyable = isBuyable;
 	}
 }
