@@ -1,6 +1,7 @@
-name: Annihilation
+name: ${project.artifactId}
 main: com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain
-version: 0.2.0
+version: ${project.version}
+
 
 description: A plugin for playing the game of Annihilation
 
