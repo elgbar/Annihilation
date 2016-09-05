@@ -1,0 +1,11 @@
+name: ${project.artifactId}
+main: com.gmail.nuclearcat1337.kitSystem.main.KitMain
+version: ${project.version}
+authors: [Mr_Little_Kitty, kh498]
+depend: [Annihilation, Annihilation_XP]
+description: An Annihilation Achievement System
+commands:
+  Achievements:
+   aliases: [ach, achieve]
+   description: Shows how far a player have come in their kit achivements
+permissions:

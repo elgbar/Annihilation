@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.kitAchievement;
+package com.gmail.nuclearcat1337.kitSystem.kitAchievement;
 
 import java.util.UUID;
 

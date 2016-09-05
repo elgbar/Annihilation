@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.achievementViewer;
+package com.gmail.nuclearcat1337.kitSystem.achievementViewer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitAchivement;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
-import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
-import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitAchivement;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitSystem;
+import com.gmail.nuclearcat1337.kitSystem.main.KitMain;
+import com.gmail.nuclearcat1337.kitSystem.utils.Acceptor;
 
 public class KitAchievementMenuItem extends MenuItem implements Listener
 {
@@ -42,7 +42,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 
 		for (Player p : Bukkit.getOnlinePlayers())
 		{
-			loadProgress(p.getUniqueId());
+			cacheProgress(p.getUniqueId());
 		}
 	}
 
@@ -54,12 +54,12 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 	@Override
 	public ItemStack getFinalIcon(Player player)
 	{
-		loadProgress(player.getUniqueId());
+		cacheProgress(player.getUniqueId());
 
 		List<String> str = new ArrayList<String>(getLore());
 		if (cachedLore.get(player.getUniqueId()) != null)
 		{
-			String[] cached = XPMain.toStringArray(cachedLore.get(player.getUniqueId()));
+			String[] cached = KitMain.toStringArray(cachedLore.get(player.getUniqueId()));
 			for (String s : cached)
 			{
 				str.add(s);
@@ -76,7 +76,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 		return setNameAndLore(getIcon().clone(), name, str);
 	}
 
-	private void loadProgress(UUID uuid)
+	private void cacheProgress(UUID uuid)
 	{
 		/*
 		 * Can only update their stats every 1 second
@@ -113,7 +113,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 					return;
 			}
 
-			kitSystem.getKitProgress(uuid, new Acceptor<Integer>()
+			kitSystem.getKitProgress(uuid, wrapper.kit, new Acceptor<Integer>()
 			{
 
 				@Override
@@ -135,7 +135,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 							+ ChatColor.GRAY + "That is " + percent + " percent.";
 					cachedLore.put(uuid, lore);
 				}
-			}, wrapper.kit);
+			});
 		}
 	}
 
@@ -148,7 +148,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void cachePlayersAchievements(PlayerJoinEvent e)
 	{
-		loadProgress(e.getPlayer().getUniqueId());
+		cacheProgress(e.getPlayer().getUniqueId());
 	}
 	
 }

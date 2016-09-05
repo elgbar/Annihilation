@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.kitAchievement;
+package com.gmail.nuclearcat1337.kitSystem.kitAchievement;
 
 import java.util.UUID;
 
@@ -7,9 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import com.gmail.nuclearcat1337.xpSystem.database.AsyncLogQuery;
-import com.gmail.nuclearcat1337.xpSystem.database.Database;
-import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
+import com.gmail.nuclearcat1337.kitSystem.database.AsyncLogQuery;
+import com.gmail.nuclearcat1337.kitSystem.database.Database;
+import com.gmail.nuclearcat1337.kitSystem.utils.Acceptor;
 import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 
 public class KitSystem
@@ -98,26 +98,30 @@ public class KitSystem
 		}
 	}
 
-	public void getKitProgress(UUID playerID, Acceptor<Integer> acceptor, KitAchivement ka)
+	public void getKitProgress(UUID playerID, KitAchivement ka, Acceptor<Integer> acceptor)
 	{
 		database.addNewAsyncQuery(new QueryKitAchievements(playerID, acceptor, ka));
 	}
 
 	private void checkCompletedObjective(final Player player, final KitAchivement kit)
 	{
-		this.getKitProgress(player.getUniqueId(), new Acceptor<Integer>()
-		{
-			@Override
-			public void accept(Integer amount)
+		//only bother to check if the player should be given the kit if he doesn't own it.
+		if (!kit.getRewardKit().hasPermission(player)){
+			this.getKitProgress(player.getUniqueId(), kit, new Acceptor<Integer>()
 			{
-				if (amount.equals(kit.getTotalActions()))
+				@Override
+				public void accept(Integer amount)
 				{
-					xpSystem.addKit(player.getUniqueId(), kit.getRewardKit());
-					player.sendMessage(ChatColor.GREEN + "You just completed the action for " + ChatColor.YELLOW + kit.toString() + ChatColor.GREEN
-							+ "! You can use this kit in the next annihilation game.");
-
+				
+					if  ((int) amount >= kit.getTotalActions())
+					{
+						xpSystem.addKit(player.getUniqueId(), kit.getRewardKit());
+						player.sendMessage(ChatColor.GREEN + "You just completed the action for " + ChatColor.YELLOW + kit.toString() + ChatColor.GREEN
+								+ "! You can use this kit in the next annihilation game.");
+	
+					}
 				}
-			}
-		}, kit);
+			});
+		}
 	}
 }

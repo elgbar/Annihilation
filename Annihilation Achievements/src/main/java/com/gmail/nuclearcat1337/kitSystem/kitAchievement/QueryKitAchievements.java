@@ -1,11 +1,11 @@
-package com.gmail.nuclearcat1337.xpSystem.kitAchievement;
+package com.gmail.nuclearcat1337.kitSystem.kitAchievement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import com.gmail.nuclearcat1337.xpSystem.database.AsyncQuery;
-import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
+import com.gmail.nuclearcat1337.kitSystem.database.AsyncQuery;
+import com.gmail.nuclearcat1337.kitSystem.utils.Acceptor;
 
 class QueryKitAchievements implements AsyncQuery
 {

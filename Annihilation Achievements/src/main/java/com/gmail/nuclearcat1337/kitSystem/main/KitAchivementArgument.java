@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.main;
+package com.gmail.nuclearcat1337.kitSystem.main;
 
 import java.util.UUID;
 
@@ -9,8 +9,8 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.Kit;
 import com.gmail.nuclearcat1337.anniPro.main.AnniArgument;
 import com.gmail.nuclearcat1337.anniPro.utils.IDTools;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitAchivement;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitAchivement;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitSystem;
 import com.google.common.base.Predicate;
 
 public class KitAchivementArgument implements AnniArgument

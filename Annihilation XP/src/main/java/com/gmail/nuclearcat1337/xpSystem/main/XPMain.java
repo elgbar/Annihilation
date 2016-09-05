@@ -24,9 +24,6 @@ import com.gmail.nuclearcat1337.anniPro.main.AnniCommand;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.utils.Perm;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
-import com.gmail.nuclearcat1337.xpSystem.achievementViewer.AchievementViewer;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitListeners;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
 import com.gmail.nuclearcat1337.xpSystem.shop.Shop;
 import com.gmail.nuclearcat1337.xpSystem.xp.MyXPCommand;
 import com.gmail.nuclearcat1337.xpSystem.xp.XPListeners;
@@ -34,18 +31,18 @@ import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 
 public final class XPMain extends JavaPlugin implements Listener
 {
-	private XPSystem xpSystem;
-	private KitSystem kitSystem;
+	private static XPSystem xpSystem = null;
 	private YamlConfiguration config;
 	private File configFile;
 	private static List<Perm> perms;
+	
+	private final String CHAT_PREFIX = "[AnnihilationXPSystem] ";
 
 	@Override
 	public void onEnable()
 	{
 		configFile = new File(AnnihilationMain.getInstance().getDataFolder(),"AnnihilationXPConfig.yml");
-		Bukkit.getLogger().info("[AnnihilationXPSystem] Loading XP system...");
-		Bukkit.getLogger().info("[AnnihilationXPSystem] Loading Kit Achievement system...");
+		Bukkit.getLogger().info(CHAT_PREFIX + "Loading XP system...");
 		Bukkit.getPluginManager().registerEvents(this, this);
 
 		checkFile(configFile);
@@ -69,17 +66,11 @@ public final class XPMain extends JavaPlugin implements Listener
 			x++;
 		}
 		
-		ConfigurationSection data = config.getConfigurationSection("Database_XP");
+		ConfigurationSection data = config.getConfigurationSection("Database");
 		if(data == null)
-			data = config.createSection("Database_XP");
+			data = config.createSection("Database");
 		
 		x += setupDatebaseConfig(data);
-		
-		ConfigurationSection kits = config.getConfigurationSection("Database_KitAchievement");
-		if(kits == null)
-			kits = config.createSection("Database_KitAchievement");
-		
-		x += setupDatebaseConfig(kits);
 		
 		ConfigurationSection shopSec = config.getConfigurationSection("Kit-Shop");
 		if(shopSec == null)
@@ -101,34 +92,26 @@ public final class XPMain extends JavaPlugin implements Listener
 		if(x > 0)
 			this.saveConfig();
 		
-		this.xpSystem = new XPSystem(config.getConfigurationSection("Database_XP"));
-		this.kitSystem = new KitSystem(config.getConfigurationSection("Database_KitAchievement"), xpSystem);
-		if(!this.xpSystem.isActive())
+		XPMain.xpSystem = new XPSystem(config.getConfigurationSection("Database"));
+		if(!XPMain.xpSystem.isActive())
 		{
-			Bukkit.getLogger().info("[AnnihilationXPSystem] Could NOT connect to the XP database");
-			disable();
-			return;
-		} else if(!this.kitSystem.isActive())
-		{
-			Bukkit.getLogger().info("[AnnihilationXPSystem] Could NOT connect to the kit achievement database");
+			Bukkit.getLogger().info(CHAT_PREFIX + "Could NOT connect to the XP database");
 			disable();
 			return;
 		}
-		Bukkit.getLogger().info("[AnnihilationXPSystem] CONNECTED to both databases");
+		Bukkit.getLogger().info(CHAT_PREFIX + "CONNECTED to XP database");
 		boolean useShop = config.getBoolean("Kit-Shop.On");
 		if(useShop)
 		{
-			Bukkit.getLogger().info("[AnnihilationXPSystem] The shop is ENABLED");
-			this.getCommand("Shop").setExecutor(new Shop(this.xpSystem,config.getConfigurationSection("Kit-Shop"), this));
+			Bukkit.getLogger().info(CHAT_PREFIX + "The shop is ENABLED");
+			this.getCommand("Shop").setExecutor(new Shop(XPMain.xpSystem,config.getConfigurationSection("Kit-Shop"), this));
 			saveConfig();
 		}
-		else Bukkit.getLogger().info("[AnnihilationXPSystem] The shop is DISABLED");
+		else Bukkit.getLogger().info(CHAT_PREFIX + "The shop is DISABLED");
 		loadMultipliers(config.getConfigurationSection("XP-Multipliers"));
 		loadXPVars(config); //This also loads the listeners with the values they need
-		this.getCommand("achievements").setExecutor(new AchievementViewer(this.kitSystem, this));
 		AnniCommand.registerArgument(new XPArgument(xpSystem));
 		AnniCommand.registerArgument(new KitArgument(xpSystem));
-		AnniCommand.registerArgument(new KitAchivementArgument(kitSystem));
 		for(AnniPlayer p : AnniPlayer.getPlayers())
 			xpSystem.loadKits(p, null);
 	}
@@ -181,7 +164,7 @@ public final class XPMain extends JavaPlugin implements Listener
 	private void disable()
 	{
 		detachAllDatabases();
-		Bukkit.getLogger().info("[AnnihilationXPSystem] Disabling XP System.");
+		Bukkit.getLogger().info(CHAT_PREFIX + "Disabling XP System.");
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
 	
@@ -199,13 +182,11 @@ public final class XPMain extends JavaPlugin implements Listener
 		teamXPs[2] = section.getInt("Third-Place-Team-XP");
 		teamXPs[3] = section.getInt("Last-Place-Team-XP");
 		
-		XPListeners listeners = new XPListeners(this.xpSystem,gaveXPMessage,killXP,nexusHitXP,teamXPs);
-		KitListeners KitListeners = new KitListeners(this.kitSystem);
+		XPListeners listeners = new XPListeners(XPMain.xpSystem,gaveXPMessage,killXP,nexusHitXP,teamXPs);
 		
 		Bukkit.getPluginManager().registerEvents(listeners, this);
-		Bukkit.getPluginManager().registerEvents(KitListeners, this);
 		
-		MyXPCommand xpCommand = new MyXPCommand(this.xpSystem,myXPMessage);
+		MyXPCommand xpCommand = new MyXPCommand(XPMain.xpSystem,myXPMessage);
 
 		this.getCommand("MyXP").setExecutor(xpCommand);
 
@@ -246,22 +227,11 @@ public final class XPMain extends JavaPlugin implements Listener
 	public void detachAllDatabases(){
 		if(xpSystem != null)
 			xpSystem.disable();
-		if (kitSystem != null){
-			kitSystem.disable();
-		}
 	}
 	
 	public static String formatString(String string, int amount)
 	{
 		return ChatColor.translateAlternateColorCodes('&', string.replace("%#", ""+amount));
-	}
-	
-	public static String[] toStringArray(String s)
-	{
-		if (s.contains("%n"))
-			return s.split("%n");
-		else
-			return new String[] { s };
 	}
 	
 	public static int checkMultipliers(Player player, int initialXP)
@@ -279,5 +249,10 @@ public final class XPMain extends JavaPlugin implements Listener
 			}
 		}
 		return returnXP;
+	}
+
+	public static XPSystem getXpSystem()
+	{
+		return xpSystem;
 	}
 }

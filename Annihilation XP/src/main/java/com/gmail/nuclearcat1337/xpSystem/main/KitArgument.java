@@ -46,7 +46,7 @@ public class KitArgument implements AnniArgument
 								sender.sendMessage(ChatColor.RED+"Kit removed.");
 								//removeKit(kit.getName(), id);
 								xpSystem.removeKit(id, kit);
-								sender.sendMessage("Removed kit "+kit.getName());
+//								sender.sendMessage("Removed kit "+kit.getName());
 							}
 							else 
 								sender.sendMessage(ChatColor.RED+"Operation "+ChatColor.GOLD+args[0]+ChatColor.RED+" is not supported.");

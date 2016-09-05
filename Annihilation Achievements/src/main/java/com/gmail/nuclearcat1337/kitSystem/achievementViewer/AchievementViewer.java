@@ -1,6 +1,5 @@
-package com.gmail.nuclearcat1337.xpSystem.achievementViewer;
+package com.gmail.nuclearcat1337.kitSystem.achievementViewer;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -11,10 +10,8 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
-import com.gmail.nuclearcat1337.anniPro.kits.Kit;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitAchivement;
-import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
-import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitAchivement;
+import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitSystem;
 
 public class AchievementViewer implements CommandExecutor
 {
@@ -22,11 +19,10 @@ public class AchievementViewer implements CommandExecutor
 
 	private KitAchievementMenuItem[] items;
 	
-	public AchievementViewer(KitSystem system, XPMain instance)
+	public AchievementViewer(KitSystem system)
 	{
 		menus = new HashMap<UUID,ItemMenu>();
-		Collection<Kit> kits = Kit.getKits();
-		items = new KitAchievementMenuItem[kits.size()];
+		items = new KitAchievementMenuItem[KitAchivement.values().length];
 		int c =0;
 		for(KitAchivement k : KitAchivement.values())
 		{

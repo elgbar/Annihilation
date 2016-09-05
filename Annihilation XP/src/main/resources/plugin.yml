@@ -7,9 +7,6 @@ description: An Annihilation XP System
 commands:
   MyXP:
     description: Shows the player's XP
-  Achievements:
-    aliases: [Ach]
-    description: Shows how far a player have come in their kit achivements
   Shop:
     description: Opens the Kit Shop
 permissions:
