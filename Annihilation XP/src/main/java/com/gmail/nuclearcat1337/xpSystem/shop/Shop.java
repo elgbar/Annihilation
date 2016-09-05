@@ -17,7 +17,7 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.kits.Kit;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
 import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
-import com.gmail.nuclearcat1337.xpSystem.main.XPSystem;
+import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 
 public class Shop implements CommandExecutor
 {

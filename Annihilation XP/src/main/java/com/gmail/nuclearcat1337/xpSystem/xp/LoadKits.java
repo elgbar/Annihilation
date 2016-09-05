@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.main;
+package com.gmail.nuclearcat1337.xpSystem.xp;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

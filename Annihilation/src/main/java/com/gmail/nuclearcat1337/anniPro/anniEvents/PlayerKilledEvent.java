@@ -5,12 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.utils.Loc;
-
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 public final class PlayerKilledEvent extends Event
 {

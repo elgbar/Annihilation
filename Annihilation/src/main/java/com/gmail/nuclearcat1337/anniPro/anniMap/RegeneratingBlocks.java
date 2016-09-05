@@ -131,7 +131,7 @@ public final class RegeneratingBlocks implements Listener
 	}
 
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void oreBreak(BlockBreakEvent event)
 	{
 		if (event.getPlayer().getGameMode() != GameMode.CREATIVE && event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase(world))
@@ -159,8 +159,9 @@ public final class RegeneratingBlocks implements Listener
 						return;
 					}
 					event.setCancelled(true);
-					if (!b.Regenerate)
+					if (!b.Regenerate) {
 						return;
+					}
 					if (b.Effect == null)
 					{
 						int amount = getAmount(b);
@@ -208,7 +209,6 @@ public final class RegeneratingBlocks implements Listener
 							}
 							executor.schedule(new FutureBlockReplace(event.getBlock(), b.CobbleReplace), b.Time, b.Unit);
 						}
-						return;
 					}
 				}
 			}

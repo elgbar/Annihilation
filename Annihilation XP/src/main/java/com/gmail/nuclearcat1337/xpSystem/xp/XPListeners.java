@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.main;
+package com.gmail.nuclearcat1337.xpSystem.xp;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +11,7 @@ import com.gmail.nuclearcat1337.anniPro.anniEvents.PlayerKilledEvent;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniTeam;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
+import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
 
 public class XPListeners implements Listener
 {

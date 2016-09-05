@@ -55,7 +55,6 @@ import net.techcable.npclib.api.NPCMain;
 
 public class AnnihilationMain extends JavaPlugin implements Listener
 {
-	
 	private static JavaPlugin instance;
 
 	public static JavaPlugin getInstance()
@@ -104,14 +103,14 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		new GameListeners(this);
 		new AreaCommand(this);
 		new BlockBreakListner(this);
-		
+
 		new FoodLvlChangeListner(this);
 		new TrampleListner(this);
 		new GolemListner(this);
 		new LaunchPadListner(this);
-		
+
 		new PartyCommands(this);
-		
+
 		new KitLoading(this); // No real reason to come last, but I kind of feel since its the heaviest processing power user, it should be last
 
 	}
@@ -416,11 +415,11 @@ public class AnnihilationMain extends JavaPlugin implements Listener
 		if (Game.getGameMap() != null)
 			Game.getGameMap().unLoadMap();
 		Bukkit.getPluginManager().callEvent(new PluginDisableEvent());
-//		try {
-//			PlayerParties.clearParties();
-//		} catch(NoClassDefFoundError e){
-//			
-//		}
+		//		try {
+		//			PlayerParties.clearParties();
+		//		} catch(NoClassDefFoundError e){
+		//			
+		//		}
 	}
 
 	public void saveMainValues()

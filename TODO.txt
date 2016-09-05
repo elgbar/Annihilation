@@ -17,8 +17,8 @@ add a diamond pickaxe with efficiency 10 and duration 4
 Max Players in a party (10)
 
 -Classes to be acived though achivements-
-Warrior: 500 kills
-Scout: 500 Nexus Damage
-Miner: Mine 1500 ores
-Lumberjack: Cut 2000 logs
-Archer: 100 kills with a bow
+Warrior: 500 melee kills (done)
+Scout: 500 Nexus Damage (done)
+Miner: Mine 1500 ores (done)
+Lumberjack: Cut 2000 logs (done)
+Archer: 200 kills with a bow (done)

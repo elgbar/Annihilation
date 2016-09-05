@@ -1,4 +1,4 @@
-package com.gmail.nuclearcat1337.xpSystem.main;
+package com.gmail.nuclearcat1337.xpSystem.xp;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandExecutor;
 
+import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
 import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
 
 public class MyXPCommand implements CommandExecutor

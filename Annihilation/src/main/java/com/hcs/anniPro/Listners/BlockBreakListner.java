@@ -300,8 +300,7 @@ public class BlockBreakListner implements Listener
 				}
 			}
 
-			// If it does not furfull the requirements above then cancel the
-			// event
+			// If it does not furfull the requirements above then cancel the event
 			event.setCancelled(true);
 		}
 	}

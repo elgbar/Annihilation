@@ -24,11 +24,18 @@ import com.gmail.nuclearcat1337.anniPro.main.AnniCommand;
 import com.gmail.nuclearcat1337.anniPro.main.AnnihilationMain;
 import com.gmail.nuclearcat1337.anniPro.utils.Perm;
 import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
+import com.gmail.nuclearcat1337.xpSystem.achievementViewer.AchievementViewer;
+import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitListeners;
+import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
 import com.gmail.nuclearcat1337.xpSystem.shop.Shop;
+import com.gmail.nuclearcat1337.xpSystem.xp.MyXPCommand;
+import com.gmail.nuclearcat1337.xpSystem.xp.XPListeners;
+import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 
 public final class XPMain extends JavaPlugin implements Listener
 {
 	private XPSystem xpSystem;
+	private KitSystem kitSystem;
 	private YamlConfiguration config;
 	private File configFile;
 	private static List<Perm> perms;
@@ -38,6 +45,7 @@ public final class XPMain extends JavaPlugin implements Listener
 	{
 		configFile = new File(AnnihilationMain.getInstance().getDataFolder(),"AnnihilationXPConfig.yml");
 		Bukkit.getLogger().info("[AnnihilationXPSystem] Loading XP system...");
+		Bukkit.getLogger().info("[AnnihilationXPSystem] Loading Kit Achievement system...");
 		Bukkit.getPluginManager().registerEvents(this, this);
 
 		checkFile(configFile);
@@ -61,22 +69,17 @@ public final class XPMain extends JavaPlugin implements Listener
 			x++;
 		}
 		
-		ConfigurationSection data = config.getConfigurationSection("Database");
+		ConfigurationSection data = config.getConfigurationSection("Database_XP");
 		if(data == null)
-			data = config.createSection("Database");
+			data = config.createSection("Database_XP");
 		
-		x += ConfigManager.setDefaultIfNotSet(data, "Host", "Test");
-		x += ConfigManager.setDefaultIfNotSet(data, "Port", "Test");
-		x += ConfigManager.setDefaultIfNotSet(data, "Database", "Test");
-		x += ConfigManager.setDefaultIfNotSet(data, "Username", "Test");
-		x += ConfigManager.setDefaultIfNotSet(data, "Password", "Test");
-
-//		data.set("Host", "Test");
-//		data.set("Port", "Test");
-//		data.set("Database", "Test");
-//		data.set("Username", "Test");
-//		data.set("Password", "Test");
-//		x++;
+		x += setupDatebaseConfig(data);
+		
+		ConfigurationSection kits = config.getConfigurationSection("Database_KitAchievement");
+		if(kits == null)
+			kits = config.createSection("Database_KitAchievement");
+		
+		x += setupDatebaseConfig(kits);
 		
 		ConfigurationSection shopSec = config.getConfigurationSection("Kit-Shop");
 		if(shopSec == null)
@@ -94,27 +97,24 @@ public final class XPMain extends JavaPlugin implements Listener
 		x += ConfigManager.setDefaultIfNotSet(shopSec, "Kit-Purchased", "&aKit %w purchased!");
 		x += ConfigManager.setDefaultIfNotSet(shopSec, "No-Kits-To-Purchase", "&cNo kits left to purchase!");
 		
-//		shopSec.set("On", false);
-//		shopSec.set("Already-Purchased-Kit", "&aPURCHASED");
-//		shopSec.set("Not-Yet-Purchased-Kit", "&cLOCKED. PURCHASE FOR &6%# &cXP");
-//		shopSec.set("Confirm-Purchase-Kit", "&aPUCHASE BEGUN. CONFIRM FOR &6%# &AXP");
-//		shopSec.set("Confirmation-Expired", "&cThe confirmation time has expired. Please try again.");
-//		shopSec.set("Not-Enough-XP", "&cYou do not have enough XP to purchase this kit.");
-//		shopSec.set("Kit-Purchased", "&aKit %w purchased!");
-//		shopSec.createSection("Kits");
-//		x++;
 		
 		if(x > 0)
 			this.saveConfig();
 		
-		this.xpSystem = new XPSystem(config.getConfigurationSection("Database"));
+		this.xpSystem = new XPSystem(config.getConfigurationSection("Database_XP"));
+		this.kitSystem = new KitSystem(config.getConfigurationSection("Database_KitAchievement"), xpSystem);
 		if(!this.xpSystem.isActive())
 		{
-			Bukkit.getLogger().info("[AnnihilationXPSystem] Could NOT connect to the database");
+			Bukkit.getLogger().info("[AnnihilationXPSystem] Could NOT connect to the XP database");
+			disable();
+			return;
+		} else if(!this.kitSystem.isActive())
+		{
+			Bukkit.getLogger().info("[AnnihilationXPSystem] Could NOT connect to the kit achievement database");
 			disable();
 			return;
 		}
-		Bukkit.getLogger().info("[AnnihilationXPSystem] CONNECTED to the database");
+		Bukkit.getLogger().info("[AnnihilationXPSystem] CONNECTED to both databases");
 		boolean useShop = config.getBoolean("Kit-Shop.On");
 		if(useShop)
 		{
@@ -125,10 +125,22 @@ public final class XPMain extends JavaPlugin implements Listener
 		else Bukkit.getLogger().info("[AnnihilationXPSystem] The shop is DISABLED");
 		loadMultipliers(config.getConfigurationSection("XP-Multipliers"));
 		loadXPVars(config); //This also loads the listeners with the values they need
+		this.getCommand("achievements").setExecutor(new AchievementViewer(this.kitSystem, this));
 		AnniCommand.registerArgument(new XPArgument(xpSystem));
 		AnniCommand.registerArgument(new KitArgument(xpSystem));
+		AnniCommand.registerArgument(new KitAchivementArgument(kitSystem));
 		for(AnniPlayer p : AnniPlayer.getPlayers())
 			xpSystem.loadKits(p, null);
+	}
+	
+	private int setupDatebaseConfig(ConfigurationSection data){
+		int x = 0;
+		x += ConfigManager.setDefaultIfNotSet(data, "Host", "Test");
+		x += ConfigManager.setDefaultIfNotSet(data, "Port", "Test");
+		x += ConfigManager.setDefaultIfNotSet(data, "Database", "Test");
+		x += ConfigManager.setDefaultIfNotSet(data, "Username", "Test");
+		x += ConfigManager.setDefaultIfNotSet(data, "Password", "Test");
+		return x;
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -168,8 +180,7 @@ public final class XPMain extends JavaPlugin implements Listener
 	
 	private void disable()
 	{
-		if(xpSystem != null)
-			xpSystem.disable();
+		detachAllDatabases();
 		Bukkit.getLogger().info("[AnnihilationXPSystem] Disabling XP System.");
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
@@ -189,11 +200,15 @@ public final class XPMain extends JavaPlugin implements Listener
 		teamXPs[3] = section.getInt("Last-Place-Team-XP");
 		
 		XPListeners listeners = new XPListeners(this.xpSystem,gaveXPMessage,killXP,nexusHitXP,teamXPs);
-		MyXPCommand command = new MyXPCommand(this.xpSystem,myXPMessage);
+		KitListeners KitListeners = new KitListeners(this.kitSystem);
 		
-		//AnniEvent.registerListener(listeners);
 		Bukkit.getPluginManager().registerEvents(listeners, this);
-		this.getCommand("MyXP").setExecutor(command);
+		Bukkit.getPluginManager().registerEvents(KitListeners, this);
+		
+		MyXPCommand xpCommand = new MyXPCommand(this.xpSystem,myXPMessage);
+
+		this.getCommand("MyXP").setExecutor(xpCommand);
+
 	}
 	
 	public void loadMultipliers(ConfigurationSection multipliers)
@@ -225,13 +240,28 @@ public final class XPMain extends JavaPlugin implements Listener
 	@Override
 	public void onDisable()
 	{
+		detachAllDatabases();
+	}
+	
+	public void detachAllDatabases(){
 		if(xpSystem != null)
 			xpSystem.disable();
+		if (kitSystem != null){
+			kitSystem.disable();
+		}
 	}
 	
 	public static String formatString(String string, int amount)
 	{
 		return ChatColor.translateAlternateColorCodes('&', string.replace("%#", ""+amount));
+	}
+	
+	public static String[] toStringArray(String s)
+	{
+		if (s.contains("%n"))
+			return s.split("%n");
+		else
+			return new String[] { s };
 	}
 	
 	public static int checkMultipliers(Player player, int initialXP)

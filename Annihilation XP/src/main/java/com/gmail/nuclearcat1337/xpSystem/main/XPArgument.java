@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.main.AnniArgument;
 import com.gmail.nuclearcat1337.anniPro.utils.IDTools;
+import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 import com.google.common.base.Predicate;
 
 public class XPArgument implements AnniArgument

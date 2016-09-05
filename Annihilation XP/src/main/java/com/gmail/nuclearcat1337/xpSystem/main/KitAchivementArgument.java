@@ -9,21 +9,22 @@ import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
 import com.gmail.nuclearcat1337.anniPro.kits.Kit;
 import com.gmail.nuclearcat1337.anniPro.main.AnniArgument;
 import com.gmail.nuclearcat1337.anniPro.utils.IDTools;
-import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
+import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitAchivement;
+import com.gmail.nuclearcat1337.xpSystem.kitAchievement.KitSystem;
 import com.google.common.base.Predicate;
 
-public class KitArgument implements AnniArgument
+public class KitAchivementArgument implements AnniArgument
 {
-	private XPSystem xpSystem;
-	public KitArgument(XPSystem system)
+	private KitSystem kitSystem;
+	public KitAchivementArgument(KitSystem system)
 	{
-		this.xpSystem = system;
+		this.kitSystem = system;
 	}
 	
 	@Override
 	public void executeCommand(final CommandSender sender, String label, final String[] args)
 	{
-		if(args != null && args.length > 2)
+		if(args != null && args.length > 3)
 		{
 			IDTools.getUUID(args[2], new Predicate<UUID>(){
 				@Override
@@ -34,19 +35,23 @@ public class KitArgument implements AnniArgument
 						Kit kit = Kit.getKit(args[1]);
 						if(kit != null)
 						{
+							int num = 1;
+							try{
+								  num = Integer.parseInt(args[3]);
+								} catch (NumberFormatException ignore) {
+									
+								}
 							if(args[0].equalsIgnoreCase("add"))
-							{
-								sender.sendMessage(ChatColor.GREEN+"Kit added.");
-								xpSystem.addKit(id, kit);
-								sender.sendMessage("Added kit "+kit.getName());
-								//addKit(kit.getName(), id);
+							{	
+								kitSystem.addKitAchivementProgess(id, KitAchivement.toKitAchivement(kit), num);
+								sender.sendMessage(ChatColor.GREEN + "" + num + " units added to " + kit.getName());
+//								sender.sendMessage("Added kit "+kit.getName());
 							}
 							else if(args[0].equalsIgnoreCase("remove"))
 							{
-								sender.sendMessage(ChatColor.RED+"Kit removed.");
-								//removeKit(kit.getName(), id);
-								xpSystem.removeKit(id, kit);
-								sender.sendMessage("Removed kit "+kit.getName());
+								kitSystem.removeKitAchivementProgess(id, KitAchivement.toKitAchivement(kit), num);
+								sender.sendMessage(ChatColor.GREEN + "" + num + " units removed from " +kit.getName());
+//								sender.sendMessage("Removed kit "+kit.getName());
 							}
 							else 
 								sender.sendMessage(ChatColor.RED+"Operation "+ChatColor.GOLD+args[0]+ChatColor.RED+" is not supported.");
@@ -64,13 +69,13 @@ public class KitArgument implements AnniArgument
 	@Override
 	public String getArgumentName()
 	{
-		return "Kit";
+		return "KitAchievement";
 	}
 
 	@Override
 	public String getHelp()
 	{			
-		return ChatColor.LIGHT_PURPLE+"Kit [add,remove] <kit> <player>--"+ChatColor.GREEN+"adds or removes a kit from a player.";
+		return ChatColor.LIGHT_PURPLE+"KitAchievement [add,remove] <kit> <player> <number>--"+ChatColor.GREEN+"adds or removes a number of units from a player.";
 	}
 
 	@Override

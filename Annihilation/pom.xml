@@ -8,11 +8,8 @@
          	<resource>
              	<includes>
  					<include>plugin.yml</include>
- 					<include>Images</include>
+ 					<include>**/*.*</include>
                </includes>
-               <excludes>
-               	<exclude>*.png</exclude>
-               </excludes>
                 <filtering>true</filtering>
                  <directory>${basedir}/src/main/resources</directory>
              </resource>
