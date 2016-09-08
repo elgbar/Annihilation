@@ -36,7 +36,7 @@ public final class XPMain extends JavaPlugin implements Listener
 	private File configFile;
 	private static List<Perm> perms;
 	
-	private final String CHAT_PREFIX = "[AnnihilationXPSystem] ";
+	private final String CHAT_PREFIX = "[" + this.getName() + "] ";
 
 	@Override
 	public void onEnable()

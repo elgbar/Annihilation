@@ -18,7 +18,6 @@ import com.gmail.nuclearcat1337.anniPro.voting.ConfigManager;
 import com.gmail.nuclearcat1337.kitSystem.achievementViewer.AchievementViewer;
 import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitListeners;
 import com.gmail.nuclearcat1337.kitSystem.kitAchievement.KitSystem;
-import com.gmail.nuclearcat1337.xpSystem.main.KitArgument;
 import com.gmail.nuclearcat1337.xpSystem.main.XPMain;
 
 public final class KitMain extends JavaPlugin implements Listener
@@ -26,7 +25,7 @@ public final class KitMain extends JavaPlugin implements Listener
 	private KitSystem kitSystem;
 	private YamlConfiguration config;
 	private File configFile;
-	private final String CHAT_PREFIX = "[AnnihilationKitSystem] ";
+	private final String CHAT_PREFIX = "[" + this.getName() + "] ";
 
 	@Override
 	public void onEnable()
@@ -57,26 +56,21 @@ public final class KitMain extends JavaPlugin implements Listener
 //		x += ConfigManager.setDefaultIfNotSet(shopSec, "Kit-Purchased", "&aKit %w purchased!");
 //		x += ConfigManager.setDefaultIfNotSet(shopSec, "No-Kits-To-Purchase", "&cNo kits left to purchase!");
 		
-		
+		//save the config if any changes have been detected
 		if(x > 0)
 			this.saveConfig();
 		
 		try {
 			this.kitSystem = new KitSystem(config.getConfigurationSection("Database"), XPMain.getXpSystem());
 		} catch (NoClassDefFoundError e){ //something went wrong with initlizing anni xp
+			Bukkit.getLogger().info(CHAT_PREFIX + "Could NOT connect to the kit achievement database, due to dependency of Annihilation XP");
 			disable(); //We cannot function without the xp addon
-		}
-		if(!this.kitSystem.isActive())
-		{
-			Bukkit.getLogger().info(CHAT_PREFIX + "Could NOT connect to the kit achievement database");
-			disable();
 			return;
 		}
 		Bukkit.getLogger().info(CHAT_PREFIX + "CONNECTED to kit database");
 		
 		loadKitVars(config); //This also loads the listeners with the values they need
 		
-//		this.getCommand("achievements").setExecutor(new AchievementViewer(this.kitSystem));
 		AnniCommand.registerArgument(new KitAchivementArgument(kitSystem));
 	}
 	
