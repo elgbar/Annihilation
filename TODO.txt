@@ -1,24 +1,17 @@
--Important-
-On dmg of nexus the damager get x2 of the Nexus-Hit-XP (from anniXPconfig)
-Make some classes only be gained though achivements (see below)
+-Important/Next-
+Make the xp rain for bosses be non nms
+Golems reward chest's item are randomly placed in the chest
 
 -Not So Important-
-verify all classes
-Edit Scoreboard to Include More Information 
 Add Particles to Nexus and Enderfurnace 
 Add Noise and Particle Effects for Special Attacks and Other Things... 
-Golems reward chest's item are randomly placed in the chest
 Create Tutorial System For Both Annihilation and HCS
-Make the xp rain for bosses be non nms
+Edit Scoreboard to Include More Information 
+
+-Items to add to golem reward-
 Add a gold sword with sharp 1 unbreaking 20 that every time you hit some one you get healed (takes 4 hits to get full life) (based on how much dmg you delt)
-add a diamond pickaxe with efficiency 10 and duration 4
+Add a diamond pickaxe with efficiency 10 and duration 4
 
 -Test-
+Verify all classes (do this with ben)
 Max Players in a party (10)
-
--Classes to be acived though achivements-
-Warrior: 500 melee kills (done)
-Scout: 500 Nexus Damage (done)
-Miner: Mine 1500 ores (done)
-Lumberjack: Cut 2000 logs (done)
-Archer: 200 kills with a bow (done)
