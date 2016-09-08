@@ -1,7 +1,7 @@
-name: AnnihilationVault
+name: ${project.artifactId}
 main: com.gmail.nuclearcat1337.vaultPlugin.VaultHook
-version: 1.1.0
-authors: [Mr_Little_Kitty]
+version: ${project.version}
+authors: [Mr_Little_Kitty, kh498]
 depend: [Vault, Annihilation]
 description: An Annihilation vault hook
 commands:

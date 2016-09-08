@@ -1,7 +1,7 @@
 name: ${project.artifactId}
 main: com.gmail.nuclearcat1337.kitSystem.main.KitMain
 version: ${project.version}
-authors: [Mr_Little_Kitty, kh498]
+authors: [kh498, Mr_Little_Kitty]
 depend: [Annihilation, Annihilation_XP]
 description: An Annihilation Achievement System
 commands:

@@ -1,7 +1,7 @@
-name: AnnihilationWorldRestorer
+name: ${project.artifactId}
 main: com.gmail.nuclearcat1337.annipro.worldrestorer.WorldRestorer
-version: 1.0.0
-authors: [Mr_Little_Kitty]
+version: ${project.version}
+authors: [Mr_Little_Kitty, kh498]
 description: A plugin for restoring Annihilation Worlds
 load: STARTUP
 loadbefore: [Annihilation]
