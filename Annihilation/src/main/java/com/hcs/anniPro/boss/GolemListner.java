@@ -24,7 +24,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
-import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
 
 public class GolemListner implements Listener
 {
@@ -179,8 +178,7 @@ public class GolemListner implements Listener
 							}
 
 							spawnLoc.getBlock().setType(Material.AIR);
-							if (Game.isGameRunning())
-								Golem.spawnGolem(golem);
+							Golem.spawnGolem(golem);
 						}
 					}, RESPAWN_TIME);
 				}
