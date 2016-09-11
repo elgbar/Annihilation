@@ -117,12 +117,10 @@ public class GolemListner implements Listener
 					for (Player p : spawnLoc.getWorld().getPlayers())
 					{
 						p.sendMessage(golem.getColor() + golem.getDisplayName() + ChatColor.LIGHT_PURPLE + " was killed by " + team + " team!");
-					}
+					}					
 
-					EnderDragonXPSpawn.mimicEnderdragonXPdrop(deathLoc);
-
-					event.setDroppedExp(0);
 					event.getDrops().clear();
+					event.setDroppedExp(2500);
 
 					spawnLoc.getBlock().setType(Material.CHEST);
 
