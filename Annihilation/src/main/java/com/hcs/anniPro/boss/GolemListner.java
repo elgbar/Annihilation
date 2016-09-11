@@ -30,7 +30,8 @@ public class GolemListner implements Listener
 
 	private final Plugin plugin;
 	private final Random rand;
-	private final long RESPAWN_TIME = 12000L; //in ticks,  10 min
+	private final long RESPAWN_TIME = 12000L; //in ticks,  10 min (20 tick in one sec* 60 s in one min * 10 min)
+
 	public GolemListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
@@ -98,7 +99,7 @@ public class GolemListner implements Listener
 						{
 							try
 							{
-								team = ap.getTeam().getColoredName();
+								team = ap.getTeam().getColoredName() + " team";
 							} catch (NullPointerException e)
 							{
 
@@ -113,8 +114,8 @@ public class GolemListner implements Listener
 
 					for (Player p : spawnLoc.getWorld().getPlayers())
 					{
-						p.sendMessage(golem.getColor() + golem.getDisplayName() + ChatColor.LIGHT_PURPLE + " was killed by " + team + " team!");
-					}					
+						p.sendMessage(golem.getColor() + golem.getDisplayName() + ChatColor.LIGHT_PURPLE + " was killed by " + team + "!");
+					}
 
 					event.getDrops().clear();
 					event.setDroppedExp(2500);
@@ -126,42 +127,53 @@ public class GolemListner implements Listener
 
 					if (chest != null && inv != null)
 					{
-						List<ItemStack> l = new ArrayList<ItemStack>();
+						List<ItemStack> list = new ArrayList<ItemStack>();
 
 						List<GolemReward> common = GolemReward.getAllRarity(Rarity.COMMON);
 						List<GolemReward> uncommon = GolemReward.getAllRarity(Rarity.UNCOMMON);
 						List<GolemReward> rare = GolemReward.getAllRarity(Rarity.RARE);
 
-						int z;
-						int z2;
-						// for (int i = 0; i < 2; i++){
-						// z = rand.nextInt(common.size());
-						// l.add(GolemReward.toItemStack(common.get(z)));
-						// }
+						int randomItem, randomItem2;
 
-						// for (int i = 0; i < 2; i++){
-						// z = rand.nextInt(uncommon.size());
-						// l.add(GolemReward.toItemStack(uncommon.get(z)));
-						// }
+						//add two common items
+						randomItem = rand.nextInt(common.size());
+						randomItem2 = rand.nextInt(common.size());
+						list.add(GolemReward.toItemStack(common.get(randomItem)));
+						while (randomItem == randomItem2)
+							randomItem2 = rand.nextInt(common.size());
+						list.add(GolemReward.toItemStack(common.get(randomItem2)));
 
-						z = rand.nextInt(common.size());
-						z2 = rand.nextInt(common.size());
-						l.add(GolemReward.toItemStack(common.get(z)));
-						while (z == z2)
-							z2 = rand.nextInt(common.size());
-						l.add(GolemReward.toItemStack(common.get(z2)));
+						//add two uncommon items
+						randomItem = rand.nextInt(uncommon.size());
+						randomItem2 = rand.nextInt(uncommon.size());
+						list.add(GolemReward.toItemStack(uncommon.get(randomItem)));
+						while (randomItem == randomItem2)
+							randomItem2 = rand.nextInt(uncommon.size());
+						list.add(GolemReward.toItemStack(uncommon.get(randomItem2)));
 
-						z = rand.nextInt(uncommon.size());
-						z2 = rand.nextInt(uncommon.size());
-						l.add(GolemReward.toItemStack(uncommon.get(z)));
-						while (z == z2)
-							z2 = rand.nextInt(uncommon.size());
-						l.add(GolemReward.toItemStack(uncommon.get(z2)));
+						//add one rare item
+						randomItem = rand.nextInt(rare.size());
+						list.add(GolemReward.toItemStack(rare.get(randomItem)));
 
-						z = rand.nextInt(rare.size());
-						l.add(GolemReward.toItemStack(rare.get(z)));
+						
+						int[] filledSlots = new int[inv.getSize()];
+						for (ItemStack item : list)
+						{
+							int slot = 0;
+							boolean acceptValue = false;
+							while (!acceptValue)
+							{
+								slot = rand.nextInt(inv.getSize());
+								if (filledSlots[slot] == 0)
+								{
+									inv.setItem(slot, item);
+									filledSlots[slot] = 1;
+									acceptValue = true;
+								}
+							}
+						}
 
-						inv.setContents(l.toArray(new ItemStack[l.size()]));
+						//						inv.setContents(list.toArray(new ItemStack[l.size()]));
 					}
 					/*
 					 * Spawns the golem after 10 minutes of being dead
