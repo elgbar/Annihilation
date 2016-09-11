@@ -253,6 +253,8 @@ public class BlockBreakListner implements Listener
 						case PUMPKIN:
 						case STANDING_BANNER:
 						case WALL_BANNER:
+						case LEAVES:
+						case LEAVES_2:
 
 							return;
 						default:

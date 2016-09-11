@@ -64,13 +64,12 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 			{
 				str.add(s);
 			}
-		} else
-		{
-			str.add(ChatColor.RED + "Click an item to update the status");
 		}
+		str.add(ChatColor.GOLD + "----------------------------");
 		if (wrapper.kit.getRewardKit().hasPermission(player))
 			str.add(ChatColor.GREEN + "You have achieved this kit's goal!");
-
+		else
+			str.add(ChatColor.YELLOW + "Click an item to update the stats.");
 		String name = getDisplayName();
 		name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 		return setNameAndLore(getIcon().clone(), name, str);
@@ -81,7 +80,7 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 		/*
 		 * Can only update their stats every 1 second
 		 */
-		if (lastCachedLore.get(uuid) == null || lastCachedLore.get(uuid) + 1000 < System.currentTimeMillis()) 
+		if (lastCachedLore.get(uuid) == null || lastCachedLore.get(uuid) + 1000 < System.currentTimeMillis())
 		{
 			lastCachedLore.put(uuid, System.currentTimeMillis());
 
@@ -119,20 +118,20 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 				@Override
 				public void accept(Integer amount)
 				{
-					double displayAmount =  (double) amount;
+					double displayAmount = (double) amount;
 
 					if (amount > wrapper.kit.getTotalActions())
 						displayAmount = wrapper.kit.getTotalActions();
-					
+
 					double percent = (displayAmount / wrapper.kit.getTotalActions()) * 100f;
-					
-					percent = (double)Math.round(percent * 100d) / 100d; //makes the number always have a precition of 2 decimanls
-					
-//					System.out.println("(" +displayAmount + " / " +wrapper.kit.getTotalActions() + ") * " + 100f + " = (" 
-//					+ displayAmount / wrapper.kit.getTotalActions() +") * " + 100f +" = " + percent );
-					
-					String lore = ChatColor.GRAY + "You have " + pre + " " + (int) displayAmount + "/" + wrapper.kit.getTotalActions() + " " + post + ".%n"
-							+ ChatColor.GRAY + "That is " + percent + " percent.";
+
+					percent = (double) Math.round(percent * 100d) / 100d; //makes the number always have a precition of 2 decimanls
+
+					//					System.out.println("(" +displayAmount + " / " +wrapper.kit.getTotalActions() + ") * " + 100f + " = (" 
+					//					+ displayAmount / wrapper.kit.getTotalActions() +") * " + 100f +" = " + percent );
+
+					String lore = ChatColor.GRAY + "You have " + pre + " " + (int) displayAmount + "/" + wrapper.kit.getTotalActions() + " " + post
+							+ ".%n" + ChatColor.GRAY + "That is " + percent + " percent.";
 					cachedLore.put(uuid, lore);
 				}
 			});
@@ -150,5 +149,5 @@ public class KitAchievementMenuItem extends MenuItem implements Listener
 	{
 		cacheProgress(e.getPlayer().getUniqueId());
 	}
-	
+
 }
