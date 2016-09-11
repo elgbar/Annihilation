@@ -25,7 +25,6 @@ import org.bukkit.util.Vector;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
 import com.gmail.nuclearcat1337.anniPro.anniGame.Game;
-import com.hcs.anniPro.boss.versions.v1_8_R3.EnderDragonXPSpawn;
 
 public class GolemListner implements Listener
 {
@@ -91,7 +90,6 @@ public class GolemListner implements Listener
 					golem.setAlive(false);
 
 					Location spawnLoc = golem.getSpawn().toLocation();
-					Location deathLoc = golEnt.getLocation();
 					Player killer = event.getEntity().getKiller();
 					String team = null;
 					if (killer != null)
