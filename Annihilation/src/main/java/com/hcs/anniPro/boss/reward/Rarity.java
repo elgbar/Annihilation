@@ -1,4 +1,4 @@
-package com.hcs.anniPro.boss;
+package com.hcs.anniPro.boss.reward;
 
 /**
  * The rarity of the golemreward

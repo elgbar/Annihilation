@@ -1,4 +1,4 @@
-package com.hcs.anniPro.boss;
+package com.hcs.anniPro.boss.reward;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -13,9 +16,11 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 @SuppressWarnings("serial")
-/** Rewards you get after you kill one of the golems
+/**
+ * Rewards you get after you kill one of the golems
  * 
- * @author kh498 */
+ * @author kh498
+ */
 public enum GolemReward
 {
 	// Common items
@@ -56,7 +61,7 @@ public enum GolemReward
 			put(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
 		}
 	}),
-	GOLD_SWORD(Rarity.UNCOMMON, Material.GOLD_SWORD, 1, new HashMap<Enchantment, Integer>()
+	GOLD_SWORD_I(Rarity.UNCOMMON, Material.GOLD_SWORD, 1, new HashMap<Enchantment, Integer>()
 	{
 		{
 			put(Enchantment.DAMAGE_ALL, 2);
@@ -124,53 +129,88 @@ public enum GolemReward
 			put(Enchantment.ARROW_FIRE, 1);
 			put(Enchantment.ARROW_INFINITE, 1);
 		}
+	}),
+	DIAMOND_PICKAXE(Rarity.RARE, Material.DIAMOND_PICKAXE, 1, new HashMap<Enchantment, Integer>()
+	{
+		{
+			put(Enchantment.DIG_SPEED, 10);
+			put(Enchantment.DURABILITY, 4);
+		}
+	}),
+	GOLDEN_HEALING_SWORD(Rarity.RARE, Material.GOLD_SWORD, 1, ChatColor.GOLD + "Golden Sword of Healing", new HashMap<Enchantment, Integer>()
+	{
+		{
+			put(Enchantment.DAMAGE_ALL, 1);
+			put(Enchantment.DURABILITY, 20);
+		}
 	}),;
 
 	private final Rarity rarity;
 	private final Material material;
 	private final int quantity;
+	private final String displayName;
 	private final Map<Enchantment, Integer> enchantments;
-
-	private GolemReward(Rarity r, Material m, int i, Map<Enchantment, Integer> ench)
-	{
-		this.rarity = r;
-		this.material = m;
-		this.quantity = i;
-
-		this.enchantments = ench;
-	}
+	
+	private static Map<GolemReward, ItemStack> cachedItems = new HashMap<GolemReward, ItemStack>();
 
 	private GolemReward(Rarity r, Material m, int i)
 	{
 		this(r, m, i, null);
 	}
 
+	private GolemReward(Rarity r, Material m, int i, Map<Enchantment, Integer> ench)
+	{
+		this(r, m, i, null, ench);
+	}
+
+	private GolemReward(Rarity r, Material m, int i, @Nullable String n, @Nullable Map<Enchantment, Integer> ench)
+	{
+		this.rarity = r;
+		this.material = m;
+		this.quantity = i;
+		this.displayName = n;
+		this.enchantments = ench;
+	}
+
 	public static ItemStack toItemStack(GolemReward gr)
 	{
-		ItemStack item = new ItemStack(gr.getMaterial(), gr.getQuantity());
-
-		if (gr.getEnchantments() != null)
-		{
-			if (gr.getMaterial().equals(Material.ENCHANTED_BOOK))
+		ItemStack item;
+		if (!cachedItems.containsKey(gr)) {
+			item = new ItemStack(gr.getMaterial(), gr.getQuantity());
+			if (gr.getEnchantments() != null)
 			{
-				EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) item.getItemMeta();
-
-				for (Entry<Enchantment, Integer> entry : gr.getEnchantments().entrySet())
+				if (gr.getMaterial().equals(Material.ENCHANTED_BOOK))
 				{
-					bookMeta.addStoredEnchant(entry.getKey(), entry.getValue(), false);
-				}
-				item.setItemMeta(bookMeta);
-
-			} else
-			{
-				ItemMeta iMeta = item.getItemMeta();
-				for (Entry<Enchantment, Integer> entry : gr.getEnchantments().entrySet())
+					EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) item.getItemMeta();
+	
+					for (Entry<Enchantment, Integer> entry : gr.getEnchantments().entrySet())
+					{
+						bookMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+					}
+					item.setItemMeta(bookMeta);
+	
+				} else
 				{
-					iMeta.addEnchant(entry.getKey(), entry.getValue(), false);
+					ItemMeta iMeta = item.getItemMeta();
+					for (Entry<Enchantment, Integer> entry : gr.getEnchantments().entrySet())
+					{
+						iMeta.addEnchant(entry.getKey(), entry.getValue(), true);
+					}
+					item.setItemMeta(iMeta);
+	
 				}
-				item.setItemMeta(iMeta);
-
 			}
+			
+			if (gr.displayName != null)
+			{
+				ItemMeta meta = item.getItemMeta();
+				meta.setDisplayName(gr.displayName);
+				item.setItemMeta(meta);
+			}
+			
+			cachedItems.put(gr, item);
+		} else {
+			item = cachedItems.get(gr);
 		}
 		return item;
 	}
@@ -211,5 +251,10 @@ public enum GolemReward
 	public Rarity getRarity()
 	{
 		return rarity;
+	}
+
+	public String getDisplayName()
+	{
+		return displayName;
 	}
 }

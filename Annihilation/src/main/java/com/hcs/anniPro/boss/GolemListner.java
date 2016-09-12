@@ -24,6 +24,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import com.gmail.nuclearcat1337.anniPro.anniGame.AnniPlayer;
+import com.hcs.anniPro.boss.reward.GolemReward;
+import com.hcs.anniPro.boss.reward.Rarity;
+import com.hcs.anniPro.boss.reward.RewardListner;
 
 public class GolemListner implements Listener
 {
@@ -35,6 +38,7 @@ public class GolemListner implements Listener
 	public GolemListner(Plugin p)
 	{
 		Bukkit.getPluginManager().registerEvents(this, p);
+		new RewardListner(p); //let this class start the reward listner as it is a psudo-child
 		rand = new Random(System.currentTimeMillis());
 		this.plugin = p;
 	}
