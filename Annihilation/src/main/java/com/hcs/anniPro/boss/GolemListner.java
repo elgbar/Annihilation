@@ -176,9 +176,8 @@ public class GolemListner implements Listener
 								}
 							}
 						}
-
-						//						inv.setContents(list.toArray(new ItemStack[l.size()]));
 					}
+					
 					/*
 					 * Spawns the golem after 10 minutes of being dead
 					 */
@@ -190,7 +189,7 @@ public class GolemListner implements Listener
 							{
 								Chest chest = (Chest) spawnLoc.getBlock().getState();
 								Inventory inv = chest.getInventory();
-								inv.setContents(null);
+								inv.setContents(new ItemStack[0]);
 							}
 
 							spawnLoc.getBlock().setType(Material.AIR);

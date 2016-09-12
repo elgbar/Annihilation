@@ -117,6 +117,7 @@ public class Golem
 		// set it's health to twice as much normal
 		golemEnt.setMaxHealth(golemEnt.getMaxHealth() * 2);
 		golemEnt.setHealth(golemEnt.getHealth() * 2);
+//		golemEnt.setHealth(1);
 
 		golemEnt.setMetadata(golem.getInternalName() + "Golem", new FixedMetadataValue(AnnihilationMain.getInstance(), true));
 

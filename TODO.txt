@@ -3,7 +3,6 @@
 -Not So Important-
 Add Particles to Nexus and Enderfurnace
 Add Noise and Particle Effects for Special Attacks and Other Things...
-Create Tutorial System For Both Annihilation and HCS
 Edit Scoreboard to Include More Information
 
 -Test-
