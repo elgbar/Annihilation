@@ -9,4 +9,6 @@ commands:
     description: Shows the player's XP
   Shop:
     description: Opens the Kit Shop
+  Convert:
+    description: Opens the exchange shop
 permissions:
