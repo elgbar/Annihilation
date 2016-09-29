@@ -1,0 +1,9 @@
+name: ${project.artifactId}
+main: com.gmail.kh498.xp2gSystem.main.XP2GMain
+version: ${project.version}
+authors: [Mr_Little_Kitty, kh498]
+description: A way to convert anni xp to ingame gold
+commands:
+  Convert:
+    description: Opens the exchange shop
+permissions:

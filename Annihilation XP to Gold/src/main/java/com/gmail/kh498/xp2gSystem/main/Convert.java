@@ -1,4 +1,4 @@
-package com.hcs.convertXP;
+package com.gmail.kh498.xp2gSystem.main;
 
 import java.util.Iterator;
 
@@ -10,16 +10,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import com.gmail.kh498.xp2gSystem.utils.Acceptor;
+import com.gmail.kh498.xp2gSystem.xp.XPSystem;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ActionMenuItem;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickEvent;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemClickHandler;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.ItemMenu.Size;
 import com.gmail.nuclearcat1337.anniPro.itemMenus.MenuItem;
-import com.gmail.nuclearcat1337.xpSystem.utils.Acceptor;
-import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 
 /**
  * Converts annihilation xp to in game gold
@@ -29,14 +28,12 @@ import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
 public class Convert implements CommandExecutor
 {
 	//	private Plugin plugin;
-	private static String CMD = "convert";
+	public static final String CMD = "convert";
 	private static XPSystem xpSystem;
 
-	public Convert (JavaPlugin plugin, XPSystem system)
+	public Convert (XPSystem system)
 	{
-		plugin.getCommand (CMD).setExecutor (this);
 		Convert.xpSystem = system;
-		//		this.plugin = plugin;
 	}
 
 	@ Override
@@ -74,8 +71,8 @@ public class Convert implements CommandExecutor
 										player.sendMessage (ChatColor.GREEN + "You successfully bought " + e.getItemName () + "!");
 									} else
 									{
-										player.sendMessage (
-												ChatColor.RED + "You do not have enough Annihilation xp to buy " + e.getItemName () + ".");
+										player.sendMessage (ChatColor.RED + "You need " + (e.getXpCost () - amount) + " more annihiliation xp to buy "
+												+ e.getItemName () + ".");
 									}
 								}
 							});

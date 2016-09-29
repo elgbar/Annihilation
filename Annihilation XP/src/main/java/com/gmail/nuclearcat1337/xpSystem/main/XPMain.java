@@ -28,7 +28,6 @@ import com.gmail.nuclearcat1337.xpSystem.shop.Shop;
 import com.gmail.nuclearcat1337.xpSystem.xp.MyXPCommand;
 import com.gmail.nuclearcat1337.xpSystem.xp.XPListeners;
 import com.gmail.nuclearcat1337.xpSystem.xp.XPSystem;
-import com.hcs.convertXP.Convert;
 
 public final class XPMain extends JavaPlugin implements Listener
 {
@@ -114,9 +113,6 @@ public final class XPMain extends JavaPlugin implements Listener
 		AnniCommand.registerArgument (new KitArgument (xpSystem));
 		for (AnniPlayer p : AnniPlayer.getPlayers ())
 			xpSystem.loadKits (p, null);
-
-		//seting up converting to gold
-		new Convert (this, xpSystem);
 	}
 
 	private int setupDatebaseConfig (ConfigurationSection data)
