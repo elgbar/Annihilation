@@ -1,11 +1,18 @@
 -Important/Next-
+Fix Teams on HCS
+Add Tip system like in HCS  to Annihilation
+Bungee?
+Debug HCS and Annihilation and prepare them for adding them to a server.
+Find Hub System
 
 -Not So Important-
-Add Particles to Nexus and Enderfurnace
+Add Particles to Nexus and Enderfurnace: Nexus= TNT Explosio, Enderfurnace=Ender Eye particles
 Add Noise and Particle Effects for Special Attacks and Other Things...
 Edit Scoreboard to Include More Information
+Create/Get a Tutorial System For Both Annihilation and HCS
 
 -Test-
 Verify all classes (do this with ben)
 Max Players in a party (10)
 Check that the game starts when x players are online
+Create Global XP/Reward System for Rewards
